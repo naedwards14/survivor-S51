@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Survivor 51 · Live Draft Board</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d1a; color: #fff; font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+  .header {
+    background: linear-gradient(135deg, #1a1a3e 0%, #0d0d1a 100%);
+    border-bottom: 2px solid #D4A017;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-title {
+    font-family: 'Cinzel', serif;
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #D4A017, #FF4500, #FF8C00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header-sub { font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 4px; color: rgba(212,160,23,.6); }
+
+  .current-pick {
+    background: linear-gradient(135deg, rgba(212,160,23,.2), rgba(255,69,0,.15));
+    border: 2px solid #D4A017;
+    border-radius: 14px;
+    padding: 10px 24px;
+    text-align: center;
+    flex: 1;
+    max-width: 320px;
+  }
+  .pick-label { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 3px; color: #D4A017; }
+  .pick-manager { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 700; color: #fff; }
+  .pick-info { font-size: 12px; color: rgba(255,255,255,.5); margin-top: 2px; }
+
+  .btn {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    padding: 9px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-undo { background: rgba(231,76,60,.25); color: #e74c3c; border: 1px solid rgba(231,76,60,.4); }
+  .btn-undo:hover { background: rgba(231,76,60,.4); }
+  .btn-reset { background: rgba(255,255,255,.1); color: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.2); }
+  .btn-reset:hover { background: rgba(255,255,255,.18); }
+  .btn-complete { background: linear-gradient(135deg,#D4A017,#FF4500); color: #fff; }
+
+  .main { display: flex; gap: 0; height: calc(100vh - 76px); }
+
+  /* LEFT: Cast grid */
+  .cast-panel {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    border-right: 1px solid rgba(255,255,255,.08);
+    background: #0d0d1a;
+  }
+  .tribe-section { margin-bottom: 18px; }
+  .tribe-header {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  .toka-hdr { background: #D4A800; color: #000; }
+  .savu-hdr { background: #7B2D8B; color: #fff; }
+  .exile-hdr { background: #5D4037; color: #fff; }
+
+  .cast-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
+
+  .cast-card {
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .2s;
+    border: 2px solid transparent;
+    position: relative;
+  }
+  .cast-card:hover:not(.maxed):not(.voted-out) { transform: scale(1.04); box-shadow: 0 4px 16px rgba(212,160,23,.4); }
+  .cast-card.toka { border-color: rgba(212,168,0,.4); }
+  .cast-card.savu { border-color: rgba(123,45,139,.4); }
+  .cast-card.exile-card { border-color: rgba(93,64,55,.4); }
+  .cast-card.maxed { opacity: 0.35; cursor: not-allowed; }
+  .cast-card.voted-out { opacity: 0.2; cursor: not-allowed; }
+
+  .cast-card img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+    background: #222;
+  }
+  .cast-name {
+    background: rgba(0,0,0,.75);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 4px 4px 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cast-count {
+    font-size: 11px;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1px;
+    text-align: center;
+    padding: 4px 4px 5px;
+  }
+  .count-6 { background:#4472C4; color:#fff; font-weight:700; }   /* 6 left - blue */
+  .count-5 { background:#FFE066; color:#222; font-weight:700; }   /* 5 left - yellow */
+  .count-4 { background:#F4A942; color:#222; font-weight:700; }   /* 4 left - orange */
+  .count-3 { background:#FF9999; color:#222; font-weight:700; }   /* 3 left - pink */
+  .count-2 { background:#C00000; color:#fff; font-weight:700; }   /* 2 left - dark red */
+  .count-1 { background:#C8C8C8; color:#333; font-weight:700; }   /* 1 left - grey */
+  .count-0 { background:#111; color:#666; font-weight:400; }      /* done - black */
+
+  .voted-badge {
+    position: absolute;
+    top: 4px; right: 4px;
+    background: #e74c3c;
+    color: #fff;
+    font-size: 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1px;
+    padding: 2px 5px;
+    border-radius: 4px;
+  }
+  .draft-indicator {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(212,160,23,.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #D4A017;
+    pointer-events: none;
+  }
+
+  /* RIGHT: Draft board */
+  .draft-panel {
+    width: 420px;
+    min-width: 380px;
+    overflow-y: auto;
+    background: #111122;
+    padding: 12px;
+  }
+  .draft-panel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: #D4A017;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .manager-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+    padding: 5px 8px;
+    border-radius: 8px;
+    transition: background .2s;
+  }
+  .manager-row.current-manager {
+    background: rgba(212,160,23,.15);
+    border: 1px solid rgba(212,160,23,.3);
+  }
+  .manager-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    width: 80px;
+    flex-shrink: 0;
+    color: rgba(255,255,255,.8);
+  }
+  .manager-name.current { color: #D4A017; font-size: 14px; }
+  .pick-slot {
+    width: 52px;
+    height: 28px;
+    border-radius: 5px;
+    font-size: 9px;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.1;
+    font-weight: 500;
+    overflow: hidden;
+    padding: 1px 2px;
+    border: 1px solid rgba(255,255,255,.07);
+  }
+  .pick-slot.filled-toka { background: rgba(212,168,0,.25); border-color: rgba(212,168,0,.4); color: #ffd700; }
+  .pick-slot.filled-savu { background: rgba(123,45,139,.3); border-color: rgba(123,45,139,.5); color: #c77ddd; }
+  .pick-slot.filled-exile { background: rgba(93,64,55,.3); border-color: rgba(93,64,55,.5); color: #a1887f; }
+  .pick-slot.empty { background: rgba(255,255,255,.04); color: rgba(255,255,255,.2); }
+  .pick-slot.next-pick { background: rgba(212,160,23,.15); border: 1px dashed #D4A017; color: #D4A017; font-size: 9px; animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+  .pick-number {
+    font-size: 9px;
+    color: rgba(255,255,255,.3);
+    text-align: center;
+    width: 18px;
+    flex-shrink: 0;
+  }
+
+  /* Done screen */
+  .done-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .done-title {
+    font-family: 'Cinzel', serif;
+    font-size: 48px;
+    font-weight: 700;
+    background: linear-gradient(135deg,#D4A017,#FF4500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 4px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useCallback } = React;
+
+const BASE_PHOTO = 'https://turnto10.com/resources/media2/16x9/1280/800/center/80/';
+
+const CONTESTANTS = [
+  // TOKA (Yellow) - Aaliyah voted out
+  { id:'aaliyah',  name:'Aaliyah',  tribe:'Toka', out:true,  photo: BASE_PHOTO+'b6cbfd4f-4722-4e95-9a4f-4cbac8693785-AaliyahPuglia.png' },
+  { id:'thienan',  name:'Thien An', tribe:'Toka', out:false, photo: BASE_PHOTO+'1d72888c-3e41-4b2d-9d59-f356f2cbac64-TheinAnNguyen.png' },
+  { id:'jelly',    name:'Jelly',    tribe:'Toka', out:false, photo: BASE_PHOTO+'1d94ac9c-0787-46f2-91d6-fdb707b65637-JellyLoblack.png' },
+  { id:'brady',    name:'Brady',    tribe:'Toka', out:false, photo: BASE_PHOTO+'05d9ecae-69eb-46d0-a6c3-e24daa6a1c28-BradyBooker.png' },
+  { id:'kilby',    name:'Kilby',    tribe:'Toka', out:false, photo: BASE_PHOTO+'34e0d308-5c3e-4c09-bb32-14fee7b707b0-DannyKilby.png' },
+  { id:'devin',    name:'Devin',    tribe:'Toka', out:false, photo: BASE_PHOTO+'a7ab02ab-53f6-4f8e-a9d3-103de9a146e1-DevinWay.png' },
+  { id:'jenna',    name:'Jenna',    tribe:'Toka', out:false, photo: BASE_PHOTO+'06d841bb-cf45-4d48-8483-4351aa7cc147-JennaDoore.png' },
+  { id:'maggie',   name:'Maggie',   tribe:'Toka', out:false, photo: BASE_PHOTO+'a2d3b5e4-4e2e-4869-a1b5-ffc08030e03f-MaggieNestor.png' },
+  { id:'mikep',    name:'Mike P',   tribe:'Toka', out:false, photo: BASE_PHOTO+'76003c77-5106-4a3f-b7df-ad0971aad662-MikePinsky.png' },
+  { id:'patt',     name:'Patt',     tribe:'Toka', out:false, photo: BASE_PHOTO+'f10d2fde-caf7-4d9f-8c4f-d5b92fda5dd6-PattCannaday.png' },
+  // SAVU (Purple)
+  { id:'alexis',   name:'Alexis',   tribe:'Savu', out:false, photo: BASE_PHOTO+'4c49b157-5964-45ca-963d-295eb24478da-AlexisLevine.png' },
+  { id:'ana',      name:'Ana',      tribe:'Savu', out:false, photo: BASE_PHOTO+'eb9e90cc-9964-4fca-bd9d-2940d1ef72eb-AnaSani.png' },
+  { id:'carter',   name:'Carter',   tribe:'Savu', out:false, photo: BASE_PHOTO+'28e202ec-6802-49b0-8fc7-f42504b8850f-CarterKrull.png' },
+  { id:'cristian', name:'Cristian', tribe:'Savu', out:false, photo: BASE_PHOTO+'c5fe29ca-1071-4fb5-81e6-e355894b6fe3-CristianChavez.png' },
+  { id:'eric',     name:'Eric',     tribe:'Savu', out:false, photo: BASE_PHOTO+'c6f23588-ed4d-48b3-b009-67a0b06911c0-EricMacksound.png' },
+  { id:'kristin',  name:'Kristin',  tribe:'Savu', out:false, photo: BASE_PHOTO+'7012944f-38af-4971-a5bf-9c4a41d3ca00-KristinFlickinger.png' },
+  { id:'linnea',   name:'Linnea',   tribe:'Savu', out:false, photo: BASE_PHOTO+'b6fac4a6-e910-4c00-906d-5c4b5a0248d4-LinneaCapobianco.png' },
+  { id:'ori',      name:'Ori',      tribe:'Savu', out:false, photo: BASE_PHOTO+'637f6f72-82c2-4a63-bb14-f8bb53c01959-OriJeanCharles.png' },
+  { id:'rob',      name:'Rob',      tribe:'Savu', out:false, photo: BASE_PHOTO+'12b3ddb4-fc45-49e2-aa40-9234adf28d25-RobAntonson.png' },
+  { id:'sharonda', name:'Sharonda', tribe:'Savu', out:false, photo: BASE_PHOTO+'bbb97a5d-5cdf-4728-9fa6-a196321f18a9-SharondaCox.png' },
+  // EXILE
+  { id:'lewis',    name:'Lewis',    tribe:'Exile', out:false, photo: BASE_PHOTO+'4ebc18d6-96a9-468c-aefd-3e49f6fd89ec-LewisKelly.png' },
+];
+
+const MANAGERS = ['Neil','Julie','Lindsay','Jason','Debbie','David','Jenny','Alex','Mel','Brett/Emma','Dan','Danielle','Gab','Grayson','Jenn','Jack','Dale','Sue','Charlie'];
+const N = MANAGERS.length; // 19
+const PICKS_PER = 6;
+const TOTAL_PICKS = N * PICKS_PER; // 114
+const MAX_DRAFTS = 6;
+
+// Generate snake order: array of manager indices (0-based)
+const SNAKE_ORDER = [];
+for (let round = 0; round < PICKS_PER; round++) {
+  if (round % 2 === 0) {
+    for (let i = 0; i < N; i++) SNAKE_ORDER.push(i);
+  } else {
+    for (let i = N-1; i >= 0; i--) SNAKE_ORDER.push(i);
+  }
+}
+
+const SAVE_KEY = 'survivor51_draftboard_v1';
+
+function getInitial() {
+  try {
+    const saved = localStorage.getItem(SAVE_KEY);
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  return { picks: [] }; // picks: [{pickNum, managerIdx, contestantId}]
+}
+
+function save(state) {
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+export default function App() {
+  const [state, setState] = useState(getInitial);
+
+  const picks = state.picks;
+  const currentPickIdx = picks.length; // 0-based index into SNAKE_ORDER
+  const isDone = currentPickIdx >= TOTAL_PICKS;
+  const currentManagerIdx = isDone ? null : SNAKE_ORDER[currentPickIdx];
+  const currentManagerName = isDone ? null : MANAGERS[currentManagerIdx];
+  const currentRound = Math.floor(currentPickIdx / N) + 1;
+  const pickInRound = (currentPickIdx % N) + 1;
+
+  // Count how many times each contestant has been drafted
+  const draftCount = {};
+  CONTESTANTS.forEach(c => draftCount[c.id] = 0);
+  picks.forEach(p => { if (draftCount[p.contestantId] !== undefined) draftCount[p.contestantId]++; });
+
+  // Build manager pick slots
+  const managerPicks = MANAGERS.map(() => Array(PICKS_PER).fill(null));
+  picks.forEach(p => {
+    const slot = Math.floor(p.pickNum / N);
+    managerPicks[p.managerIdx][slot] = p.contestantId;
+  });
+
+  const draft = useCallback((contestantId) => {
+    if (isDone) return;
+    const c = CONTESTANTS.find(x => x.id === contestantId);
+    if (!c || c.out) return;
+    if (draftCount[contestantId] >= MAX_DRAFTS) return;
+
+    const newPick = { pickNum: currentPickIdx, managerIdx: currentManagerIdx, contestantId };
+    const newState = { picks: [...picks, newPick] };
+    setState(newState);
+    save(newState);
+  }, [isDone, currentPickIdx, currentManagerIdx, draftCount, picks]);
+
+  const undo = () => {
+    if (picks.length === 0) return;
+    const newState = { picks: picks.slice(0, -1) };
+    setState(newState);
+    save(newState);
+  };
+
+  const reset = () => {
+    if (!confirm('Reset the entire draft board?')) return;
+    const newState = { picks: [] };
+    setState(newState);
+    save(newState);
+  };
+
+  const toka = CONTESTANTS.filter(c => c.tribe === 'Toka');
+  const savu = CONTESTANTS.filter(c => c.tribe === 'Savu');
+  const exile = CONTESTANTS.filter(c => c.tribe === 'Exile');
+
+  const renderCard = (c) => {
+    const count = draftCount[c.id];
+    const left = MAX_DRAFTS - count;
+    const maxed = count >= MAX_DRAFTS;
+    const isOut = c.out;
+    const leftColor = `count-${left}`;
+    const tribeClass = c.tribe === 'Toka' ? 'toka' : c.tribe === 'Savu' ? 'savu' : 'exile-card';
+    return (
+      <div
+        key={c.id}
+        className={`cast-card ${tribeClass} ${maxed ? 'maxed' : ''} ${isOut ? 'voted-out' : ''}`}
+        onClick={() => !maxed && !isOut && draft(c.id)}
+        title={isOut ? `${c.name} — VOTED OUT` : maxed ? `${c.name} — FULLY DRAFTED` : `Draft ${c.name} · ${left} picks left`}
+      >
+        <img src={c.photo} alt={c.name} onError={e => { e.target.style.background='#333'; e.target.style.minHeight='80px'; }} />
+        {isOut && <div className="voted-badge">OUT</div>}
+        <div className="cast-name">{c.name}</div>
+        <div className={`cast-count ${leftColor}`}>{isOut ? '💀 VOTED OUT' : maxed ? '✅ DONE' : `${left} left`}</div>
+      </div>
+    );
+  };
+
+  const availableCount = (tribe) =>
+    CONTESTANTS.filter(c => c.tribe === tribe && !c.out && draftCount[c.id] < MAX_DRAFTS).length;
+  const totalLeft = (tribe) =>
+    CONTESTANTS.filter(c => c.tribe === tribe && !c.out).reduce((s, c) => s + (MAX_DRAFTS - draftCount[c.id]), 0);
+
+  return (
+    <div>
+      {isDone && (
+        <div className="done-overlay">
+          <div style={{fontSize:'60px'}}>🔥</div>
+          <div className="done-title">DRAFT COMPLETE!</div>
+          <div style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:'3px',color:'rgba(255,255,255,.5)'}}>MAY THE BEST TEAM WIN</div>
+          <button className="btn btn-reset" onClick={reset} style={{marginTop:'10px'}}>RESET BOARD</button>
+        </div>
+      )}
+
+      {/* HEADER */}
+      <div className="header">
+        <div>
+          <div className="header-sub">FANTASY LEAGUE · THE OPEN ERA</div>
+          <div className="header-title">SURVIVOR 51 · LIVE DRAFT</div>
+        </div>
+
+        {!isDone && (
+          <div className="current-pick">
+            <div className="pick-label">Now Drafting</div>
+            <div className="pick-manager">{currentManagerName}</div>
+            <div className="pick-info">Pick #{currentPickIdx+1} · Round {currentRound} · {pickInRound} of {N}</div>
+          </div>
+        )}
+
+        <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
+          <div style={{fontFamily:"'Inter',sans-serif",fontSize:'12px',color:'rgba(255,255,255,.4)',textAlign:'right'}}>
+            <div>{picks.length} of {TOTAL_PICKS} picks made</div>
+            <div>19 managers · 6 picks each · max 6/survivor</div>
+          </div>
+          <button className="btn btn-undo" onClick={undo} disabled={picks.length===0}>↩ UNDO</button>
+          <button className="btn btn-reset" onClick={reset}>RESET</button>
+        </div>
+      </div>
+
+      {/* MAIN */}
+      <div className="main">
+        {/* CAST */}
+        <div className="cast-panel">
+          <div className="tribe-section">
+            <div className="tribe-header toka-hdr">🟡 TOKA · {availableCount('Toka')} players · {totalLeft('Toka')} picks left</div>
+            <div className="cast-grid">{toka.map(renderCard)}</div>
+          </div>
+          <div className="tribe-section">
+            <div className="tribe-header savu-hdr">🟣 SAVU · {availableCount('Savu')} players · {totalLeft('Savu')} picks left</div>
+            <div className="cast-grid">{savu.map(renderCard)}</div>
+          </div>
+          <div className="tribe-section">
+            <div className="tribe-header exile-hdr">🟫 EXILE · {availableCount('Exile')} player · {totalLeft('Exile')} picks left</div>
+            <div className="cast-grid">{exile.map(renderCard)}</div>
+          </div>
+        </div>
+
+        {/* DRAFT BOARD */}
+        <div className="draft-panel">
+          <div className="draft-panel-title">📋 DRAFT BOARD</div>
+          {MANAGERS.map((mgr, mi) => {
+            const isCurrent = mi === currentManagerIdx && !isDone;
+            const slots = managerPicks[mi];
+            // find the next pick for this manager in snake order
+            const nextPickSlot = isDone ? -1 : (currentPickIdx < TOTAL_PICKS && SNAKE_ORDER[currentPickIdx] === mi ? currentPickIdx : -1);
+            return (
+              <div key={mgr} className={`manager-row ${isCurrent ? 'current-manager' : ''}`}>
+                <div className={`manager-name ${isCurrent ? 'current' : ''}`}>{isCurrent ? '▶ ' : ''}{mgr}</div>
+                {slots.map((cid, si) => {
+                  const c = cid ? CONTESTANTS.find(x=>x.id===cid) : null;
+                  const isNextSlot = isCurrent && si === picks.filter(p=>p.managerIdx===mi).length;
+                  if (c) {
+                    const tribeClass = c.tribe==='Toka'?'filled-toka':c.tribe==='Savu'?'filled-savu':'filled-exile';
+                    return <div key={si} className={`pick-slot ${tribeClass}`}>{c.name}</div>;
+                  } else if (isNextSlot) {
+                    return <div key={si} className="pick-slot next-pick">PICK</div>;
+                  } else {
+                    return <div key={si} className="pick-slot empty">—</div>;
+                  }
+                })}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
