@@ -10,77 +10,67 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0d0d1a;color:#fff;font-family:'Inter',sans-serif;height:100vh;overflow:hidden}
+html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:'Inter',sans-serif}
 
-/* HEADER */
-.header{background:linear-gradient(135deg,#1a1a3e,#0d0d1a);border-bottom:2px solid #D4A017;padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;height:62px}
-.header-title{font-family:'Cinzel',serif;font-size:22px;font-weight:700;background:linear-gradient(135deg,#D4A017,#FF4500,#FF8C00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.header-sub{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:4px;color:rgba(212,160,23,.6)}
-.cur-pick{background:linear-gradient(135deg,rgba(212,160,23,.2),rgba(255,69,0,.15));border:2px solid #D4A017;border-radius:10px;padding:7px 18px;text-align:center;min-width:220px}
-.cur-label{font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:3px;color:#D4A017}
-.cur-name{font-family:'Cinzel',serif;font-size:22px;font-weight:700}
-.cur-info{font-size:10px;color:rgba(255,255,255,.45)}
-.btn{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;padding:7px 14px;border:none;border-radius:7px;cursor:pointer;transition:all .2s}
-.btn-undo{background:rgba(231,76,60,.2);color:#e74c3c;border:1px solid rgba(231,76,60,.35)}
-.btn-undo:hover{background:rgba(231,76,60,.35)}
-.btn-reset{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15)}
-.btn-reset:hover{background:rgba(255,255,255,.15)}
+.header{background:linear-gradient(135deg,#1a1a3e,#0d0d1a);border-bottom:2px solid #D4A017;padding:7px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;height:54px}
+.ht{font-family:'Cinzel',serif;font-size:19px;font-weight:700;background:linear-gradient(135deg,#D4A017,#FF4500,#FF8C00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hs{font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:4px;color:rgba(212,160,23,.6)}
+.cp{background:linear-gradient(135deg,rgba(212,160,23,.2),rgba(255,69,0,.15));border:2px solid #D4A017;border-radius:9px;padding:5px 16px;text-align:center;min-width:200px}
+.cpl{font-family:'Bebas Neue',sans-serif;font-size:8px;letter-spacing:3px;color:#D4A017}
+.cpn{font-family:'Cinzel',serif;font-size:19px;font-weight:700}
+.cpi{font-size:9px;color:rgba(255,255,255,.4)}
+.btn{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2px;padding:6px 12px;border:none;border-radius:6px;cursor:pointer}
+.bu{background:rgba(231,76,60,.2);color:#e74c3c;border:1px solid rgba(231,76,60,.35)}
+.br{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15)}
 
-/* LAYOUT - draft board LEFT, cast RIGHT */
-.main{display:flex;height:calc(100vh - 62px)}
+.main{display:flex;height:calc(100vh - 54px)}
 
 /* LEFT: Draft Board */
-.draft-panel{width:520px;min-width:480px;overflow-y:auto;background:#111122;padding:12px 14px;border-right:1px solid rgba(255,255,255,.08)}
-.dp-title{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:#D4A017;text-align:center;margin-bottom:10px}
-.mgr-row{display:flex;align-items:center;gap:5px;margin-bottom:5px;padding:6px 8px;border-radius:8px}
-.mgr-row.cur{background:rgba(212,160,23,.15);border:1px solid rgba(212,160,23,.35)}
-.mgr-name{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.5px;width:96px;flex-shrink:0;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mgr-name.cur{color:#D4A017;font-size:16px}
-.pick-slot{flex:1;height:34px;border-radius:5px;font-size:10px;font-family:'Bebas Neue',sans-serif;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:2px;border:1px solid rgba(255,255,255,.07)}
-.ps-toka{background:rgba(212,168,0,.25);border-color:rgba(212,168,0,.5);color:#ffe066}
-.ps-savu{background:rgba(123,45,139,.3);border-color:rgba(123,45,139,.55);color:#d9a8f5}
-.ps-exile{background:rgba(93,64,55,.3);border-color:rgba(93,64,55,.55);color:#bcaaa4}
-.ps-empty{background:rgba(255,255,255,.03);color:rgba(255,255,255,.15)}
-.ps-next{background:rgba(212,160,23,.12);border:1px dashed #D4A017;color:#D4A017;animation:blink 1.4s ease-in-out infinite;font-size:11px}
+.dp{width:460px;flex-shrink:0;padding:8px 10px;background:#111122;border-right:1px solid rgba(255,255,255,.07);overflow:hidden;display:flex;flex-direction:column}
+.dpt{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:3px;color:#D4A017;text-align:center;margin-bottom:6px;flex-shrink:0}
+.mgrs{flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.mr{display:flex;align-items:center;gap:4px;padding:3px 6px;border-radius:6px}
+.mr.cur{background:rgba(212,160,23,.15);border:1px solid rgba(212,160,23,.3)}
+.mn{font-family:'Bebas Neue',sans-serif;font-size:13px;width:84px;flex-shrink:0;color:rgba(255,255,255,.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mn.cur{color:#D4A017;font-size:14px}
+.ps{flex:1;height:28px;border-radius:4px;font-size:9px;font-family:'Bebas Neue',sans-serif;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.pt{background:rgba(212,168,0,.22);border-color:rgba(212,168,0,.45);color:#ffe066}
+.pv{background:rgba(123,45,139,.28);border-color:rgba(123,45,139,.5);color:#d9a8f5}
+.pe{background:rgba(93,64,55,.28);border-color:rgba(93,64,55,.5);color:#bcaaa4}
+.pm{background:rgba(255,255,255,.03);color:rgba(255,255,255,.15)}
+.pn{background:rgba(212,160,23,.1);border:1px dashed #D4A017;color:#D4A017;animation:blink 1.4s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* RIGHT: Cast panel */
-.cast-panel{flex:1;overflow-y:auto;padding:14px 16px;background:#0d0d1a}
-.tribe-section{margin-bottom:20px}
-.tribe-hdr{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;padding:6px 14px;border-radius:6px;display:inline-block;margin-bottom:10px}
-.toka-hdr{background:#D4A800;color:#000}
-.savu-hdr{background:#7B2D8B;color:#fff}
-.exile-hdr{background:#5D4037;color:#fff}
+/* RIGHT: Cast — 5 columns, everything visible */
+.cp2{flex:1;padding:8px 10px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+.ts{display:flex;flex-direction:column;gap:5px}
+.th{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;padding:3px 10px;border-radius:4px;display:inline-block}
+.tht{background:#D4A800;color:#000}
+.ths{background:#7B2D8B;color:#fff}
+.the{background:#5D4037;color:#fff}
+.cg{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+/* exile gets single row nicely */
+.cg1{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
 
-/* 3-column grid */
-.cast-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cc{border-radius:7px;overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .12s;border:2px solid transparent;position:relative}
+.cc:hover:not(.mx):not(.vo){transform:scale(1.06);box-shadow:0 4px 14px rgba(212,160,23,.5)}
+.cc.tt{border-color:rgba(212,168,0,.5)}
+.cc.sv{border-color:rgba(123,45,139,.5)}
+.cc.ex{border-color:rgba(93,64,55,.5)}
+.cc.mx{opacity:.25;cursor:not-allowed}
+.cc img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;display:block;background:#222}
+.cn{background:rgba(0,0,0,.82);font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;text-align:center;padding:3px 2px 1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ck{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;text-align:center;padding:2px 2px 4px}
+.k6{background:#4472C4;color:#fff}
+.k5{background:#FFE066;color:#222}
+.k4{background:#F4A942;color:#222}
+.k3{background:#FF9999;color:#222}
+.k2{background:#C00000;color:#fff}
+.k1{background:#C8C8C8;color:#333}
+.k0{background:#111;color:#555}
 
-.cast-card{border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;border:2px solid transparent;position:relative}
-.cast-card:hover:not(.maxed):not(.voted-out){transform:scale(1.04);box-shadow:0 6px 20px rgba(212,160,23,.45)}
-.cast-card.toka{border-color:rgba(212,168,0,.5)}
-.cast-card.savu{border-color:rgba(123,45,139,.5)}
-.cast-card.exilecard{border-color:rgba(93,64,55,.5)}
-.cast-card.maxed{opacity:.25;cursor:not-allowed}
-.cast-card.voted-out{opacity:.15;cursor:not-allowed}
-.cast-card img{width:100%;aspect-ratio:3/2;object-fit:cover;object-position:top center;display:block;background:#222}
-.cast-name{background:rgba(0,0,0,.8);font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1.5px;text-align:center;padding:5px 4px 2px}
-.cast-count{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1.5px;text-align:center;padding:4px 4px 6px}
-.c6{background:#4472C4;color:#fff}
-.c5{background:#FFE066;color:#222}
-.c4{background:#F4A942;color:#222}
-.c3{background:#FF9999;color:#222}
-.c2{background:#C00000;color:#fff}
-.c1{background:#C8C8C8;color:#333}
-.c0{background:#111;color:#555}
-.voted-badge{position:absolute;top:5px;right:5px;background:#e74c3c;color:#fff;font-size:9px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;padding:3px 6px;border-radius:4px}
-
-/* Done overlay */
-.done-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column;gap:18px}
-.done-title{font-family:'Cinzel',serif;font-size:48px;font-weight:700;background:linear-gradient(135deg,#D4A017,#FF4500);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:3px}
+.done-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column;gap:16px}
+.done-title{font-family:'Cinzel',serif;font-size:44px;font-weight:700;background:linear-gradient(135deg,#D4A017,#FF4500);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 </style>
 </head>
 <body>
@@ -89,161 +79,169 @@ body{background:#0d0d1a;color:#fff;font-family:'Inter',sans-serif;height:100vh;o
 const { useState } = React;
 
 const BASE = 'https://turnto10.com/resources/media2/16x9/1280/800/center/80/';
-const CONTESTANTS = [
-  {id:'aaliyah', name:'Aaliyah', tribe:'Toka', out:true,  photo:BASE+'b6cbfd4f-4722-4e95-9a4f-4cbac8693785-AaliyahPuglia.png'},
-  {id:'thienan', name:'Thien An',tribe:'Toka', out:false, photo:BASE+'1d72888c-3e41-4b2d-9d59-f356f2cbac64-TheinAnNguyen.png'},
-  {id:'jelly',   name:'Jelly',   tribe:'Toka', out:false, photo:BASE+'1d94ac9c-0787-46f2-91d6-fdb707b65637-JellyLoblack.png'},
-  {id:'brady',   name:'Brady',   tribe:'Toka', out:false, photo:BASE+'05d9ecae-69eb-46d0-a6c3-e24daa6a1c28-BradyBooker.png'},
-  {id:'kilby',   name:'Kilby',   tribe:'Toka', out:false, photo:BASE+'34e0d308-5c3e-4c09-bb32-14fee7b707b0-DannyKilby.png'},
-  {id:'devin',   name:'Devin',   tribe:'Toka', out:false, photo:BASE+'a7ab02ab-53f6-4f8e-a9d3-103de9a146e1-DevinWay.png'},
-  {id:'jenna',   name:'Jenna',   tribe:'Toka', out:false, photo:BASE+'06d841bb-cf45-4d48-8483-4351aa7cc147-JennaDoore.png'},
-  {id:'maggie',  name:'Maggie',  tribe:'Toka', out:false, photo:BASE+'a2d3b5e4-4e2e-4869-a1b5-ffc08030e03f-MaggieNestor.png'},
-  {id:'mikep',   name:'Mike P',  tribe:'Toka', out:false, photo:BASE+'76003c77-5106-4a3f-b7df-ad0971aad662-MikePinsky.png'},
-  {id:'patt',    name:'Patt',    tribe:'Toka', out:false, photo:BASE+'f10d2fde-caf7-4d9f-8c4f-d5b92fda5dd6-PattCannaday.png'},
-  {id:'alexis',  name:'Alexis',  tribe:'Savu', out:false, photo:BASE+'4c49b157-5964-45ca-963d-295eb24478da-AlexisLevine.png'},
-  {id:'ana',     name:'Ana',     tribe:'Savu', out:false, photo:BASE+'eb9e90cc-9964-4fca-bd9d-2940d1ef72eb-AnaSani.png'},
-  {id:'carter',  name:'Carter',  tribe:'Savu', out:false, photo:BASE+'28e202ec-6802-49b0-8fc7-f42504b8850f-CarterKrull.png'},
-  {id:'cristian',name:'Cristian',tribe:'Savu', out:false, photo:BASE+'c5fe29ca-1071-4fb5-81e6-e355894b6fe3-CristianChavez.png'},
-  {id:'eric',    name:'Eric',    tribe:'Savu', out:false, photo:BASE+'c6f23588-ed4d-48b3-b009-67a0b06911c0-EricMacksound.png'},
-  {id:'kristin', name:'Kristin', tribe:'Savu', out:false, photo:BASE+'7012944f-38af-4971-a5bf-9c4a41d3ca00-KristinFlickinger.png'},
-  {id:'linnea',  name:'Linnea',  tribe:'Savu', out:false, photo:BASE+'b6fac4a6-e910-4c00-906d-5c4b5a0248d4-LinneaCapobianco.png'},
-  {id:'ori',     name:'Ori',     tribe:'Savu', out:false, photo:BASE+'637f6f72-82c2-4a63-bb14-f8bb53c01959-OriJeanCharles.png'},
-  {id:'rob',     name:'Rob',     tribe:'Savu', out:false, photo:BASE+'12b3ddb4-fc45-49e2-aa40-9234adf28d25-RobAntonson.png'},
-  {id:'sharonda',name:'Sharonda',tribe:'Savu', out:false, photo:BASE+'bbb97a5d-5cdf-4728-9fa6-a196321f18a9-SharondaCox.png'},
-  {id:'lewis',   name:'Lewis',   tribe:'Exile',out:false, photo:BASE+'4ebc18d6-96a9-468c-aefd-3e49f6fd89ec-LewisKelly.png'},
+const ALL = [
+  {id:'thienan', name:'Thien An',tribe:'Toka', photo:BASE+'1d72888c-3e41-4b2d-9d59-f356f2cbac64-TheinAnNguyen.png'},
+  {id:'jelly',   name:'Jelly',   tribe:'Toka', photo:BASE+'1d94ac9c-0787-46f2-91d6-fdb707b65637-JellyLoblack.png'},
+  {id:'brady',   name:'Brady',   tribe:'Toka', photo:BASE+'05d9ecae-69eb-46d0-a6c3-e24daa6a1c28-BradyBooker.png'},
+  {id:'kilby',   name:'Kilby',   tribe:'Toka', photo:BASE+'34e0d308-5c3e-4c09-bb32-14fee7b707b0-DannyKilby.png'},
+  {id:'devin',   name:'Devin',   tribe:'Toka', photo:BASE+'a7ab02ab-53f6-4f8e-a9d3-103de9a146e1-DevinWay.png'},
+  {id:'jenna',   name:'Jenna',   tribe:'Toka', photo:BASE+'06d841bb-cf45-4d48-8483-4351aa7cc147-JennaDoore.png'},
+  {id:'maggie',  name:'Maggie',  tribe:'Toka', photo:BASE+'a2d3b5e4-4e2e-4869-a1b5-ffc08030e03f-MaggieNestor.png'},
+  {id:'mikep',   name:'Mike P',  tribe:'Toka', photo:BASE+'76003c77-5106-4a3f-b7df-ad0971aad662-MikePinsky.png'},
+  {id:'patt',    name:'Patt',    tribe:'Toka', photo:BASE+'f10d2fde-caf7-4d9f-8c4f-d5b92fda5dd6-PattCannaday.png'},
+  {id:'kilby2',  name:'Kilby',   tribe:'Toka', photo:BASE+'34e0d308-5c3e-4c09-bb32-14fee7b707b0-DannyKilby.png'}, // placeholder to make 10
+  {id:'alexis',  name:'Alexis',  tribe:'Savu', photo:BASE+'4c49b157-5964-45ca-963d-295eb24478da-AlexisLevine.png'},
+  {id:'ana',     name:'Ana',     tribe:'Savu', photo:BASE+'eb9e90cc-9964-4fca-bd9d-2940d1ef72eb-AnaSani.png'},
+  {id:'carter',  name:'Carter',  tribe:'Savu', photo:BASE+'28e202ec-6802-49b0-8fc7-f42504b8850f-CarterKrull.png'},
+  {id:'cristian',name:'Cristian',tribe:'Savu', photo:BASE+'c5fe29ca-1071-4fb5-81e6-e355894b6fe3-CristianChavez.png'},
+  {id:'eric',    name:'Eric',    tribe:'Savu', photo:BASE+'c6f23588-ed4d-48b3-b009-67a0b06911c0-EricMacksound.png'},
+  {id:'kristin', name:'Kristin', tribe:'Savu', photo:BASE+'7012944f-38af-4971-a5bf-9c4a41d3ca00-KristinFlickinger.png'},
+  {id:'linnea',  name:'Linnea',  tribe:'Savu', photo:BASE+'b6fac4a6-e910-4c00-906d-5c4b5a0248d4-LinneaCapobianco.png'},
+  {id:'ori',     name:'Ori',     tribe:'Savu', photo:BASE+'637f6f72-82c2-4a63-bb14-f8bb53c01959-OriJeanCharles.png'},
+  {id:'rob',     name:'Rob',     tribe:'Savu', photo:BASE+'12b3ddb4-fc45-49e2-aa40-9234adf28d25-RobAntonson.png'},
+  {id:'sharonda',name:'Sharonda',tribe:'Savu', photo:BASE+'bbb97a5d-5cdf-4728-9fa6-a196321f18a9-SharondaCox.png'},
+  {id:'lewis',   name:'Lewis',   tribe:'Exile',photo:BASE+'4ebc18d6-96a9-468c-aefd-3e49f6fd89ec-LewisKelly.png'},
 ];
 
-const MANAGERS = ['Neil','Julie','Lindsay','Jason','Debbie','David','Jenny','Alex','Mel','Brett/Emma','Dan','Danielle','Gab','Grayson','Jenn','Jack','Dale','Sue','Charlie'];
-const N=MANAGERS.length, PICKS_PER=6, TOTAL=N*PICKS_PER, MAX=6, SAVE='s51draft_v3';
+// Fix: remove duplicate kilby placeholder
+const CONTESTANTS = [
+  {id:'thienan', name:'Thien An',tribe:'Toka', photo:BASE+'1d72888c-3e41-4b2d-9d59-f356f2cbac64-TheinAnNguyen.png'},
+  {id:'jelly',   name:'Jelly',   tribe:'Toka', photo:BASE+'1d94ac9c-0787-46f2-91d6-fdb707b65637-JellyLoblack.png'},
+  {id:'brady',   name:'Brady',   tribe:'Toka', photo:BASE+'05d9ecae-69eb-46d0-a6c3-e24daa6a1c28-BradyBooker.png'},
+  {id:'kilby',   name:'Kilby',   tribe:'Toka', photo:BASE+'34e0d308-5c3e-4c09-bb32-14fee7b707b0-DannyKilby.png'},
+  {id:'devin',   name:'Devin',   tribe:'Toka', photo:BASE+'a7ab02ab-53f6-4f8e-a9d3-103de9a146e1-DevinWay.png'},
+  {id:'jenna',   name:'Jenna',   tribe:'Toka', photo:BASE+'06d841bb-cf45-4d48-8483-4351aa7cc147-JennaDoore.png'},
+  {id:'maggie',  name:'Maggie',  tribe:'Toka', photo:BASE+'a2d3b5e4-4e2e-4869-a1b5-ffc08030e03f-MaggieNestor.png'},
+  {id:'mikep',   name:'Mike P',  tribe:'Toka', photo:BASE+'76003c77-5106-4a3f-b7df-ad0971aad662-MikePinsky.png'},
+  {id:'patt',    name:'Patt',    tribe:'Toka', photo:BASE+'f10d2fde-caf7-4d9f-8c4f-d5b92fda5dd6-PattCannaday.png'},
+  {id:'alexis',  name:'Alexis',  tribe:'Savu', photo:BASE+'4c49b157-5964-45ca-963d-295eb24478da-AlexisLevine.png'},
+  {id:'ana',     name:'Ana',     tribe:'Savu', photo:BASE+'eb9e90cc-9964-4fca-bd9d-2940d1ef72eb-AnaSani.png'},
+  {id:'carter',  name:'Carter',  tribe:'Savu', photo:BASE+'28e202ec-6802-49b0-8fc7-f42504b8850f-CarterKrull.png'},
+  {id:'cristian',name:'Cristian',tribe:'Savu', photo:BASE+'c5fe29ca-1071-4fb5-81e6-e355894b6fe3-CristianChavez.png'},
+  {id:'eric',    name:'Eric',    tribe:'Savu', photo:BASE+'c6f23588-ed4d-48b3-b009-67a0b06911c0-EricMacksound.png'},
+  {id:'kristin', name:'Kristin', tribe:'Savu', photo:BASE+'7012944f-38af-4971-a5bf-9c4a41d3ca00-KristinFlickinger.png'},
+  {id:'linnea',  name:'Linnea',  tribe:'Savu', photo:BASE+'b6fac4a6-e910-4c00-906d-5c4b5a0248d4-LinneaCapobianco.png'},
+  {id:'ori',     name:'Ori',     tribe:'Savu', photo:BASE+'637f6f72-82c2-4a63-bb14-f8bb53c01959-OriJeanCharles.png'},
+  {id:'rob',     name:'Rob',     tribe:'Savu', photo:BASE+'12b3ddb4-fc45-49e2-aa40-9234adf28d25-RobAntonson.png'},
+  {id:'sharonda',name:'Sharonda',tribe:'Savu', photo:BASE+'bbb97a5d-5cdf-4728-9fa6-a196321f18a9-SharondaCox.png'},
+  {id:'lewis',   name:'Lewis',   tribe:'Exile',photo:BASE+'4ebc18d6-96a9-468c-aefd-3e49f6fd89ec-LewisKelly.png'},
+];
 
+const MGR=['Neil','Julie','Lindsay','Jason','Debbie','David','Jenny','Alex','Mel','Brett/Emma','Dan','Danielle','Gab','Grayson','Jenn','Jack','Dale','Sue','Charlie'];
+const N=MGR.length,PP=6,TOT=N*PP,MAX=6,SK='s51d_v4';
 const SNAKE=[];
-for(let r=0;r<PICKS_PER;r++){
-  if(r%2===0){for(let i=0;i<N;i++)SNAKE.push(i);}
-  else{for(let i=N-1;i>=0;i--)SNAKE.push(i);}
-}
+for(let r=0;r<PP;r++){if(r%2===0){for(let i=0;i<N;i++)SNAKE.push(i);}else{for(let i=N-1;i>=0;i--)SNAKE.push(i);}}
 
-function load(){try{const s=localStorage.getItem(SAVE);if(s)return JSON.parse(s);}catch(e){}return{picks:[]};}
-function save(s){try{localStorage.setItem(SAVE,JSON.stringify(s));}catch(e){}}
+function load(){try{const s=localStorage.getItem(SK);if(s)return JSON.parse(s);}catch(e){}return{picks:[]};}
+function sv(s){try{localStorage.setItem(SK,JSON.stringify(s));}catch(e){}}
+function kc(l){return['k0','k1','k2','k3','k4','k5','k6'][l]||'k0';}
 
-function cc(left){return['c0','c1','c2','c3','c4','c5','c6'][left]||'c0';}
+function App(){
+  const [st,setSt]=useState(load);
+  const picks=st.picks,cur=picks.length,done=cur>=TOT;
+  const cmi=done?null:SNAKE[cur],cm=done?null:MGR[cmi];
 
-function DraftBoard(){
-  const [state,setState]=useState(load);
-  const picks=state.picks, cur=picks.length, done=cur>=TOTAL;
-  const curMgrIdx=done?null:SNAKE[cur];
-  const curMgr=done?null:MANAGERS[curMgrIdx];
+  const dc={};CONTESTANTS.forEach(c=>dc[c.id]=0);
+  picks.forEach(p=>{if(p.cid in dc)dc[p.cid]++;});
 
-  const draftCount={};
-  CONTESTANTS.forEach(c=>draftCount[c.id]=0);
-  picks.forEach(p=>{if(p.cid in draftCount)draftCount[p.cid]++;});
+  const mp=MGR.map(()=>Array(PP).fill(null));
+  picks.forEach(p=>{mp[p.mi][Math.floor(p.num/N)]=p.cid;});
 
-  const mgrPicks=MANAGERS.map(()=>Array(PICKS_PER).fill(null));
-  picks.forEach(p=>{mgrPicks[p.mgrIdx][Math.floor(p.num/N)]=p.cid;});
-
-  function doDraft(cid){
+  function draft(cid){
     if(done)return;
     const c=CONTESTANTS.find(x=>x.id===cid);
-    if(!c||c.out||draftCount[cid]>=MAX)return;
-    const ns={picks:[...picks,{num:cur,mgrIdx:curMgrIdx,cid}]};
-    setState(ns);save(ns);
+    if(!c||dc[cid]>=MAX)return;
+    const ns={picks:[...picks,{num:cur,mi:cmi,cid}]};setSt(ns);sv(ns);
   }
-  function undo(){if(!picks.length)return;const ns={picks:picks.slice(0,-1)};setState(ns);save(ns);}
-  function reset(){if(!confirm('Reset the entire draft board?'))return;const ns={picks:[]};setState(ns);save(ns);}
+  function undo(){if(!picks.length)return;const ns={picks:picks.slice(0,-1)};setSt(ns);sv(ns);}
+  function reset(){if(!confirm('Reset the entire draft board?'))return;const ns={picks:[]};setSt(ns);sv(ns);}
 
-  function avail(t){return CONTESTANTS.filter(c=>c.tribe===t&&!c.out&&draftCount[c.id]<MAX).length;}
-  function slotsLeft(t){return CONTESTANTS.filter(c=>c.tribe===t&&!c.out).reduce((s,c)=>s+(MAX-draftCount[c.id]),0);}
-
-  function renderCard(c){
-    const left=MAX-draftCount[c.id], maxed=left===0;
-    const tc=c.tribe==='Toka'?'toka':c.tribe==='Savu'?'savu':'exilecard';
+  function card(c){
+    const left=MAX-dc[c.id],maxed=left===0;
+    const tc=c.tribe==='Toka'?'tt':c.tribe==='Savu'?'sv':'ex';
     return(
-      <div key={c.id} className={'cast-card '+tc+(maxed?' maxed':'')+(c.out?' voted-out':'')}
-        onClick={()=>doDraft(c.id)}
-        title={c.out?c.name+' — VOTED OUT':maxed?c.name+' — DONE':c.name+' · '+left+' left'}>
-        <img src={c.photo} alt={c.name} onError={e=>{e.target.style.minHeight='100px';e.target.style.background='#2a2a3a';}}/>
-        {c.out&&<div className="voted-badge">OUT</div>}
-        <div className="cast-name">{c.name}</div>
-        <div className={'cast-count '+cc(left)}>{c.out?'💀 VOTED OUT':maxed?'✅ DONE':left+' LEFT'}</div>
+      <div key={c.id} className={'cc '+tc+(maxed?' mx':'')}
+        onClick={()=>draft(c.id)} title={maxed?c.name+' DONE':c.name+' · '+left+' left'}>
+        <img src={c.photo} alt={c.name} onError={e=>{e.target.style.minHeight='80px';e.target.style.background='#2a2a3a';}}/>
+        <div className="cn">{c.name}</div>
+        <div className={'ck '+kc(left)}>{maxed?'✅':left+' LEFT'}</div>
       </div>
     );
   }
 
-  const toka=CONTESTANTS.filter(c=>c.tribe==='Toka'&&!c.out);
-  const savu=CONTESTANTS.filter(c=>c.tribe==='Savu'&&!c.out);
-  const exile=CONTESTANTS.filter(c=>c.tribe==='Exile'&&!c.out);
+  const toka=CONTESTANTS.filter(c=>c.tribe==='Toka');
+  const savu=CONTESTANTS.filter(c=>c.tribe==='Savu');
+  const exile=CONTESTANTS.filter(c=>c.tribe==='Exile');
 
   return(
     <div>
       {done&&(
         <div className="done-overlay">
-          <div style={{fontSize:'60px'}}>🔥</div>
+          <div style={{fontSize:'52px'}}>🔥</div>
           <div className="done-title">DRAFT COMPLETE!</div>
           <div style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:'3px',color:'rgba(255,255,255,.4)'}}>MAY THE BEST TEAM WIN</div>
-          <button className="btn btn-reset" onClick={reset} style={{marginTop:'12px'}}>RESET BOARD</button>
+          <button className="btn br" onClick={reset} style={{marginTop:'10px'}}>RESET BOARD</button>
         </div>
       )}
 
-      {/* HEADER */}
       <div className="header">
         <div>
-          <div className="header-sub">FANTASY LEAGUE · THE OPEN ERA</div>
-          <div className="header-title">SURVIVOR 51 · LIVE DRAFT</div>
+          <div className="hs">FANTASY LEAGUE · THE OPEN ERA</div>
+          <div className="ht">SURVIVOR 51 · LIVE DRAFT</div>
         </div>
         {!done&&(
-          <div className="cur-pick">
-            <div className="cur-label">Now Drafting</div>
-            <div className="cur-name">{curMgr}</div>
-            <div className="cur-info">Pick #{cur+1} · Round {Math.floor(cur/N)+1} · {(cur%N)+1} of {N}</div>
+          <div className="cp">
+            <div className="cpl">Now Drafting</div>
+            <div className="cpn">{cm}</div>
+            <div className="cpi">Pick #{cur+1} · Round {Math.floor(cur/N)+1} · {(cur%N)+1} of {N}</div>
           </div>
         )}
-        <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
-          <div style={{fontSize:'11px',color:'rgba(255,255,255,.35)',textAlign:'right',lineHeight:'1.7'}}>
-            <div>{picks.length} / {TOTAL} picks made</div>
-            <div>19 managers · 6 picks · max 6/player</div>
+        <div style={{display:'flex',gap:'7px',alignItems:'center'}}>
+          <div style={{fontSize:'10px',color:'rgba(255,255,255,.35)',textAlign:'right',lineHeight:'1.6'}}>
+            <div>{picks.length}/{TOT} picks</div>
+            <div>19 mgrs · 6 picks · max 6</div>
           </div>
-          <button className="btn btn-undo" onClick={undo} disabled={!picks.length}>↩ UNDO</button>
-          <button className="btn btn-reset" onClick={reset}>RESET</button>
+          <button className="btn bu" onClick={undo} disabled={!picks.length}>↩ UNDO</button>
+          <button className="btn br" onClick={reset}>RESET</button>
         </div>
       </div>
 
       <div className="main">
-        {/* LEFT: Draft Board */}
-        <div className="draft-panel">
-          <div className="dp-title">📋 DRAFT BOARD</div>
-          {MANAGERS.map((mgr,mi)=>{
-            const isCur=mi===curMgrIdx&&!done;
-            const filled=picks.filter(p=>p.mgrIdx===mi).length;
-            return(
-              <div key={mgr} className={'mgr-row'+(isCur?' cur':'')}>
-                <div className={'mgr-name'+(isCur?' cur':'')}>{isCur?'▶ ':''}{mgr}</div>
-                {mgrPicks[mi].map((cid,si)=>{
-                  const c=cid?CONTESTANTS.find(x=>x.id===cid):null;
-                  const isNext=isCur&&si===filled;
-                  if(c){
-                    const ps=c.tribe==='Toka'?'ps-toka':c.tribe==='Savu'?'ps-savu':'ps-exile';
-                    return<div key={si} className={'pick-slot '+ps}>{c.name}</div>;
-                  }
-                  if(isNext)return<div key={si} className="pick-slot ps-next">PICK</div>;
-                  return<div key={si} className="pick-slot ps-empty">—</div>;
-                })}
-              </div>
-            );
-          })}
+        {/* DRAFT BOARD LEFT */}
+        <div className="dp">
+          <div className="dpt">📋 DRAFT BOARD</div>
+          <div className="mgrs">
+            {MGR.map((m,mi)=>{
+              const isc=mi===cmi&&!done;
+              const filled=picks.filter(p=>p.mi===mi).length;
+              return(
+                <div key={m} className={'mr'+(isc?' cur':'')}>
+                  <div className={'mn'+(isc?' cur':'')}>{isc?'▶ ':''}{m}</div>
+                  {mp[mi].map((cid,si)=>{
+                    const c=cid?CONTESTANTS.find(x=>x.id===cid):null;
+                    if(c){const ps=c.tribe==='Toka'?'pt':c.tribe==='Savu'?'pv':'pe';return<div key={si} className={'ps '+ps}>{c.name}</div>;}
+                    if(isc&&si===filled)return<div key={si} className="ps pn">PICK</div>;
+                    return<div key={si} className="ps pm">—</div>;
+                  })}
+                </div>
+              );
+            })}
+          </div>
         </div>
 
-        {/* RIGHT: Cast */}
-        <div className="cast-panel">
-          <div className="tribe-section">
-            <div className="tribe-hdr toka-hdr">🟡 TOKA · {avail('Toka')} players · {slotsLeft('Toka')} picks left</div>
-            <div className="cast-grid">{toka.map(renderCard)}</div>
+        {/* CAST RIGHT */}
+        <div className="cp2">
+          <div className="ts">
+            <div className="th tht">🟡 TOKA</div>
+            <div className="cg">{toka.map(card)}</div>
           </div>
-          <div className="tribe-section">
-            <div className="tribe-hdr savu-hdr">🟣 SAVU · {avail('Savu')} players · {slotsLeft('Savu')} picks left</div>
-            <div className="cast-grid">{savu.map(renderCard)}</div>
+          <div className="ts">
+            <div className="th ths">🟣 SAVU</div>
+            <div className="cg">{savu.map(card)}</div>
           </div>
-          <div className="tribe-section">
-            <div className="tribe-hdr exile-hdr">🟫 EXILE · {avail('Exile')} player · {slotsLeft('Exile')} picks left</div>
-            <div className="cast-grid">{exile.map(renderCard)}</div>
+          <div className="ts">
+            <div className="th the">🟫 EXILE</div>
+            <div className="cg1">{exile.map(card)}</div>
           </div>
         </div>
       </div>
@@ -251,7 +249,7 @@ function DraftBoard(){
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(DraftBoard));
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
 </script>
 </body>
 </html>
