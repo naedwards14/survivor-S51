@@ -321,7 +321,7 @@ function save(state) {
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch(e) {}
 }
 
-export default function App() {
+function App() {
   const [state, setState] = useState(getInitial);
 
   const picks = state.picks;
