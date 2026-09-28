@@ -87,18 +87,18 @@ html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:
 .k0{background:#111;color:#555}
 
 /* ── PHOTOS ── */
-.photos{flex:1;padding:4px 10px 6px;display:flex;flex-direction:column;gap:5px;border-top:1px solid rgba(255,255,255,.08);min-height:0}
-.photo-tribe{display:flex;align-items:stretch;gap:5px;flex:1;min-height:0}
+.photos{padding:4px 10px 6px;display:flex;flex-direction:column;gap:5px;border-top:1px solid rgba(255,255,255,.08);height:220px;flex-shrink:0}
+.photo-tribe{display:flex;gap:4px;flex:1;align-items:center}
 .ptl{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2px;writing-mode:vertical-lr;transform:rotate(180deg);padding:4px 3px;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;min-width:22px}
 .ptl-t{background:#D4A800;color:#000}
 .ptl-s{background:#7B2D8B;color:#fff}
 .ptl-e{background:#5D4037;color:#fff}
-.photo-grid{display:flex;gap:4px;flex:1;min-width:0}
-.pc{flex:1;border-radius:6px;overflow:hidden;border:2px solid rgba(255,255,255,.12);min-width:0;max-width:10.5%;display:flex;flex-direction:column}
+.photo-grid{display:flex;gap:4px;flex:1;align-items:center}
+.pc{flex:1;border-radius:6px;overflow:hidden;border:2px solid rgba(255,255,255,.12);min-width:0;max-width:10%}
 .pc.t2{border-color:rgba(212,168,0,.5)}
 .pc.s2{border-color:rgba(123,45,139,.5)}
 .pc.e2{border-color:rgba(93,64,55,.5)}
-.pc img{width:100%;flex:1;object-fit:cover;object-position:top center;display:block;background:#222;min-height:0;object-position:20% 5%}
+.pc img{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:center 20%;display:block;background:#1a1a2e}
 .pc .pn2{background:rgba(0,0,0,.85);font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:.5px;text-align:center;padding:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
 
 .done-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column;gap:16px}
@@ -161,7 +161,7 @@ function App(){
     return(
       <div key={c.id} className={'prow'+(maxed?' done-row':'')} onClick={()=>draft(c.id)} title={maxed?c.name+' DONE':c.name+' · '+left+' left'}>
         
-        <div className="pname">{c.name}{c.idol ? ' 🏺' : ''}</div>
+        <div className={'pname '+(c.tribe==='Toka'?'pname-t':c.tribe==='Savu'?'pname-s':'pname-e')}>{c.name}{c.idol ? ' 🏺' : ''}</div>
         <div className="pscore">+{c.ep1}</div>
         <div className={'pcount '+kc(left)}>{maxed?'✅':left}</div>
       </div>
