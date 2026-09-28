@@ -12,7 +12,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:'Inter',sans-serif}
 
-/* HEADER */
 .hdr{background:linear-gradient(135deg,#1a1a3e,#0d0d1a);border-bottom:2px solid #D4A017;padding:7px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;height:52px}
 .ht{font-family:'Cinzel',serif;font-size:18px;font-weight:700;background:linear-gradient(135deg,#D4A017,#FF4500,#FF8C00);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hs{font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:4px;color:rgba(212,160,23,.6)}
@@ -26,45 +25,56 @@ html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:
 
 .main{display:flex;height:calc(100vh - 52px);overflow:hidden}
 
-/* LEFT: Draft Board */
-.dboard{width:430px;flex-shrink:0;display:flex;flex-direction:column;background:#111122;border-right:1px solid rgba(255,255,255,.08);padding:7px 10px}
-.dbt{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:3px;color:#D4A017;text-align:center;margin-bottom:4px}
+/* ── DRAFT BOARD ── */
+.dboard{width:520px;flex-shrink:0;display:flex;flex-direction:column;background:#111122;border-right:1px solid rgba(255,255,255,.08);padding:8px 12px}
+.dbt{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:#D4A017;text-align:center;margin-bottom:5px;flex-shrink:0}
 .rows{flex:1;display:flex;flex-direction:column;justify-content:space-between}
-.mr{display:flex;align-items:center;gap:3px;padding:2px 5px;border-radius:5px}
+.mr{display:flex;align-items:center;gap:4px;padding:2px 6px;border-radius:5px}
 .mr.cur{background:rgba(212,160,23,.15);border:1px solid rgba(212,160,23,.3)}
-.mn{font-family:'Bebas Neue',sans-serif;font-size:13px;width:80px;flex-shrink:0;color:rgba(255,255,255,.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mn.cur{color:#D4A017;font-size:14px}
-.ps{flex:1;height:25px;border-radius:4px;font-size:8px;font-family:'Bebas Neue',sans-serif;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
-.pt{background:rgba(212,168,0,.22);border-color:rgba(212,168,0,.4);color:#ffe066}
-.pv{background:rgba(123,45,139,.28);border-color:rgba(123,45,139,.5);color:#d9a8f5}
-.pe{background:rgba(93,64,55,.28);border-color:rgba(93,64,55,.5);color:#bcaaa4}
+.mn{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.5px;width:90px;flex-shrink:0;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mn.cur{color:#D4A017;font-size:16px}
+.ps{flex:1;height:28px;border-radius:4px;font-size:10px;font-family:'Bebas Neue',sans-serif;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;border:1px solid rgba(255,255,255,.07);padding:0 2px}
+.pt{background:rgba(212,168,0,.25);border-color:rgba(212,168,0,.45);color:#ffe066}
+.pv{background:rgba(123,45,139,.3);border-color:rgba(123,45,139,.5);color:#d9a8f5}
+.pe{background:rgba(93,64,55,.3);border-color:rgba(93,64,55,.5);color:#bcaaa4}
 .pm{background:rgba(255,255,255,.03);color:rgba(255,255,255,.12)}
 .pn{background:rgba(212,160,23,.1);border:1px dashed #D4A017;color:#D4A017;animation:blink 1.4s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* RIGHT PANEL */
-.rp{flex:1;display:flex;flex-direction:column;overflow:hidden}
+/* ── RIGHT PANEL ── */
+.rp{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 
-/* TOP: Player table */
-.ptable{flex:0 0 auto;padding:8px 12px 4px;display:flex;gap:8px}
-.tribe-col{flex:1;display:flex;flex-direction:column}
-.tribe-col-header{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:3px;padding:4px 10px;border-radius:4px;margin-bottom:5px;display:flex;gap:6px;align-items:center}
+/* player table */
+.ptable{display:flex;gap:8px;padding:8px 10px 4px;flex-shrink:0}
+.tribe-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:0}
+.exile-col{width:160px;flex-shrink:0;display:flex;flex-direction:column;gap:0}
+
+.tribe-col-header{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;padding:5px 12px;border-radius:5px;margin-bottom:5px;display:flex;align-items:center;gap:6px}
 .tch-t{background:#D4A800;color:#000}
 .tch-s{background:#7B2D8B;color:#fff}
 .tch-e{background:#5D4037;color:#fff}
-.col-headers{display:grid;grid-template-columns:1fr 40px 1fr;gap:3px;margin-bottom:3px;padding:0 3px}
-.ch{font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.35);text-align:center}
 
-/* Player row in table */
-.prow{display:flex;align-items:center;gap:3px;margin-bottom:3px;border-radius:6px;padding:1px;cursor:pointer;transition:all .12s}
-.prow:hover:not(.done-row){transform:scale(1.02);filter:brightness(1.15)}
+/* col sub-header */
+.col-sub{display:grid;grid-template-columns:52px 1fr 44px 38px;gap:3px;margin-bottom:3px;padding:0 2px}
+.cs{font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.3);text-align:center}
+
+/* Player row */
+.prow{display:grid;grid-template-columns:52px 1fr 44px 38px;gap:3px;align-items:center;margin-bottom:3px;cursor:pointer;border-radius:5px;transition:all .12s}
+.prow:hover:not(.done-row){filter:brightness(1.2);transform:scale(1.01)}
 .prow.done-row{opacity:.25;cursor:not-allowed}
-.prow-tribe{width:36px;flex-shrink:0;border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:1px;text-align:center;padding:3px 2px;font-size:9px}
+.ptribe{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:.5px;text-align:center;padding:5px 2px}
 .tt{background:#D4A800;color:#000}
 .ss{background:#7B2D8B;color:#fff}
 .ee{background:#5D4037;color:#fff}
-.prow-name{flex:1;background:rgba(255,255,255,.08);border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.5px;padding:4px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.prow-count{width:36px;flex-shrink:0;border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;text-align:center;padding:4px 2px}
+.pname{background:rgba(255,255,255,.09);border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.5px;padding:5px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pscore{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:13px;text-align:center;padding:5px 2px;background:rgba(78,204,163,.12);border:1px solid rgba(78,204,163,.25);color:#4ecca3}
+.pcount{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;text-align:center;padding:5px 2px}
+
+/* Legend */
+.legend{margin-top:8px;display:flex;flex-direction:column;gap:3px}
+.leg-item{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;text-align:center;padding:4px 6px}
+
+/* Pick count colors */
 .k6{background:#4472C4;color:#fff}
 .k5{background:#FFE066;color:#222}
 .k4{background:#F4A942;color:#222}
@@ -73,27 +83,20 @@ html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:
 .k1{background:#C8C8C8;color:#333}
 .k0{background:#111;color:#555}
 
-/* Legend */
-.legend{display:flex;flex-direction:column;gap:3px;padding-top:20px;flex-shrink:0;width:70px}
-.leg-item{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:1px;text-align:center;padding:3px 5px}
-
-/* BOTTOM: Photos */
-.photos{padding:4px 12px 6px;display:flex;flex-direction:column;gap:4px;border-top:1px solid rgba(255,255,255,.07);height:130px;flex-shrink:0}
-.photo-tribe{display:flex;align-items:stretch;gap:4px;flex:1;overflow:hidden}
-.photo-grid{display:flex;gap:3px;flex:1;overflow:hidden}
-.photo-card{flex:1;border-radius:5px;overflow:hidden;border:1px solid rgba(255,255,255,.15);min-width:0;max-width:80px;display:flex;flex-direction:column}
-.photo-tribe{display:flex;align-items:center;gap:5px;flex:1;min-height:0}
-.photo-tribe-label{font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:2px;writing-mode:vertical-lr;transform:rotate(180deg);padding:4px 3px;border-radius:4px;flex-shrink:0;height:100%;display:flex;align-items:center;justify-content:center}
+/* ── PHOTOS ── */
+.photos{flex:1;padding:4px 10px 6px;display:flex;flex-direction:column;gap:5px;border-top:1px solid rgba(255,255,255,.08);min-height:0}
+.photo-tribe{display:flex;align-items:stretch;gap:5px;flex:1;min-height:0}
+.ptl{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2px;writing-mode:vertical-lr;transform:rotate(180deg);padding:4px 3px;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;min-width:22px}
 .ptl-t{background:#D4A800;color:#000}
 .ptl-s{background:#7B2D8B;color:#fff}
 .ptl-e{background:#5D4037;color:#fff}
-.photo-grid{display:flex;gap:4px;flex:1;align-items:center}
-.photo-card{flex:1;border-radius:6px;overflow:hidden;border:2px solid transparent;position:relative;min-width:0}
-.photo-card.tt2{border-color:rgba(212,168,0,.5)}
-.photo-card.ss2{border-color:rgba(123,45,139,.5)}
-.photo-card.ee2{border-color:rgba(93,64,55,.5)}
-.photo-card img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;background:#222;max-height:100px}
-.photo-card .pname{background:rgba(0,0,0,.8);font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:.5px;text-align:center;padding:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.photo-grid{display:flex;gap:4px;flex:1;min-width:0}
+.pc{flex:1;border-radius:6px;overflow:hidden;border:2px solid rgba(255,255,255,.12);min-width:0;display:flex;flex-direction:column}
+.pc.t2{border-color:rgba(212,168,0,.5)}
+.pc.s2{border-color:rgba(123,45,139,.5)}
+.pc.e2{border-color:rgba(93,64,55,.5)}
+.pc img{width:100%;flex:1;object-fit:cover;object-position:top;display:block;background:#222;min-height:0}
+.pc .pn2{background:rgba(0,0,0,.85);font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:.5px;text-align:center;padding:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
 
 .done-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column;gap:16px}
 .done-title{font-family:'Cinzel',serif;font-size:44px;font-weight:700;background:linear-gradient(135deg,#D4A017,#FF4500);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -105,37 +108,37 @@ html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:
 const { useState } = React;
 const BASE = 'https://turnto10.com/resources/media2/16x9/1280/800/center/80/';
 const CONTESTANTS = [
-  {id:'thienan', name:'Thien An',tribe:'Toka', photo:BASE+'1d72888c-3e41-4b2d-9d59-f356f2cbac64-TheinAnNguyen.png'},
-  {id:'jelly',   name:'Jelly',   tribe:'Toka', photo:BASE+'1d94ac9c-0787-46f2-91d6-fdb707b65637-JellyLoblack.png'},
-  {id:'brady',   name:'Brady',   tribe:'Toka', photo:BASE+'05d9ecae-69eb-46d0-a6c3-e24daa6a1c28-BradyBooker.png'},
-  {id:'kilby',   name:'Kilby',   tribe:'Toka', photo:BASE+'34e0d308-5c3e-4c09-bb32-14fee7b707b0-DannyKilby.png'},
-  {id:'devin',   name:'Devin',   tribe:'Toka', photo:BASE+'a7ab02ab-53f6-4f8e-a9d3-103de9a146e1-DevinWay.png'},
-  {id:'jenna',   name:'Jenna',   tribe:'Toka', photo:BASE+'06d841bb-cf45-4d48-8483-4351aa7cc147-JennaDoore.png'},
-  {id:'maggie',  name:'Maggie',  tribe:'Toka', photo:BASE+'a2d3b5e4-4e2e-4869-a1b5-ffc08030e03f-MaggieNestor.png'},
-  {id:'mikep',   name:'Mike P',  tribe:'Toka', photo:BASE+'76003c77-5106-4a3f-b7df-ad0971aad662-MikePinsky.png'},
-  {id:'patt',    name:'Patt',    tribe:'Toka', photo:BASE+'f10d2fde-caf7-4d9f-8c4f-d5b92fda5dd6-PattCannaday.png'},
-  {id:'alexis',  name:'Alexis',  tribe:'Savu', photo:BASE+'4c49b157-5964-45ca-963d-295eb24478da-AlexisLevine.png'},
-  {id:'ana',     name:'Ana',     tribe:'Savu', photo:BASE+'eb9e90cc-9964-4fca-bd9d-2940d1ef72eb-AnaSani.png'},
-  {id:'carter',  name:'Carter',  tribe:'Savu', photo:BASE+'28e202ec-6802-49b0-8fc7-f42504b8850f-CarterKrull.png'},
-  {id:'cristian',name:'Cristian',tribe:'Savu', photo:BASE+'c5fe29ca-1071-4fb5-81e6-e355894b6fe3-CristianChavez.png'},
-  {id:'eric',    name:'Eric',    tribe:'Savu', photo:BASE+'c6f23588-ed4d-48b3-b009-67a0b06911c0-EricMacksound.png'},
-  {id:'kristin', name:'Kristin', tribe:'Savu', photo:BASE+'7012944f-38af-4971-a5bf-9c4a41d3ca00-KristinFlickinger.png'},
-  {id:'linnea',  name:'Linnea',  tribe:'Savu', photo:BASE+'b6fac4a6-e910-4c00-906d-5c4b5a0248d4-LinneaCapobianco.png'},
-  {id:'ori',     name:'Ori',     tribe:'Savu', photo:BASE+'637f6f72-82c2-4a63-bb14-f8bb53c01959-OriJeanCharles.png'},
-  {id:'rob',     name:'Rob',     tribe:'Savu', photo:BASE+'12b3ddb4-fc45-49e2-aa40-9234adf28d25-RobAntonson.png'},
-  {id:'sharonda',name:'Sharonda',tribe:'Savu', photo:BASE+'bbb97a5d-5cdf-4728-9fa6-a196321f18a9-SharondaCox.png'},
-  {id:'lewis',   name:'Lewis',   tribe:'Exile',photo:BASE+'4ebc18d6-96a9-468c-aefd-3e49f6fd89ec-LewisKelly.png'},
+  {id:'thienan', name:'Thien An',tribe:'Toka', ep1:0.50, photo:BASE+'1d72888c-3e41-4b2d-9d59-f356f2cbac64-TheinAnNguyen.png'},
+  {id:'jelly',   name:'Jelly',   tribe:'Toka', ep1:0.50, photo:BASE+'1d94ac9c-0787-46f2-91d6-fdb707b65637-JellyLoblack.png'},
+  {id:'brady',   name:'Brady',   tribe:'Toka', ep1:0.50, photo:BASE+'05d9ecae-69eb-46d0-a6c3-e24daa6a1c28-BradyBooker.png'},
+  {id:'kilby',   name:'Kilby',   tribe:'Toka', ep1:0.50, photo:BASE+'34e0d308-5c3e-4c09-bb32-14fee7b707b0-DannyKilby.png'},
+  {id:'devin',   name:'Devin',   tribe:'Toka', ep1:0.50, photo:BASE+'a7ab02ab-53f6-4f8e-a9d3-103de9a146e1-DevinWay.png'},
+  {id:'jenna',   name:'Jenna',   tribe:'Toka', ep1:0.50, photo:BASE+'06d841bb-cf45-4d48-8483-4351aa7cc147-JennaDoore.png'},
+  {id:'maggie',  name:'Maggie',  tribe:'Toka', ep1:0.50, photo:BASE+'a2d3b5e4-4e2e-4869-a1b5-ffc08030e03f-MaggieNestor.png'},
+  {id:'mikep',   name:'Mike P',  tribe:'Toka', ep1:0.50, photo:BASE+'76003c77-5106-4a3f-b7df-ad0971aad662-MikePinsky.png'},
+  {id:'patt',    name:'Patt',    tribe:'Toka', ep1:0.50, photo:BASE+'f10d2fde-caf7-4d9f-8c4f-d5b92fda5dd6-PattCannaday.png'},
+  {id:'alexis',  name:'Alexis',  tribe:'Savu', ep1:1.00, photo:BASE+'4c49b157-5964-45ca-963d-295eb24478da-AlexisLevine.png'},
+  {id:'ana',     name:'Ana',     tribe:'Savu', ep1:1.00, photo:BASE+'eb9e90cc-9964-4fca-bd9d-2940d1ef72eb-AnaSani.png'},
+  {id:'carter',  name:'Carter',  tribe:'Savu', ep1:1.00, photo:BASE+'28e202ec-6802-49b0-8fc7-f42504b8850f-CarterKrull.png'},
+  {id:'cristian',name:'Cristian',tribe:'Savu', ep1:1.00, photo:BASE+'c5fe29ca-1071-4fb5-81e6-e355894b6fe3-CristianChavez.png'},
+  {id:'eric',    name:'Eric',    tribe:'Savu', ep1:1.00, photo:BASE+'c6f23588-ed4d-48b3-b009-67a0b06911c0-EricMacksound.png'},
+  {id:'kristin', name:'Kristin', tribe:'Savu', ep1:1.00, photo:BASE+'7012944f-38af-4971-a5bf-9c4a41d3ca00-KristinFlickinger.png'},
+  {id:'linnea',  name:'Linnea',  tribe:'Savu', ep1:1.00, photo:BASE+'b6fac4a6-e910-4c00-906d-5c4b5a0248d4-LinneaCapobianco.png'},
+  {id:'ori',     name:'Ori',     tribe:'Savu', ep1:1.00, photo:BASE+'637f6f72-82c2-4a63-bb14-f8bb53c01959-OriJeanCharles.png'},
+  {id:'rob',     name:'Rob',     tribe:'Savu', ep1:1.00, photo:BASE+'12b3ddb4-fc45-49e2-aa40-9234adf28d25-RobAntonson.png'},
+  {id:'sharonda',name:'Sharonda',tribe:'Savu', ep1:1.00, photo:BASE+'bbb97a5d-5cdf-4728-9fa6-a196321f18a9-SharondaCox.png'},
+  {id:'lewis',   name:'Lewis',   tribe:'Exile',ep1:0.25, photo:BASE+'4ebc18d6-96a9-468c-aefd-3e49f6fd89ec-LewisKelly.png'},
 ];
 const MGR=['Neil','Julie','Lindsay','Jason','Debbie','David','Jenny','Alex','Mel','Brett/Emma','Dan','Danielle','Gab','Grayson','Jenn','Jack','Dale','Sue','Charlie'];
-const N=MGR.length,PP=6,TOT=N*PP,MAX=6,SK='s51d_v6';
+const N=MGR.length,PP=6,TOT=N*PP,MAX=6,SK='s51d_v7';
 const SNAKE=[];
 for(let r=0;r<PP;r++){if(r%2===0){for(let i=0;i<N;i++)SNAKE.push(i);}else{for(let i=N-1;i>=0;i--)SNAKE.push(i);}}
 function load(){try{const s=localStorage.getItem(SK);if(s)return JSON.parse(s);}catch(e){}return{picks:[]};}
 function sv(s){try{localStorage.setItem(SK,JSON.stringify(s));}catch(e){}}
 function kc(l){return['k0','k1','k2','k3','k4','k5','k6'][Math.min(l,6)];}
-function tcc(t){return t==='Toka'?'tt':t==='Savu'?'ss':'ee';}
 function psc(t){return t==='Toka'?'pt':t==='Savu'?'pv':'pe';}
-function pc2(t){return t==='Toka'?'tt2':t==='Savu'?'ss2':'ee2';}
+function tc(t){return t==='Toka'?'tt':t==='Savu'?'ss':'ee';}
+function pc2(t){return t==='Toka'?'t2':t==='Savu'?'s2':'e2';}
 
 function App(){
   const [st,setSt]=useState(load);
@@ -154,9 +157,10 @@ function App(){
     const left=MAX-dc[c.id],maxed=left===0;
     return(
       <div key={c.id} className={'prow'+(maxed?' done-row':'')} onClick={()=>draft(c.id)} title={maxed?c.name+' DONE':c.name+' · '+left+' left'}>
-        <div className={'prow-tribe '+tcc(c.tribe)}>{c.tribe==='Toka'?'TKA':c.tribe==='Savu'?'SVU':'EXL'}</div>
-        <div className="prow-name">{c.name}</div>
-        <div className={'prow-count '+kc(left)}>{maxed?'✅':left}</div>
+        <div className={'ptribe '+tc(c.tribe)}>{c.tribe}</div>
+        <div className="pname">{c.name}</div>
+        <div className="pscore">+{c.ep1}</div>
+        <div className={'pcount '+kc(left)}>{maxed?'✅':left}</div>
       </div>
     );
   }
@@ -164,9 +168,9 @@ function App(){
   function photoCard(c){
     const left=MAX-dc[c.id],maxed=left===0;
     return(
-      <div key={c.id} className={'photo-card '+pc2(c.tribe)} style={{opacity:maxed?.3:1}} title={c.name}>
-        <img src={c.photo} alt={c.name} onError={e=>{e.target.style.background='#2a2a3a';e.target.style.minHeight='60px';}}/>
-        <div className="pname">{c.name}</div>
+      <div key={c.id} className={'pc '+pc2(c.tribe)} style={{opacity:maxed?.25:1}} title={c.name+' · '+left+' left'}>
+        <img src={c.photo} alt={c.name} onError={e=>{e.target.style.background='#2a2a3a';}}/>
+        <div className="pn2">{c.name}</div>
       </div>
     );
   }
@@ -196,7 +200,7 @@ function App(){
       </div>
 
       <div className="main">
-        {/* DRAFT BOARD LEFT */}
+        {/* DRAFT BOARD */}
         <div className="dboard">
           <div className="dbt">📋 DRAFT BOARD</div>
           <div className="rows">
@@ -217,46 +221,47 @@ function App(){
           </div>
         </div>
 
-        {/* RIGHT PANEL */}
+        {/* RIGHT */}
         <div className="rp">
-          {/* TOP: Player table — two columns side by side */}
+          {/* PLAYER TABLE */}
           <div className="ptable">
-            {/* Toka column */}
+            {/* TOKA */}
             <div className="tribe-col">
               <div className="tribe-col-header tch-t">🟡 TOKA</div>
+              <div className="col-sub"><div className="cs">TRIBE</div><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
               {toka.map(pRow)}
             </div>
-            {/* Savu column */}
+            {/* SAVU */}
             <div className="tribe-col">
               <div className="tribe-col-header tch-s">🟣 SAVU</div>
+              <div className="col-sub"><div className="cs">TRIBE</div><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
               {savu.map(pRow)}
             </div>
-            {/* Legend + Exile */}
-            <div style={{display:'flex',flexDirection:'column',gap:'6px',width:'80px',flexShrink:0}}>
-              <div className="tribe-col-header tch-e" style={{fontSize:'10px',letterSpacing:'2px'}}>🟫 EXILE</div>
+            {/* EXILE + LEGEND */}
+            <div className="exile-col">
+              <div className="tribe-col-header tch-e">🟫 EXILE</div>
+              <div className="col-sub"><div className="cs">TRIBE</div><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
               {exile.map(pRow)}
-              <div style={{marginTop:'8px'}}>
+              <div className="legend" style={{marginTop:'12px'}}>
                 {[6,5,4,3,2,1,0].map(n=>(
-                  <div key={n} className={'leg-item '+kc(n)} style={{marginBottom:'3px'}}>
-                    {n===0?'DONE':n+' LEFT'}
-                  </div>
+                  <div key={n} className={'leg-item '+kc(n)}>{n===0?'DONE':n+' LEFT'}</div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* BOTTOM: Photos by tribe */}
+          {/* PHOTOS */}
           <div className="photos">
             <div className="photo-tribe">
-              <div className="photo-tribe-label ptl-t">TOKA</div>
+              <div className="ptl ptl-t">TOKA</div>
               <div className="photo-grid">{toka.map(photoCard)}</div>
             </div>
             <div className="photo-tribe">
-              <div className="photo-tribe-label ptl-s">SAVU</div>
+              <div className="ptl ptl-s">SAVU</div>
               <div className="photo-grid">{savu.map(photoCard)}</div>
             </div>
             <div className="photo-tribe">
-              <div className="photo-tribe-label ptl-e">EXILE</div>
+              <div className="ptl ptl-e">EXILE</div>
               <div className="photo-grid">{exile.map(photoCard)}</div>
             </div>
           </div>
