@@ -55,11 +55,11 @@ html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:
 .tch-e{background:#5D4037;color:#fff}
 
 /* col sub-header */
-.col-sub{display:grid;grid-template-columns:52px 1fr 44px 38px;gap:3px;margin-bottom:3px;padding:0 2px}
+.col-sub{display:grid;grid-template-columns:1fr 44px 38px;gap:3px;margin-bottom:3px;padding:0 2px}
 .cs{font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.3);text-align:center}
 
 /* Player row */
-.prow{display:grid;grid-template-columns:52px 1fr 44px 38px;gap:3px;align-items:center;margin-bottom:3px;cursor:pointer;border-radius:5px;transition:all .12s}
+.prow{display:grid;grid-template-columns:1fr 44px 38px;gap:3px;align-items:center;margin-bottom:3px;cursor:pointer;border-radius:5px;transition:all .12s}
 .prow:hover:not(.done-row){filter:brightness(1.2);transform:scale(1.01)}
 .prow.done-row{opacity:.25;cursor:not-allowed}
 .ptribe{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:.5px;text-align:center;padding:5px 2px}
@@ -91,11 +91,11 @@ html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:
 .ptl-s{background:#7B2D8B;color:#fff}
 .ptl-e{background:#5D4037;color:#fff}
 .photo-grid{display:flex;gap:4px;flex:1;min-width:0}
-.pc{flex:1;border-radius:6px;overflow:hidden;border:2px solid rgba(255,255,255,.12);min-width:0;display:flex;flex-direction:column}
+.pc{flex:1;border-radius:6px;overflow:hidden;border:2px solid rgba(255,255,255,.12);min-width:0;max-width:10.5%;display:flex;flex-direction:column}
 .pc.t2{border-color:rgba(212,168,0,.5)}
 .pc.s2{border-color:rgba(123,45,139,.5)}
 .pc.e2{border-color:rgba(93,64,55,.5)}
-.pc img{width:100%;flex:1;object-fit:cover;object-position:top;display:block;background:#222;min-height:0}
+.pc img{width:100%;flex:1;object-fit:cover;object-position:top center;display:block;background:#222;min-height:0;object-position:20% 5%}
 .pc .pn2{background:rgba(0,0,0,.85);font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:.5px;text-align:center;padding:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
 
 .done-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column;gap:16px}
@@ -125,11 +125,11 @@ const CONTESTANTS = [
   {id:'kristin', name:'Kristin', tribe:'Savu', ep1:1.00, photo:BASE+'7012944f-38af-4971-a5bf-9c4a41d3ca00-KristinFlickinger.png'},
   {id:'linnea',  name:'Linnea',  tribe:'Savu', ep1:1.00, photo:BASE+'b6fac4a6-e910-4c00-906d-5c4b5a0248d4-LinneaCapobianco.png'},
   {id:'ori',     name:'Ori',     tribe:'Savu', ep1:1.00, photo:BASE+'637f6f72-82c2-4a63-bb14-f8bb53c01959-OriJeanCharles.png'},
-  {id:'rob',     name:'Rob',     tribe:'Savu', ep1:1.00, photo:BASE+'12b3ddb4-fc45-49e2-aa40-9234adf28d25-RobAntonson.png'},
+  {id:'rob',     name:'Rob',     tribe:'Savu', ep1:1.00, idol:true,  photo:BASE+'12b3ddb4-fc45-49e2-aa40-9234adf28d25-RobAntonson.png'},
   {id:'sharonda',name:'Sharonda',tribe:'Savu', ep1:1.00, photo:BASE+'bbb97a5d-5cdf-4728-9fa6-a196321f18a9-SharondaCox.png'},
   {id:'lewis',   name:'Lewis',   tribe:'Exile',ep1:0.25, photo:BASE+'4ebc18d6-96a9-468c-aefd-3e49f6fd89ec-LewisKelly.png'},
 ];
-const MGR=['Neil','Julie','Lindsay','Jason','Debbie','David','Jenny','Alex','Mel','Brett/Emma','Dan','Danielle','Gab','Grayson','Jenn','Jack','Dale','Sue','Charlie'];
+const MGR=['Jack','Mel','Julie','Neil','Grayson','Brett/Emma','Dan','Dale','Charlie','Jenn','Sue','Jason','Jenny','Gab','David','Danielle','Debbie','Alex','Lindsay'];
 const N=MGR.length,PP=6,TOT=N*PP,MAX=6,SK='s51d_v7';
 const SNAKE=[];
 for(let r=0;r<PP;r++){if(r%2===0){for(let i=0;i<N;i++)SNAKE.push(i);}else{for(let i=N-1;i>=0;i--)SNAKE.push(i);}}
@@ -157,8 +157,8 @@ function App(){
     const left=MAX-dc[c.id],maxed=left===0;
     return(
       <div key={c.id} className={'prow'+(maxed?' done-row':'')} onClick={()=>draft(c.id)} title={maxed?c.name+' DONE':c.name+' · '+left+' left'}>
-        <div className={'ptribe '+tc(c.tribe)}>{c.tribe}</div>
-        <div className="pname">{c.name}</div>
+        
+        <div className="pname">{c.name}{c.idol ? ' 🏺' : ''}</div>
         <div className="pscore">+{c.ep1}</div>
         <div className={'pcount '+kc(left)}>{maxed?'✅':left}</div>
       </div>
@@ -191,6 +191,11 @@ function App(){
       )}
       <div className="hdr">
         <div><div className="hs">FANTASY LEAGUE · THE OPEN ERA</div><div className="ht">SURVIVOR 51 · LIVE DRAFT</div></div>
+        <img src="https://www.paramountpressexpress.com/cbs-entertainment/shows/survivor/images/asset/MTkyOTI4My9zdXJ2aXZvci9pbWFnZXMvc2hvd19pbWFnZXMvU3Vydml2b3JfUzUxX0tleUFydC5qcGc=" 
+          alt="Survivor 51" 
+          style={{height:'42px',objectFit:'contain'}}
+          onError={e=>{e.target.style.display='none'}}
+        />
         {!done&&(<div className="now"><div className="nl">Now Drafting</div><div className="nn">{cm}</div><div className="ni">Pick #{cur+1} · Round {Math.floor(cur/N)+1} · {(cur%N)+1} of {N}</div></div>)}
         <div style={{display:'flex',gap:'7px',alignItems:'center'}}>
           <div style={{fontSize:'10px',color:'rgba(255,255,255,.35)',textAlign:'right',lineHeight:'1.7'}}><div>{picks.length}/{TOT} picks</div><div>19 mgrs · 6 picks · max 6</div></div>
@@ -228,19 +233,19 @@ function App(){
             {/* TOKA */}
             <div className="tribe-col">
               <div className="tribe-col-header tch-t">🟡 TOKA</div>
-              <div className="col-sub"><div className="cs">TRIBE</div><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
+              <div className="col-sub"><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
               {toka.map(pRow)}
             </div>
             {/* SAVU */}
             <div className="tribe-col">
               <div className="tribe-col-header tch-s">🟣 SAVU</div>
-              <div className="col-sub"><div className="cs">TRIBE</div><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
+              <div className="col-sub"><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
               {savu.map(pRow)}
             </div>
             {/* EXILE + LEGEND */}
             <div className="exile-col">
               <div className="tribe-col-header tch-e">🟫 EXILE</div>
-              <div className="col-sub"><div className="cs">TRIBE</div><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
+              <div className="col-sub"><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
               {exile.map(pRow)}
               <div className="legend" style={{marginTop:'12px'}}>
                 {[6,5,4,3,2,1,0].map(n=>(
@@ -253,15 +258,12 @@ function App(){
           {/* PHOTOS */}
           <div className="photos">
             <div className="photo-tribe">
-              <div className="ptl ptl-t">TOKA</div>
               <div className="photo-grid">{toka.map(photoCard)}</div>
             </div>
             <div className="photo-tribe">
-              <div className="ptl ptl-s">SAVU</div>
               <div className="photo-grid">{savu.map(photoCard)}</div>
             </div>
             <div className="photo-tribe">
-              <div className="ptl ptl-e">EXILE</div>
               <div className="photo-grid">{exile.map(photoCard)}</div>
             </div>
           </div>
