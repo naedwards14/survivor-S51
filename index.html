@@ -388,7 +388,7 @@ const SurvivorLeague = () => {
     const [expandedPlayer, setExpandedPlayer] = useState(null);
 
     const getInitialData = () => {
-        const DATA_VERSION = 5; // Ep1 scores corrected // Ep5 scores, Charlie+Angelina eliminated, attendance wks 4-5
+        const DATA_VERSION = 6; // Ep1 scores corrected // Ep5 scores, Charlie+Angelina eliminated, attendance wks 4-5
         const savedVersion = localStorage.getItem('survivor51DataVersion');
         if (savedVersion != DATA_VERSION) {
             localStorage.removeItem('survivor51LeagueData');
@@ -614,7 +614,7 @@ const SurvivorLeague = () => {
                             <tr><td className="score-cat" colSpan="2">Challenges</td></tr>
                             <tr><td>Won team reward <span style={{fontSize:'11px',opacity:.55}}>(nothing if combined)</span></td><td>+1 pt</td></tr>
                             <tr><td>Won team immunity</td><td>+1 pt</td></tr>
-                            <tr><td>Second in team immunity</td><td>+0.5 pts</td></tr>
+                            <tr><td>Second in team immunity <span style={{fontSize:'11px',opacity:.55}}>(3 tribes only — no 2nd place with 2 tribes)</span></td><td>+0.5 pts</td></tr>
                             <tr><td>Won individual reward <span style={{fontSize:'11px',opacity:.55}}>(nothing if combined)</span></td><td>+2 pts</td></tr>
                             <tr><td>Won individual immunity</td><td>+2 pts</td></tr>
                             <tr><td>Taken on individual reward</td><td>+1 pt</td></tr>
@@ -625,8 +625,8 @@ const SurvivorLeague = () => {
                             <tr><td>Voted off with idol in pocket</td><td>−3 pts</td></tr>
                             <tr className="new-rule"><td>Holds any advantage at end of episode <span style={{fontSize:'11px',opacity:.55}}>(extra vote, KIP, etc. — not idols)</span></td><td>+0.5 pts</td></tr>
                             <tr><td className="score-cat" colSpan="2">Survival</td></tr>
-                            <tr><td>Survives an elimination (pre-merge, 2 tribes)</td><td>+0.50 pts</td></tr>
-                            <tr><td>Survives an elimination (pre-merge, 3 tribes)</td><td>+0.75 pts</td></tr>
+                            <tr><td>Survives an elimination (pre-merge, 2 tribes) <span style={{fontSize:'11px',opacity:.55}}>(losing tribe only)</span></td><td>+0.50 pts</td></tr>
+                            <tr><td>Survives an elimination (pre-merge, 3 tribes) <span style={{fontSize:'11px',opacity:.55}}>(losing tribe only)</span></td><td>+0.75 pts</td></tr>
                             <tr><td>Survives an elimination (post-merge)</td><td>+1 pt</td></tr>
                             <tr><td>Made final group</td><td>+2 pts</td></tr>
                             <tr><td>Vote in final group</td><td>+0.5 pts</td></tr>
