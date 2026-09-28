@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survivor 50 Fantasy League</title>
+    <title>Survivor 51 Fantasy League</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -190,9 +190,9 @@
         .total-points { font-size:1.8em; font-weight:bold; text-align:right; color:#4ecca3; }
 
         /* Tribes */
-        .tribe-cila { background: #D4521E; color:white; font-weight:bold; }
-        .tribe-kalo { background: #2A9D8F; color:white; font-weight:bold; }
-        .tribe-vatu { background: #C2185B; color:white; font-weight:bold; }
+        .tribe-toka   { background: #D4A800; color:white; font-weight:bold; }
+        .tribe-savu   { background: #7B2D8B; color:white; font-weight:bold; }
+        .tribe-exile  { background: #5D4037; color:white; font-weight:bold; }
         .tribe-merged { background: linear-gradient(135deg,#D4A017,#FF8C00); color:white; font-weight:bold; }
         .eliminated { background:#555 !important; opacity:.55; }
 
@@ -217,9 +217,9 @@
             text-align:center; transition:all .3s; border:3px solid transparent; cursor:pointer;
         }
         .contestant-card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,0,0,0.3); }
-        .contestant-card.tribe-cila { border-color:#D4521E; }
-        .contestant-card.tribe-kalo { border-color:#2A9D8F; }
-        .contestant-card.tribe-vatu { border-color:#C2185B; }
+        .contestant-card.tribe-toka  { border-color:#D4A800; }
+        .contestant-card.tribe-savu  { border-color:#7B2D8B; }
+        .contestant-card.tribe-exile { border-color:#5D4037; }
         .contestant-card.eliminated { opacity:.4; filter:grayscale(100%); }
         .contestant-name { font-size:1.2em; font-weight:bold; margin-bottom:8px; }
         .contestant-tribe { padding:5px 10px; border-radius:15px; font-size:.85em; display:inline-block; margin-bottom:8px; }
@@ -334,9 +334,8 @@
 const { useState, useEffect, useMemo } = React;
 
 const ALL_CONTESTANTS = [
-    "Rick","Jenna","Cirie","Emily","Christian","Joe H","Savannah","Ozzy",
-    "Charlie","Tiffany","Chrissy","Kamilla","Dee","Coach","Mike","Jonathan",
-    "Angelina","Aubry","Q","Colby","Kyle","Stephenie","Genevieve","Rizo"
+    "Aaliyah","Thien An","Jelly","Brady","Kilby","Devin","Jenna","Maggie","Mike P","Patt",
+    "Alexis","Ana","Carter","Cristian","Eric","Kristin","Linnea","Ori","Rob","Sharonda","Lewis"
 ];
 
 const scoringCategories = [
@@ -352,7 +351,7 @@ const scoringCategories = [
     { id:'idol_used',          name:'Uses idol (or successful dice)',                         points: 0.5 },
     { id:'voted_idol',         name:'Voted off with idol',                                    points: -3 },
     { id:'advantage_held',     name:'Holds any advantage at end of episode (not idol)',       points: 0.5, isNew: true },
-    { id:'premerge_survive',   name:'Pre-merge surviving an elimination',                     points: 0.75 },
+    { id:'premerge_survive',   name:'Pre-merge surviving an elimination',                     points: 0.5 },
     { id:'postmerge_survive',  name:'Post-merge surviving an elimination',                    points: 1 },
     { id:'shot_in_dark',       name:'Goes home with shot in the dark',                       points: -0.5 },
     { id:'quits',              name:'Quits',                                                  points: -3 },
@@ -361,7 +360,7 @@ const scoringCategories = [
     { id:'won_survivor',       name:'Won survivor',                                           points: 7.5 }
 ];
 
-const TOTAL_WEEKS = 15;
+const TOTAL_WEEKS = 13;
 
 function makeEmptyWeekScores() {
     const ws = {};
@@ -389,499 +388,133 @@ const SurvivorLeague = () => {
     const [expandedPlayer, setExpandedPlayer] = useState(null);
 
     const getInitialData = () => {
-        const DATA_VERSION = 42; // Ep5 scores, Charlie+Angelina eliminated, attendance wks 4-5
-        const savedVersion = localStorage.getItem('survivor50DataVersion');
+        const DATA_VERSION = 2; // Ep1 scores corrected // Ep5 scores, Charlie+Angelina eliminated, attendance wks 4-5
+        const savedVersion = localStorage.getItem('survivor51DataVersion');
         if (savedVersion != DATA_VERSION) {
-            localStorage.removeItem('survivor50LeagueData');
-            localStorage.setItem('survivor50DataVersion', DATA_VERSION);
+            localStorage.removeItem('survivor51LeagueData');
+            localStorage.setItem('survivor51DataVersion', DATA_VERSION);
         }
-        const savedData = localStorage.getItem('survivor50LeagueData');
+        const savedData = localStorage.getItem('survivor51LeagueData');
         if (savedData && savedVersion == DATA_VERSION) return JSON.parse(savedData);
 
         return {
             contestants: [
-                // ── CILA (post-swap) ──
-                { name:"Rick",      tribe:"Voted Out",  originalTribe:"Cila", eliminated:true,  eliminatedWeek:12,   advantages:[] },
-                { name:"Jenna",     tribe:"Voted Out",  originalTribe:"Cila", eliminated:true,  eliminatedWeek:1,    advantages:[] },
-                { name:"Cirie",     tribe:"Voted Out",  originalTribe:"Cila", eliminated:true,  eliminatedWeek:12,   advantages:[] },
-                { name:"Emily",     tribe:"Voted Out",  originalTribe:"Cila", eliminated:true,  eliminatedWeek:11,   advantages:[] },
-                { name:"Christian", tribe:"Voted Out",  originalTribe:"Cila", eliminated:true,  eliminatedWeek:9,    advantages:[] },
-                { name:"Joe H",     tribe:"Kalo",       originalTribe:"Cila", eliminated:false, eliminatedWeek:null, advantages:[] },
-                { name:"Savannah",  tribe:"Voted Out",  originalTribe:"Cila", eliminated:true,  eliminatedWeek:2,    advantages:[] },
-                { name:"Ozzy",      tribe:"Voted Out",  originalTribe:"Cila", eliminated:true,  eliminatedWeek:11,   advantages:[] },
-                // ── KALO (post-swap) ──
-                { name:"Charlie",   tribe:"Voted Out",  originalTribe:"Kalo", eliminated:true,  eliminatedWeek:5,    advantages:[] },
-                { name:"Tiffany",   tribe:"Voted Out",  originalTribe:"Kalo", eliminated:true,  eliminatedWeek:13,   advantages:[] },
-                { name:"Chrissy",   tribe:"Voted Out",  originalTribe:"Kalo", eliminated:true,  eliminatedWeek:8,    advantages:[] },
-                { name:"Kamilla",   tribe:"Voted Out",  originalTribe:"Kalo", eliminated:true,  eliminatedWeek:6,    advantages:[] },
-                { name:"Dee",       tribe:"Voted Out",  originalTribe:"Kalo", eliminated:true,  eliminatedWeek:7,    advantages:[] },
-                { name:"Coach",     tribe:"Voted Out",  originalTribe:"Kalo", eliminated:true,  eliminatedWeek:8,    advantages:[] },
-                { name:"Mike",      tribe:"Voted Out",  originalTribe:"Kalo", eliminated:true,  eliminatedWeek:4,    advantages:[] },
-                { name:"Jonathan",  tribe:"Cila",       originalTribe:"Kalo", eliminated:false, eliminatedWeek:null, advantages:[] },
-                // ── VATU (post-swap) ──
-                { name:"Angelina",  tribe:"Voted Out",  originalTribe:"Vatu", eliminated:true,  eliminatedWeek:5,    advantages:[] },
-                { name:"Aubry",     tribe:"Kalo",       originalTribe:"Vatu", eliminated:false, eliminatedWeek:null, advantages:[] },
-                { name:"Q",         tribe:"Voted Out",  originalTribe:"Vatu", eliminated:true,  eliminatedWeek:3,    advantages:[] },
-                { name:"Colby",     tribe:"Voted Out",  originalTribe:"Vatu", eliminated:true,  eliminatedWeek:6,    advantages:[] },
-                { name:"Kyle",      tribe:"Voted Out",  originalTribe:"Vatu", eliminated:true,  eliminatedWeek:1,    advantages:[] },
-                { name:"Stephenie", tribe:"Voted Out",  originalTribe:"Vatu", eliminated:true,  eliminatedWeek:10,   advantages:[] },
-                { name:"Genevieve", tribe:"Voted Out",  originalTribe:"Vatu", eliminated:true,  eliminatedWeek:6,    advantages:[] },
-                { name:"Rizo",      tribe:"Voted Out",  originalTribe:"Vatu", eliminated:true,  eliminatedWeek:13,   advantages:[] },
+                // ── TOKA TRIBE (Yellow) ──
+                { name:"Aaliyah",  tribe:"Voted Out", originalTribe:"Toka", eliminated:true,  eliminatedWeek:1,    advantages:[] },
+                { name:"Thien An", tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Jelly",    tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Brady",    tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Kilby",    tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Devin",    tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Jenna",    tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Maggie",   tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Mike P",   tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Patt",     tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                // ── SAVU TRIBE (Purple) ──
+                { name:"Alexis",   tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Ana",      tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Carter",   tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Cristian", tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Eric",     tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Kristin",  tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Linnea",   tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Ori",      tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Rob",      tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:["Hidden Idol"] },
+                { name:"Sharonda", tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                // ── EXILE ──
+                { name:"Lewis",    tribe:"Exile",     originalTribe:"Exile", eliminated:false, eliminatedWeek:null, advantages:[] },
             ],
             weeklyScores: {
                 1: {
-                    "Rick":0.75,"Jenna":-0.5,"Cirie":0.75,"Emily":0.75,"Christian":0.75,"Joe H":0.75,"Savannah":1.25,"Ozzy":2.25,
-                    "Tiffany":1,"Chrissy":1,"Kamilla":1,"Dee":1,"Coach":1.5,"Mike":1.25,"Jonathan":1,"Charlie":1,
-                    "Angelina":1.5,"Aubry":1.5,"Q":1.5,"Colby":1.5,"Kyle":1.5,"Stephenie":1.5,"Genevieve":2,"Rizo":1.5
+                    "Aaliyah":-0.5,"Thien An":0.5,"Jelly":0.5,"Brady":0.5,"Kilby":0.5,
+                    "Devin":0.5,"Jenna":0.5,"Maggie":0.5,"Mike P":0.5,"Patt":0.5,
+                    "Alexis":1,"Ana":1,"Carter":1,"Cristian":1,"Eric":1,
+                    "Kristin":1,"Linnea":1,"Ori":1,"Rob":1,"Sharonda":1,
+                    "Lewis":0.25
                 },
-                2: {
-                    "Rick":1.75,"Jenna":0,"Cirie":2.25,"Emily":1.75,"Christian":2.5,"Joe H":1.75,"Savannah":1,"Ozzy":2.75,
-                    "Tiffany":1,"Chrissy":1,"Kamilla":1,"Dee":1,"Coach":1,"Mike":1,"Jonathan":1,"Charlie":1,
-                    "Angelina":1,"Aubry":1,"Q":1,"Colby":1,"Kyle":0,"Stephenie":1,"Genevieve":1,"Rizo":1
-                },
-                3: {
-                    "Rick":1,"Jenna":0,"Cirie":1,"Emily":0.75,"Christian":1,"Joe H":0.5,"Savannah":0,"Ozzy":1.75,
-                    "Tiffany":0.5,"Chrissy":0.5,"Kamilla":1,"Dee":1,"Coach":0.5,"Mike":0.75,"Jonathan":1,"Charlie":1,
-                    "Angelina":0.75,"Aubry":0.5,"Q":-0.5,"Colby":0.5,"Kyle":0,"Stephenie":0.75,"Genevieve":0.5,"Rizo":1
-                },
-                4: {
-                    "Rick":0.5,"Jenna":0,"Cirie":0.5,"Emily":0.75,"Christian":1,"Joe H":1,"Savannah":0,"Ozzy":1.75,
-                    "Tiffany":1,"Chrissy":1,"Kamilla":0.5,"Dee":0.5,"Coach":1,"Mike":-0.5,"Jonathan":0.5,"Charlie":0.5,
-                    "Angelina":0.75,"Aubry":1,"Q":0,"Colby":1,"Kyle":0,"Stephenie":0.75,"Genevieve":1.5,"Rizo":0.5
-                },
-                5: {
-                    "Rick":0.75,"Jenna":0,"Cirie":1.25,"Emily":0.75,"Christian":0.75,"Joe H":1,"Savannah":0,"Ozzy":2,
-                    "Tiffany":1,"Chrissy":1,"Kamilla":0.75,"Dee":0.75,"Coach":1,"Mike":0,"Jonathan":0.75,"Charlie":-0.5,
-                    "Angelina":-0.5,"Aubry":1,"Q":0,"Colby":1,"Kyle":0,"Stephenie":0.75,"Genevieve":1,"Rizo":1.75
-                },
-                6: {
-                    "Rick":0.75,"Jenna":0,"Cirie":1.25,"Emily":0.75,"Christian":2.75,"Joe H":0.75,"Savannah":0,"Ozzy":0.5,
-                    "Tiffany":2,"Chrissy":1.75,"Kamilla":0.5,"Dee":2.75,"Coach":0.75,"Mike":0,"Jonathan":2,"Charlie":0,
-                    "Angelina":0,"Aubry":2,"Q":0,"Colby":-0.5,"Kyle":0,"Stephenie":2.75,"Genevieve":2.75,"Rizo":0.5
-                },
-                7: {
-                    "Rick":2,"Jenna":0,"Cirie":1.5,"Emily":2,"Christian":2,"Joe H":2,"Savannah":0,"Ozzy":5,
-                    "Tiffany":1,"Chrissy":1,"Kamilla":0,"Dee":0.5,"Coach":1.25,"Mike":0,"Jonathan":1,"Charlie":0,
-                    "Angelina":0,"Aubry":1,"Q":0,"Colby":0,"Kyle":0,"Stephenie":2.75,"Genevieve":0,"Rizo":2.75
-                },
-                8: {
-                    "Rick":1,"Jenna":0,"Cirie":2,"Emily":1,"Christian":1,"Joe H":2,"Savannah":0,"Ozzy":0,
-                    "Tiffany":2,"Chrissy":-0.5,"Kamilla":0,"Dee":0,"Coach":0.25,"Mike":0,"Jonathan":1,"Charlie":0,
-                    "Angelina":0,"Aubry":1,"Q":0,"Colby":0,"Kyle":0,"Stephenie":1.5,"Genevieve":0,"Rizo":2
-                },
-                9: {
-                    "Rick":1,"Jenna":0,"Cirie":1.5,"Emily":1,"Christian":-0.5,"Joe H":1,"Savannah":0,"Ozzy":2,
-                    "Tiffany":1,"Chrissy":0,"Kamilla":0,"Dee":0,"Coach":0,"Mike":0,"Jonathan":1,"Charlie":0,
-                    "Angelina":0,"Aubry":1,"Q":0,"Colby":0,"Kyle":0,"Stephenie":1.5,"Genevieve":0,"Rizo":2
-                },
-                10: {
-                    "Rick":2.5,"Jenna":0,"Cirie":1.5,"Emily":1,"Christian":0,"Joe H":1,"Savannah":0,"Ozzy":2,
-                    "Tiffany":3,"Chrissy":0,"Kamilla":0,"Dee":0,"Coach":0,"Mike":0,"Jonathan":1,"Charlie":0,
-                    "Angelina":0,"Aubry":1.25,"Q":0,"Colby":0,"Kyle":0,"Stephenie":-0.5,"Genevieve":0,"Rizo":2
-                },
-                11: {
-                    "Rick":2.25,"Jenna":0,"Cirie":1,"Emily":-0.5,"Christian":0,"Joe H":1,"Savannah":0,"Ozzy":-3.5,
-                    "Tiffany":1,"Chrissy":0,"Kamilla":0,"Dee":0,"Coach":0,"Mike":0,"Jonathan":3,"Charlie":0,
-                    "Angelina":0,"Aubry":1,"Q":0,"Colby":0,"Kyle":0,"Stephenie":0,"Genevieve":0,"Rizo":2
-                },
-                12: {
-                    "Rick":0,"Jenna":0,"Cirie":0.5,"Emily":0,"Christian":0,"Joe H":4.25,"Savannah":0,"Ozzy":0,
-                    "Tiffany":4,"Chrissy":0,"Kamilla":0,"Dee":0,"Coach":0,"Mike":0,"Jonathan":2,"Charlie":0,
-                    "Angelina":0,"Aubry":2,"Q":0,"Colby":0,"Kyle":0,"Stephenie":0,"Genevieve":0,"Rizo":4
-                },
-                13: {
-                    "Rick":0,"Jenna":0,"Cirie":0,"Emily":0,"Christian":0,"Joe H":3,"Savannah":0,"Ozzy":0,
-                    "Tiffany":-0.5,"Chrissy":0,"Kamilla":0,"Dee":0,"Coach":0,"Mike":0,"Jonathan":7,"Charlie":0,
-                    "Angelina":0,"Aubry":16.5,"Q":0,"Colby":0,"Kyle":0,"Stephenie":0,"Genevieve":0,"Rizo":1.5
-                },
-                ...Object.fromEntries(Array.from({length:2},(_,i)=>[i+14, Object.fromEntries([
-                    "Rick","Jenna","Cirie","Emily","Christian","Joe H","Savannah","Ozzy",
-                    "Tiffany","Chrissy","Kamilla","Dee","Coach","Mike","Jonathan","Charlie",
-                    "Angelina","Aubry","Q","Colby","Kyle","Stephenie","Genevieve","Rizo"
+                ...Object.fromEntries(Array.from({length:12},(_,i)=>[i+2, Object.fromEntries([
+                    "Aaliyah","Thien An","Jelly","Brady","Kilby","Devin","Jenna","Maggie","Mike P","Patt",
+                    "Alexis","Ana","Carter","Cristian","Eric","Kristin","Linnea","Ori","Rob","Sharonda","Lewis"
                 ].map(n=>[n,0]))]))
             },
             weeklyCheckboxStates: {
                 1: {
-                    "Rick":      { premerge_survive:true },
-                    "Jenna":     { shot_in_dark:true },
-                    "Cirie":     { premerge_survive:true },
-                    "Emily":     { premerge_survive:true },
-                    "Christian": { premerge_survive:true },
-                    "Joe H":     { premerge_survive:true },
-                    "Savannah":  { premerge_survive:true, advantage_held:true },
-                    "Ozzy":      { premerge_survive:true, idol_tribal:true, advantage_held:true },
-                    "Tiffany":   { team_immunity:true },
-                    "Chrissy":   { team_immunity:true },
-                    "Kamilla":   { team_immunity:true },
-                    "Dee":       { team_immunity:true },
-                    "Coach":     { team_immunity:true, mini_reward:true },
-                    "Mike":      { team_immunity:true, title_quote:true },
-                    "Jonathan":  { team_immunity:true },
-                    "Charlie":   { team_immunity:true },
-                    "Angelina":  { team_reward:true, second_team_immunity:true },
-                    "Aubry":     { team_reward:true, second_team_immunity:true },
-                    "Q":         { team_reward:true, second_team_immunity:true },
-                    "Colby":     { team_reward:true, second_team_immunity:true },
-                    "Kyle":      { team_reward:true, second_team_immunity:true },
-                    "Stephenie": { team_reward:true, second_team_immunity:true },
-                    "Genevieve": { team_reward:true, second_team_immunity:true, advantage_held:true },
-                    "Rizo":      { team_reward:true, second_team_immunity:true },
+                    "Aaliyah":  { shot_in_dark:true },
+                    "Thien An": { premerge_survive:true },
+                    "Jelly":    { premerge_survive:true },
+                    "Brady":    { premerge_survive:true },
+                    "Kilby":    { premerge_survive:true },
+                    "Devin":    { premerge_survive:true },
+                    "Jenna":    { premerge_survive:true },
+                    "Maggie":   { premerge_survive:true },
+                    "Mike P":   { premerge_survive:true },
+                    "Patt":     { premerge_survive:true },
+                    "Alexis":   { team_immunity:true },
+                    "Ana":      { team_immunity:true },
+                    "Carter":   { team_immunity:true },
+                    "Cristian": { team_immunity:true },
+                    "Eric":     { team_immunity:true },
+                    "Kristin":  { team_immunity:true },
+                    "Linnea":   { team_immunity:true },
+                    "Ori":      { team_immunity:true },
+                    "Rob":      { team_immunity:true },
+                    "Sharonda": { team_immunity:true },
+                    "Lewis":    { title_quote:true },
                 },
-                2: {
-                    "Rick":      { team_reward:true, premerge_survive:true },
-                    "Jenna":     {},
-                    "Cirie":     { team_reward:true, premerge_survive:true, advantage_held:true },
-                    "Emily":     { team_reward:true, premerge_survive:true },
-                    "Christian": { team_reward:true, premerge_survive:true, title_quote:true, advantage_held:true },
-                    "Joe H":     { team_reward:true, premerge_survive:true },
-                    "Savannah":  { team_reward:true },
-                    "Ozzy":      { team_reward:true, premerge_survive:true, idol_tribal:true },
-                    "Tiffany":   { team_immunity:true },
-                    "Chrissy":   { team_immunity:true },
-                    "Kamilla":   { team_immunity:true },
-                    "Dee":       { team_immunity:true },
-                    "Coach":     { team_immunity:true },
-                    "Mike":      { team_immunity:true },
-                    "Jonathan":  { team_immunity:true },
-                    "Charlie":   { team_immunity:true },
-                    "Angelina":  { team_reward:true },
-                    "Aubry":     { team_reward:true },
-                    "Q":         { team_reward:true },
-                    "Colby":     { team_reward:true },
-                    "Kyle":      {},
-                    "Stephenie": { team_reward:true },
-                    "Genevieve": { team_reward:true },
-                    "Rizo":      { team_reward:true },
-                },
-                3: {
-                    "Rick":      { team_immunity:true },
-                    "Jenna":     {},
-                    "Cirie":     { team_immunity:true },
-                    "Emily":     { premerge_survive:true },
-                    "Christian": { premerge_survive:true, title_quote:true },
-                    "Joe H":     { second_team_immunity:true },
-                    "Savannah":  {},
-                    "Ozzy":      { premerge_survive:true, idol_tribal:true },
-                    "Tiffany":   { second_team_immunity:true },
-                    "Chrissy":   { second_team_immunity:true },
-                    "Kamilla":   { team_immunity:true },
-                    "Dee":       { team_immunity:true },
-                    "Coach":     { second_team_immunity:true },
-                    "Mike":      { premerge_survive:true },
-                    "Jonathan":  { team_immunity:true },
-                    "Charlie":   { team_immunity:true },
-                    "Angelina":  { premerge_survive:true },
-                    "Aubry":     { second_team_immunity:true },
-                    "Q":         { shot_in_dark:true },
-                    "Colby":     { second_team_immunity:true },
-                    "Kyle":      {},
-                    "Stephenie": { premerge_survive:true },
-                    "Genevieve": { second_team_immunity:true },
-                    "Rizo":      { team_immunity:true },
-                },
-                4: {
-                    "Rick":      { second_team_immunity:true },
-                    "Jenna":     {},
-                    "Cirie":     { second_team_immunity:true },
-                    "Emily":     { premerge_survive:true },
-                    "Christian": { premerge_survive:true, title_quote:true },
-                    "Joe H":     { team_immunity:true },
-                    "Savannah":  {},
-                    "Ozzy":      { premerge_survive:true, idol_tribal:true },
-                    "Tiffany":   { team_immunity:true },
-                    "Chrissy":   { team_immunity:true },
-                    "Kamilla":   { second_team_immunity:true },
-                    "Dee":       { second_team_immunity:true },
-                    "Coach":     { team_immunity:true },
-                    "Mike":      { shot_in_dark:true },
-                    "Jonathan":  { second_team_immunity:true },
-                    "Charlie":   { second_team_immunity:true },
-                    "Angelina":  { premerge_survive:true },
-                    "Aubry":     { team_immunity:true },
-                    "Q":         {},
-                    "Colby":     { team_immunity:true },
-                    "Kyle":      {},
-                    "Stephenie": { premerge_survive:true },
-                    "Genevieve": { team_immunity:true, advantage_held:true },
-                    "Rizo":      { second_team_immunity:true },
-                },
-                5: {
-                    "Rick":      { premerge_survive:true },
-                    "Jenna":     {},
-                    "Cirie":     { premerge_survive:true, advantage_held:true },
-                    "Emily":     { premerge_survive:true },
-                    "Christian": { premerge_survive:true },
-                    "Joe H":     { team_immunity:true },
-                    "Savannah":  {},
-                    "Ozzy":      { premerge_survive:true, idol_tribal:true, title_quote:true },
-                    "Tiffany":   { team_immunity:true },
-                    "Chrissy":   { team_immunity:true },
-                    "Kamilla":   { premerge_survive:true },
-                    "Dee":       { premerge_survive:true },
-                    "Coach":     { team_immunity:true },
-                    "Mike":      {},
-                    "Jonathan":  { premerge_survive:true },
-                    "Charlie":   { shot_in_dark:true },
-                    "Angelina":  { shot_in_dark:true },
-                    "Aubry":     { team_immunity:true },
-                    "Q":         {},
-                    "Colby":     { team_immunity:true },
-                    "Kyle":      {},
-                    "Stephenie": { premerge_survive:true },
-                    "Genevieve": { team_immunity:true },
-                    "Rizo":      { premerge_survive:true, idol_tribal:true },
-                },
-                6: {
-                    "Rick":      { premerge_survive:true },
-                    "Jenna":     {},
-                    "Cirie":     { premerge_survive:true, advantage_held:true },
-                    "Emily":     { premerge_survive:true },
-                    "Christian": { individual_immunity:true, premerge_survive:true },
-                    "Joe H":     { premerge_survive:true },
-                    "Savannah":  {},
-                    "Ozzy":      { mini_reward:true },
-                    "Tiffany":   { team_reward:true, team_immunity:true },
-                    "Chrissy":   { team_reward:true, second_team_immunity:true, title_quote:true },
-                    "Kamilla":   { team_reward:true, shot_in_dark:true },
-                    "Dee":       { individual_immunity:true, premerge_survive:true },
-                    "Coach":     { premerge_survive:true },
-                    "Mike":      {},
-                    "Jonathan":  { team_reward:true, team_immunity:true },
-                    "Charlie":   {},
-                    "Angelina":  {},
-                    "Aubry":     { idol_tribal:true, premerge_survive:true, title_quote:true },
-                    "Q":         {},
-                    "Colby":     { shot_in_dark:true },
-                    "Kyle":      {},
-                    "Stephenie": { individual_immunity:true, premerge_survive:true, advantage_held:true },
-                    "Genevieve": { team_reward:true, second_team_immunity:true, idol_tribal:true, title_quote:true },
-                    "Rizo":      { mini_reward:true },
-                },
-                7: {
-                    "Rick":      { team_reward:true, postmerge_survive:true },
-                    "Jenna":     {},
-                    "Cirie":     { postmerge_survive:true, advantage_held:true },
-                    "Emily":     { team_reward:true, postmerge_survive:true },
-                    "Christian": { team_reward:true, postmerge_survive:true },
-                    "Joe H":     { team_reward:true, postmerge_survive:true },
-                    "Savannah":  {},
-                    "Ozzy":      { team_reward:true, individual_immunity:true, idol_tribal:true, postmerge_survive:true },
-                    "Tiffany":   { postmerge_survive:true },
-                    "Chrissy":   { postmerge_survive:true },
-                    "Kamilla":   {},
-                    "Dee":       { team_reward:true, shot_in_dark:true },
-                    "Coach":     { postmerge_survive:true, title_quote:true },
-                    "Mike":      {},
-                    "Jonathan":  { postmerge_survive:true },
-                    "Charlie":   {},
-                    "Angelina":  {},
-                    "Aubry":     { postmerge_survive:true },
-                    "Q":         {},
-                    "Colby":     {},
-                    "Kyle":      {},
-                    "Stephenie": { team_reward:true, advantage_held:true, postmerge_survive:true, title_quote:true },
-                    "Genevieve": {},
-                    "Rizo":      { idol_tribal:true, premerge_survive:true, postmerge_survive:true },
-                },
-                8: {
-                    "Rick":      { postmerge_survive:true },
-                    "Jenna":     {},
-                    "Cirie":     { mini_reward:true, advantage_held:true, postmerge_survive:true },
-                    "Emily":     { postmerge_survive:true },
-                    "Christian": { postmerge_survive:true },
-                    "Joe H":     { team_immunity:true, postmerge_survive:true },
-                    "Savannah":  {},
-                    "Ozzy":      {},
-                    "Tiffany":   { team_immunity:true, postmerge_survive:true },
-                    "Chrissy":   { shot_in_dark:true },
-                    "Kamilla":   {},
-                    "Dee":       {},
-                    "Coach":     { title_quote:true },
-                    "Mike":      {},
-                    "Jonathan":  { postmerge_survive:true },
-                    "Charlie":   {},
-                    "Angelina":  {},
-                    "Aubry":     { postmerge_survive:true },
-                    "Q":         {},
-                    "Colby":     {},
-                    "Kyle":      {},
-                    "Stephenie": { postmerge_survive:true },
-                    "Genevieve": {},
-                    "Rizo":      { idol_tribal:true, postmerge_survive:true },
-                },
-                9: {
-                    "Rick":      { postmerge_survive:true },
-                    "Jenna":     {},
-                    "Cirie":     { postmerge_survive:true, advantage_held:true },
-                    "Emily":     { postmerge_survive:true },
-                    "Christian": { shot_in_dark:true },
-                    "Joe H":     { postmerge_survive:true },
-                    "Savannah":  {},
-                    "Ozzy":      { postmerge_survive:true, idol_tribal:true },
-                    "Tiffany":   { postmerge_survive:true },
-                    "Chrissy":   {},
-                    "Kamilla":   {},
-                    "Dee":       {},
-                    "Coach":     {},
-                    "Mike":      {},
-                    "Jonathan":  { postmerge_survive:true },
-                    "Charlie":   {},
-                    "Angelina":  {},
-                    "Aubry":     { postmerge_survive:true },
-                    "Q":         {},
-                    "Colby":     {},
-                    "Kyle":      {},
-                    "Stephenie": { postmerge_survive:true, advantage_held:true },
-                    "Genevieve": {},
-                    "Rizo":      { postmerge_survive:true, idol_tribal:true },
-                },
-                10: {
-                    "Rick":      { mini_reward:true, idol_tribal:true, postmerge_survive:true },
-                    "Jenna":     {},
-                    "Cirie":     { postmerge_survive:true, advantage_held:true },
-                    "Emily":     { postmerge_survive:true },
-                    "Christian": {},
-                    "Joe H":     { postmerge_survive:true },
-                    "Savannah":  {},
-                    "Ozzy":      { idol_tribal:true, postmerge_survive:true },
-                    "Tiffany":   { individual_immunity:true, postmerge_survive:true },
-                    "Chrissy":   {},
-                    "Kamilla":   {},
-                    "Dee":       {},
-                    "Coach":     {},
-                    "Mike":      {},
-                    "Jonathan":  { postmerge_survive:true },
-                    "Charlie":   {},
-                    "Angelina":  {},
-                    "Aubry":     { postmerge_survive:true, title_quote:true },
-                    "Q":         {},
-                    "Colby":     {},
-                    "Kyle":      {},
-                    "Stephenie": { shot_in_dark:true },
-                    "Genevieve": {},
-                    "Rizo":      { idol_tribal:true, postmerge_survive:true },
-                },
-                11: {
-                    "Rick":      { uses_idol:true, title_quote:true, postmerge_survive:true },
-                    "Jenna":     {},
-                    "Cirie":     { postmerge_survive:true },
-                    "Emily":     { shot_in_dark:true },
-                    "Christian": {},
-                    "Joe H":     { postmerge_survive:true },
-                    "Savannah":  {},
-                    "Ozzy":      { voted_off_with_idol:true, shot_in_dark:true },
-                    "Tiffany":   { postmerge_survive:true },
-                    "Chrissy":   {}, "Kamilla":{}, "Dee":{}, "Coach":{}, "Mike":{},
-                    "Jonathan":  { individual_immunity:true, postmerge_survive:true },
-                    "Charlie":   {}, "Angelina":{},
-                    "Aubry":     { postmerge_survive:true },
-                    "Q":{}, "Colby":{}, "Kyle":{}, "Stephenie":{}, "Genevieve":{},
-                    "Rizo":      { idol_tribal:true, postmerge_survive:true },
-                },
-                12: {
-                    "Rick":      {},
-                    "Jenna":     {},
-                    "Cirie":     { postmerge_survive:true, shot_in_dark:true },
-                    "Emily":     {},
-                    "Christian": {},
-                    "Joe H":     { individual_immunity:true, team_reward:true, postmerge_survive:true, title_quote:true },
-                    "Savannah":  {},
-                    "Ozzy":      {},
-                    "Tiffany":   { individual_immunity:true, postmerge_survive:true },
-                    "Chrissy":{},"Kamilla":{},"Dee":{},"Coach":{},"Mike":{},
-                    "Jonathan":  { postmerge_survive:true },
-                    "Charlie":{},"Angelina":{},
-                    "Aubry":     { postmerge_survive:true },
-                    "Q":{},"Colby":{},"Kyle":{},"Stephenie":{},"Genevieve":{},
-                    "Rizo":      { idol_tribal:true, postmerge_survive:true },
-                },
-                13: {
-                    "Rick":{},"Jenna":{},"Cirie":{},"Emily":{},"Christian":{},
-                    "Joe H":     { postmerge_survive:true, made_final:true },
-                    "Savannah":{},"Ozzy":{},
-                    "Tiffany":   { shot_in_dark:true },
-                    "Chrissy":{},"Kamilla":{},"Dee":{},"Coach":{},"Mike":{},
-                    "Jonathan":  { individual_reward:true, mini_reward:true, postmerge_survive:true, made_final:true, vote_in_final:true },
-                    "Charlie":{},"Angelina":{},
-                    "Aubry":     { individual_immunity:true, postmerge_survive:true, made_final:true, vote_in_final:true, won_survivor:true },
-                    "Q":{},"Colby":{},"Kyle":{},"Stephenie":{},"Genevieve":{},
-                    "Rizo":      { mini_reward:true, postmerge_survive:true },
-                },
-                ...Object.fromEntries(Array.from({length:2},(_,i)=>[i+14, Object.fromEntries([
-                    "Rick","Jenna","Cirie","Emily","Christian","Joe H","Savannah","Ozzy",
-                    "Tiffany","Chrissy","Kamilla","Dee","Coach","Mike","Jonathan","Charlie",
-                    "Angelina","Aubry","Q","Colby","Kyle","Stephenie","Genevieve","Rizo"
+                ...Object.fromEntries(Array.from({length:12},(_,i)=>[i+2, Object.fromEntries([
+                    "Aaliyah","Thien An","Jelly","Brady","Kilby","Devin","Jenna","Maggie","Mike P","Patt",
+                    "Alexis","Ana","Carter","Cristian","Eric","Kristin","Linnea","Ori","Rob","Sharonda","Lewis"
                 ].map(n=>[n,{}]))]))
             },
             draftData: [
-                { player:"Mel",          picks:["Dee","Christian","Savannah","Chrissy","Genevieve","Emily"], left:0 },
-                { player:"Jenny",        picks:["Aubry","Joe H","Cirie","Coach","Stephenie","Tiffany"], left:0 },
-                { player:"Shannon/Tyler",picks:["Rick","Genevieve","Q","Savannah","Rizo","Stephenie"], left:0 },
-                { player:"Dale",         picks:["Colby","Christian","Mike","Kamilla","Dee","Savannah"], left:0 },
-                { player:"Jenn",         picks:["Colby","Joe H","Dee","Rick","Genevieve","Tiffany"], left:0 },
-                { player:"Neil",         picks:["Aubry","Ozzy","Jonathan","Cirie","Cirie","Rizo"], left:0 },
-                { player:"Dan",          picks:["Aubry","Charlie","Christian","Rick","Chrissy","Coach"], left:0 },
-                { player:"Julie",        picks:["Aubry","Colby","Ozzy","Cirie","Chrissy","Tiffany"], left:0 },
-                { player:"Alex",         picks:["Aubry","Charlie","Jonathan","Cirie","Rizo","Stephenie"], left:0 },
-                { player:"Gab",          picks:["Christian","Coach","Ozzy","Rizo","Genevieve","Q"], left:0 },
-                { player:"Lindsay",      picks:["Aubry","Charlie","Dee","Coach","Chrissy","Mike"], left:0 },
-                { player:"Jack",         picks:["Coach","Q","Ozzy","Jonathan","Dee","Kamilla"], left:0 },
-                { player:"Ryan",         picks:["Colby","Charlie","Ozzy","Jonathan","Rizo","Savannah"], left:0 },
-                { player:"Brett/Emma",   picks:["Christian","Colby","Q","Rick","Savannah","Emily"], left:0 },
-                { player:"Debbie",       picks:["Christian","Charlie","Ozzy","Kamilla","Emily","Tiffany"], left:0 },
-                { player:"David",        picks:["Jonathan","Joe H","Rick","Cirie","Rizo","Coach"], left:0 },
-                { player:"Jason",        picks:["Charlie","Joe H","Jonathan","Genevieve","Kamilla","Mike"], left:0 },
-                { player:"Charlie",      picks:["Genevieve","Joe H","Chrissy","Rick","Kamilla","Q"], left:0 },
-                { player:"Sue",          picks:["Dee","Joe H","Savannah","Colby","Kamilla","Mike"], left:0 },
+                { player:"Neil",       picks:["","","","","",""], left:0 },
+                { player:"Julie",      picks:["","","","","",""], left:0 },
+                { player:"Lindsay",    picks:["","","","","",""], left:0 },
+                { player:"Jason",      picks:["","","","","",""], left:0 },
+                { player:"Debbie",     picks:["","","","","",""], left:0 },
+                { player:"David",      picks:["","","","","",""], left:0 },
+                { player:"Jenny",      picks:["","","","","",""], left:0 },
+                { player:"Alex",       picks:["","","","","",""], left:0 },
+                { player:"Mel",        picks:["","","","","",""], left:0 },
+                { player:"Brett/Emma", picks:["","","","","",""], left:0 },
+                { player:"Dan",        picks:["","","","","",""], left:0 },
+                { player:"Danielle",   picks:["","","","","",""], left:0 },
+                { player:"Gab",        picks:["","","","","",""], left:0 },
+                { player:"Grayson",    picks:["","","","","",""], left:0 },
+                { player:"Jenn",       picks:["","","","","",""], left:0 },
+                { player:"Jack",       picks:["","","","","",""], left:0 },
+                { player:"Dale",       picks:["","","","","",""], left:0 },
+                { player:"Sue",        picks:["","","","","",""], left:0 },
+                { player:"Charlie",    picks:["","","","","",""], left:0 },
             ],
             attendanceData: {
-                "Mel":[2,2,2,2,2,2,2,2,2,2,2],"Jenny":[2,2,2,2,2,2,2,2,2,2,2],"Shannon/Tyler":[2,2,2,2,2,2,2,2,2,2,2],"Dale":[2,2,2,2,2,2,2,2,2,2,2],"Jenn":[2,2,2,2,2,2,2,2,2,2,2],
-                "Neil":[2,2,2,2,2,2,2,2,2,2,2],"Dan":[2,2,2,2,2,2,2,2,2,2,2],"Julie":[2,2,2,2,2,2,2,2,2,2,2],"Alex":[2,2,2,2,2,2,2,2,2,2,2],"Gab":[2,2,2,2,2,2,2,2,2,2,2],
-                "Lindsay":[2,2,2,2,2,2,2,2,2,2,2],"Jack":[2,2,2,2,2,2,2,2,2,2,2],"Ryan":[2,2,2,2,2,2,2,2,2,2,2],"Brett/Emma":[2,2,2,2,2,2,2,2,2,2,2],"Debbie":[2,2,2,2,2,2,2,2,2,2,2],
-                "David":[2,2,2,2,2,2,2,2,2,2,2],"Jason":[2,2,2,2,2,2,2,2,2,2,2],"Charlie":[2,2,2,2,2,2,2,2,2,2,2],"Sue":[2,2,2,2,2,2,2,0,2,2,2]
+                "Neil":[],"Julie":[],"Lindsay":[],"Jason":[],"Debbie":[],
+                "David":[],"Jenny":[],"Alex":[],"Mel":[],"Brett/Emma":[],
+                "Dan":[],"Danielle":[],"Gab":[],"Grayson":[],"Jenn":[],
+                "Jack":[],"Dale":[],"Sue":[],"Charlie":[]
             },
             eliminationTimeline: [
-                { week:1, contestant:"Jenna", reason:"Voted out unanimously at Tribal Council. Cila lost the immunity challenge largely due to Cirie struggling with the monkey fist throw. Jenna had been gunning for Cirie before her sneakers were even sandy, which pushed Cirie and Ozzy to target her instead." },
-                { week:1, contestant:"Kyle", reason:"Medically evacuated after rupturing his Achilles tendon jumping the wall during the first immunity challenge. Dr. Joe confirmed the injury via on-site sonogram. Kyle, the Season 48 winner, made a tearful goodbye and was pulled from the game.", medical:true },
-                { week:2, contestant:"Savannah", reason:"Voted out unanimously by Cila. Despite winning the team reward, her Block-a-Vote advantage made her a threat. Cirie orchestrated the vote, steering the tribe away from Joe and Ozzy and onto Savannah, who had been targeting Cirie since day one." },
-                { week:3, contestant:"Q", reason:"Voted out by the new Vatu tribe after a tribe swap reshuffled all three tribes. Q's lost vote from the journey hurt his position. Mike pushed to eliminate him as the more dominant threat. Vatu lost the immunity challenge with Christian calling poorly." },
-                { week:4, contestant:"Mike", reason:"Voted out at Kalo's Tribal Council. Used shot in the dark but it didn't save him. Kalo lost the immunity challenge, and Mike was sent home despite having been a strong strategic presence." },
-                { week:5, contestant:"Charlie", reason:"Voted out at Cila's Tribal Council. Charlie's obsession with targeting Rizo over the Savannah betrayal backfired when Rizo flipped the tribe by bonding with Dee, Cirie, and Kamilla. Dee delivered the brutal verdict: 'I thought Charlie was the most dangerous player here — but I actually think he's the dumbest.' First torch snuffing of Charlie's Survivor career." },
-                { week:5, contestant:"Angelina", reason:"Voted out unanimously by Vatu. Despite losing her closest ally Mike the week prior, Angelina barely registered in the edit down the stretch. Christian surrendered his Shot in the Dark to Ozzy as a show of trust, and the tribe united to send Angelina home. She exited in full-circle fashion — leaving her jacket behind for the tribe." },
-                { week:6, contestant:"Kamilla", reason:"8th person voted out in the Blood Moon episode. After the merge, Jonathan was the deciding vote between Kamilla and Chrissy. Despite Kamilla being seen as a swing vote, Jonathan drew his line in the sand and the new school alliance prevailed. Her parting words: 'Drag that man through the mud.'" },
-                { week:6, contestant:"Genevieve", reason:"9th person voted out at the Blood Moon tribal. Genevieve played her Hidden Idol but was still eliminated — the votes against her could not be negated. She had tried to use Christian against Rick, but the move backfired in the chaotic three-elimination night." },
-                { week:6, contestant:"Colby", reason:"10th person voted out on Blood Moon night — the most eliminations in a single Tribal Council in Survivor history. Dee debated saving him after Colby promised her loyalty, but ultimately chose to target Coach as more untrustworthy. Colby reflected: 'Half of my life has transpired since the first time I played.'" },
-                { week:7, contestant:"Dee", reason:"11th person voted out and first jury member. The Season 45 winner had a huge target after the Blood Moon as Coach and Jonathan rallied others against her. She played her Shot in the Dark unsuccessfully, and was sent home despite winning team reward earlier in the episode. Aubry played her Boomerang Idol this episode but no votes were cast against her." },
-                { week:8, contestant:"Coach", reason:"12th person voted out in a historic first — eliminated as a pair with Chrissy in a single vote. Coach spent the episode being put in 'timeout' by Chrissy to manage his social game, but his Dragonslayer flair proved impossible to contain. Rick's fake idol theatrics at Tribal sealed their fate. Coach played his Shot in the Dark (unsuccessfully) while Chrissy cast her vote." },
-                { week:8, contestant:"Chrissy", reason:"13th person voted out, eliminated alongside Coach as part of Survivor's first ever paired elimination. Chrissy spent the episode as 'Dragonslayer whisperer,' trying to keep Coach calm, but Cirie masterfully shifted the target onto them. Cirie's line: 'When you gonna get Chrissy and Coach at one time?' proved decisive." },
-                { week:9, contestant:"Christian", reason:"14th person voted out. After a disastrous journey twist forced him to vote against himself and arrive at tribal with an extra vote already cast against him, Christian gave his Shot in the Dark to Jonathan as a show of trust. It backfired — Jonathan used it to his advantage as the tribal scramble ended with the majority targeting Christian." },
-                { week:10, contestant:"Stephenie", reason:"15th person voted out. With Coach and Chrissy gone, Stephenie found herself without her core alliance. She played her Shot in the Dark unsuccessfully at Tribal Council and was sent home, joining the jury. MrBeast guest-appeared this episode during a crossover with Beast Games." },
-                { week:11, contestant:"Emily", reason:"16th person voted out. Emily's close ally Christian was gone and she found herself in a difficult position. She played her Shot in the Dark unsuccessfully and was voted out in a double elimination alongside Ozzy." },
-                { week:11, contestant:"Ozzy", reason:"17th person voted out. Ozzy was voted out with his Boomerang Idol in his pocket — a costly mistake worth −3 points. He was also sent home via Shot in the Dark play (−0.5). Jonathan won individual immunity, sealing Ozzy and Emily's fate in a double elimination.", medical:false },
-                { week:12, contestant:"Rick", reason:"18th person voted out in a double-elimination episode. Rick played his Shot in the Dark but was not safe, voted out unanimously 6-0 at the first Tribal Council. His fake idol theatrics earlier in the season couldn't save him in the end." },
-                { week:12, contestant:"Cirie", reason:"19th person voted out — Survivor's greatest player, finally snuffed. Cirie survived the first tribal but was voted out 4-2 at the second. Aubry said at the voting booth: 'You're the best Survivor player of all time. You're better than Sandra. You're better than Tony.' Cirie played her Shot in the Dark unsuccessfully." },
-                { week:13, contestant:"Tiffany", reason:"Eliminated in the finale. Played her Shot in the Dark unsuccessfully and was sent home from the Final 5." },
-                { week:13, contestant:"Rizo", reason:"Eliminated at the Final 4, just short of the Final Tribal Council. The Rizgod played the whole game with an idol and made it to the very end without ever needing to use it — but couldn't secure a spot in the final three." },
+                { week:1, contestant:"Aaliyah", reason:"First boot of Survivor 51's Open Era. Toka lost the first immunity challenge after Aaliyah struggled in a key phase. The vote came down to her vs. Jenna — both played their Shots in the Dark unsuccessfully. Aaliyah was voted out 6-2, refusing to betray her Helicopter Alliance with Devin and Jelly even to save herself." },
             ],
             winnerCircles: [
-                { season:50, first:"Neil",   second:"Alex",     third:"Jenny" },
-                { season:49, first:"Dan",    second:"Alex",     third:"Jenny" },
-                { season:48, first:"Julie",  second:"Jack",     third:"Gab" },
-                { season:47, first:"Ian",    second:"Neil",     third:"Julie" },
-                { season:46, first:"Julie",  second:"Lindsay",  third:"Jenn" },
-                { season:45, first:"Ryan",   second:"Ian",      third:null }
+                { season:50, first:"Neil",    second:"Alex",    third:"Jenny" },
+                { season:49, first:"Dan",     second:"Alex",    third:"Jenny" },
+                { season:48, first:"Julie",   second:"Jack",    third:"Gab" },
+                { season:47, first:"Ian",     second:"Neil",    third:"Julie" },
+                { season:46, first:"Julie",   second:"Lindsay", third:"Jenn" },
+                { season:45, first:"Ryan",    second:"Ian",     third:null }
             ],
             surveyPoints: {
-                "Mel":3,"Jenny":4,"Shannon/Tyler":0,"Dale":1,"Jenn":0,
-                "Neil":9,"Dan":6,"Julie":9,"Alex":4,"Gab":1,
-                "Lindsay":2,"Jack":5,"Ryan":0,"Brett/Emma":0,"Debbie":4,
-                "David":3,"Jason":7,"Charlie":0,"Sue":1
+                "Neil":0,"Julie":0,"Lindsay":0,"Jason":0,"Debbie":0,
+                "David":0,"Jenny":0,"Alex":0,"Mel":0,"Brett/Emma":0,
+                "Dan":0,"Danielle":0,"Gab":0,"Grayson":0,"Jenn":0,
+                "Jack":0,"Dale":0,"Sue":0,"Charlie":0
             }
         };
     };
 
     const [data, setData] = useState(() => getInitialData());
-    useEffect(() => { localStorage.setItem('survivor50LeagueData', JSON.stringify(data)); }, [data]);
+    useEffect(() => { localStorage.setItem('survivor51LeagueData', JSON.stringify(data)); }, [data]);
 
     const contestantTotals = useMemo(() => {
         const totals = {};
@@ -921,9 +554,9 @@ const SurvivorLeague = () => {
     const getTribeCss = tribe => {
         if (!tribe) return '';
         const t = tribe.toLowerCase();
-        if (t==='cila') return 'tribe-cila';
-        if (t==='kalo') return 'tribe-kalo';
-        if (t==='vatu') return 'tribe-vatu';
+        if (t==='toka')   return 'tribe-toka';
+        if (t==='savu')   return 'tribe-savu';
+        if (t==='exile')  return 'tribe-exile';
         if (t==='merged') return 'tribe-merged';
         return '';
     };
@@ -945,7 +578,7 @@ const SurvivorLeague = () => {
             </div>
 
             <p className="welcome-intro">
-                The milestone season is here. 24 fan favorites, one island, and a league full of people with absolutely no excuse for a bad draft. Welcome back.
+                The Open Era is here. 21 brand new players, zero experience, and permanent uncertainty baked into every episode. Any twist, any idol, any advantage from Survivor history could show up at any time. Good luck drafting for that.
             </p>
 
             <div className="w-section">
@@ -968,7 +601,7 @@ const SurvivorLeague = () => {
                         <li>Snake draft held <strong>after the first episode airs</strong> — watch it before you draft!</li>
                         <li>Each manager drafts <strong>6 Survivor contestants</strong></li>
                         <li>Any contestant can be drafted by a <strong>maximum of 6 different people</strong></li>
-                        <li>24-person expanded cast this season — do your research, veterans! 😤</li>
+                        <li>21-person cast — two tribes (Toka 🟡 &amp; Savu 🟣) plus Lewis on Exile Island</li>
                     </ul>
                     <a className="doodle-link" href="https://doodle.com/group-poll/participate/eZGmKK2a" target="_blank">
                         <span className="doodle-label">📅 Schedule Draft</span>
@@ -996,7 +629,8 @@ const SurvivorLeague = () => {
                             <tr><td>Voted off with idol in pocket</td><td>−3 pts</td></tr>
                             <tr className="new-rule"><td>Holds any advantage at end of episode <span style={{fontSize:'11px',opacity:.55}}>(extra vote, KIP, etc. — not idols)</span></td><td>+0.5 pts</td></tr>
                             <tr><td className="score-cat" colSpan="2">Survival</td></tr>
-                            <tr><td>Survives an elimination (pre-merge)</td><td>+0.75 pts</td></tr>
+                            <tr><td>Survives an elimination (pre-merge, 2 tribes)</td><td>+0.50 pts</td></tr>
+                            <tr><td>Survives an elimination (pre-merge, 3 tribes)</td><td>+0.75 pts</td></tr>
                             <tr><td>Survives an elimination (post-merge)</td><td>+1 pt</td></tr>
                             <tr><td>Made final group</td><td>+2 pts</td></tr>
                             <tr><td>Vote in final group</td><td>+0.5 pts</td></tr>
@@ -1104,7 +738,7 @@ const SurvivorLeague = () => {
             </div>
             <div className="summary-stats">
                 <div className="stat-card"><div className="stat-label">Current Season</div><div className="stat-value">50</div></div>
-                <div className="stat-card"><div className="stat-label">Episodes Aired</div><div className="stat-value">Finale</div></div>
+                <div className="stat-card"><div className="stat-label">Episodes Aired</div><div className="stat-value">1/{TOTAL_WEEKS}</div></div>
                 <div className="stat-card"><div className="stat-label">Cast Remaining</div><div className="stat-value">{data.contestants.filter(c=>!c.eliminated).length}</div></div>
                 <div className="stat-card"><div className="stat-label">League Players</div><div className="stat-value">{leaderboard.length}</div></div>
                 <div className="stat-card"><div className="stat-label">🏆 Current Leader</div><div className="stat-value" style={{color:'#D4A017'}}>{leaderboard[0]?.player || '—'}</div></div>
@@ -1205,18 +839,18 @@ const SurvivorLeague = () => {
             return bp-ap;
         });
         const getTribeGrad = tribe => {
-            if (tribe==='Cila') return '#D4521E';
-            if (tribe==='Kalo') return '#2A9D8F';
-            if (tribe==='Vatu') return '#C2185B';
+            if (tribe==='Toka')  return '#D4A800';
+            if (tribe==='Savu')  return '#7B2D8B';
+            if (tribe==='Exile') return '#5D4037';
             return '#555';
         };
         return (
             <div className="content-section">
                 <h2 className="section-title">🌴 All Contestants 🌴</h2>
                 <div className="tribe-legend">
-                    <div className="legend-item"><div className="legend-color" style={{background:'#D4521E'}}></div><span>Cila ({data.contestants.filter(c=>c.originalTribe==='Cila').length})</span></div>
-                    <div className="legend-item"><div className="legend-color" style={{background:'#2A9D8F'}}></div><span>Kalo ({data.contestants.filter(c=>c.originalTribe==='Kalo').length})</span></div>
-                    <div className="legend-item"><div className="legend-color" style={{background:'#C2185B'}}></div><span>Vatu ({data.contestants.filter(c=>c.originalTribe==='Vatu').length})</span></div>
+                    <div className="legend-item"><div className="legend-color" style={{background:'#D4A800'}}></div><span>Toka ({data.contestants.filter(c=>c.originalTribe==='Toka').length})</span></div>
+                    <div className="legend-item"><div className="legend-color" style={{background:'#7B2D8B'}}></div><span>Savu ({data.contestants.filter(c=>c.originalTribe==='Savu').length})</span></div>
+                    <div className="legend-item"><div className="legend-color" style={{background:'#5D4037'}}></div><span>Exile ({data.contestants.filter(c=>c.originalTribe==='Exile').length})</span></div>
                 </div>
                 <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
                     {sorted.map((c,i)=>{
@@ -1526,8 +1160,8 @@ const SurvivorLeague = () => {
         <div className="app-container">
             <div style={{textAlign:'center',padding:'36px 20px 28px',marginBottom:'10px'}}>
                 <span style={{fontSize:'52px',display:'block',marginBottom:'10px',animation:'torchFlicker 2.5s ease-in-out infinite alternate'}}>🔥</span>
-                <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'11px',letterSpacing:'5px',color:'#D4A017',marginBottom:'6px',opacity:.8}}>FANTASY LEAGUE · ALL VETERANS</div>
-                <div style={{fontFamily:"'Cinzel',serif",fontSize:'clamp(48px,10vw,80px)',fontWeight:700,lineHeight:.93,background:'linear-gradient(135deg,#D4A017 0%,#FF4500 50%,#FF8C00 100%)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text',marginBottom:'8px'}}>SURVIVOR<br/>50</div>
+                <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'11px',letterSpacing:'5px',color:'#D4A017',marginBottom:'6px',opacity:.8}}>FANTASY LEAGUE · THE OPEN ERA</div>
+                <div style={{fontFamily:"'Cinzel',serif",fontSize:'clamp(48px,10vw,80px)',fontWeight:700,lineHeight:.93,background:'linear-gradient(135deg,#D4A017 0%,#FF4500 50%,#FF8C00 100%)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text',marginBottom:'8px'}}>SURVIVOR<br/>51</div>
                 <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'16px',letterSpacing:'4px',color:'#F5E6C8',opacity:.65}}>THE MILESTONE SEASON</div>
                 <div style={{width:'80px',height:'2px',background:'linear-gradient(90deg,transparent,#D4A017,transparent)',margin:'18px auto 0'}}></div>
             </div>
