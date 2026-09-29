@@ -388,7 +388,7 @@ const SurvivorLeague = () => {
     const [expandedPlayer, setExpandedPlayer] = useState(null);
 
     const getInitialData = () => {
-        const DATA_VERSION = 6; // Ep1 scores corrected // Ep5 scores, Charlie+Angelina eliminated, attendance wks 4-5
+        const DATA_VERSION = 8; // Ep1 scores corrected // Ep5 scores, Charlie+Angelina eliminated, attendance wks 4-5
         const savedVersion = localStorage.getItem('survivor51DataVersion');
         if (savedVersion != DATA_VERSION) {
             localStorage.removeItem('survivor51LeagueData');
@@ -473,6 +473,7 @@ const SurvivorLeague = () => {
                 { player:"Jason",      picks:["","","","","",""], left:0 },
                 { player:"Debbie",     picks:["","","","","",""], left:0 },
                 { player:"David",      picks:["","","","","",""], left:0 },
+                { player:"Shannon/Tyler",picks:["","","","","",""], left:0 },
                 { player:"Jenny",      picks:["","","","","",""], left:0 },
                 { player:"Alex",       picks:["","","","","",""], left:0 },
                 { player:"Mel",        picks:["","","","","",""], left:0 },
@@ -489,7 +490,7 @@ const SurvivorLeague = () => {
             ],
             attendanceData: {
                 "Neil":[],"Julie":[],"Lindsay":[],"Jason":[],"Debbie":[],
-                "David":[],"Jenny":[],"Alex":[],"Mel":[],"Brett/Emma":[],
+                "David":[],"Shannon/Tyler":[],"Jenny":[],"Alex":[],"Mel":[],"Brett/Emma":[],
                 "Dan":[],"Danielle":[],"Gab":[],"Grayson":[],"Jenn":[],
                 "Jack":[],"Dale":[],"Sue":[],"Charlie":[]
             },
@@ -506,7 +507,7 @@ const SurvivorLeague = () => {
             ],
             surveyPoints: {
                 "Neil":0,"Julie":0,"Lindsay":0,"Jason":0,"Debbie":0,
-                "David":0,"Jenny":0,"Alex":0,"Mel":0,"Brett/Emma":0,
+                "David":0,"Shannon/Tyler":0,"Jenny":0,"Alex":0,"Mel":0,"Brett/Emma":0,
                 "Dan":0,"Danielle":0,"Gab":0,"Grayson":0,"Jenn":0,
                 "Jack":0,"Dale":0,"Sue":0,"Charlie":0
             }
@@ -572,11 +573,6 @@ const SurvivorLeague = () => {
     // ─── WELCOME VIEW ───────────────────────────────────────────────
     const renderWelcome = () => (
         <div className="welcome-wrap">
-            <div className="congrats-box">
-                <div className="congrats-label">🏆 Season 49 Champion</div>
-                <p>A huge congratulations to <strong>Dan</strong> for taking home the victory last season! The torch has been snuffed and reset — time to defend the title or steal the crown. 👑</p>
-            </div>
-
             <p className="welcome-intro">
                 The Open Era is here. 21 brand new players, zero experience, and permanent uncertainty baked into every episode. Any twist, any idol, any advantage from Survivor history could show up at any time. Good luck drafting for that.
             </p>
