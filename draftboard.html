@@ -34,13 +34,13 @@ html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:
 .mn{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.5px;width:90px;flex-shrink:0;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mn.cur{color:#D4A017;font-size:16px}
 .ps{flex:1;height:30px;border-radius:4px;font-size:13px;font-family:'Bebas Neue',sans-serif;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;border:1px solid rgba(255,255,255,.07);padding:0 2px}
-.pk6{background:rgba(68,114,196,.3);border-color:rgba(68,114,196,.6);color:#9ec5ff}
-.pk5{background:rgba(255,224,102,.2);border-color:rgba(255,224,102,.5);color:#ffe066}
-.pk4{background:rgba(244,169,66,.25);border-color:rgba(244,169,66,.5);color:#f4a942}
+.pk6{background:rgba(46,160,67,.3);border-color:rgba(46,160,67,.6);color:#7ee787}
+.pk5{background:rgba(68,114,196,.3);border-color:rgba(68,114,196,.6);color:#9ec5ff}
+.pk4{background:rgba(255,224,102,.2);border-color:rgba(255,224,102,.5);color:#ffe066}
 .pk3{background:rgba(255,153,153,.2);border-color:rgba(255,153,153,.5);color:#ffaaaa}
-.pk2{background:rgba(192,0,0,.3);border-color:rgba(192,0,0,.6);color:#ff8080}
-.pk1{background:rgba(200,200,200,.15);border-color:rgba(200,200,200,.4);color:#ccc}
-.pk0{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:#555}
+.pk2{background:rgba(244,169,66,.3);border-color:rgba(244,169,66,.6);color:#f4a942}
+.pk1{background:rgba(192,0,0,.3);border-color:rgba(192,0,0,.6);color:#ff8080}
+.pk0{background:rgba(20,20,20,.8);border-color:rgba(255,255,255,.15);color:#444}
 
 
 .pm{background:rgba(255,255,255,.03);color:rgba(255,255,255,.12)}
@@ -270,7 +270,11 @@ function App(){
               {exile.map(pRow)}
               <div className="legend" style={{marginTop:'12px'}}>
                 {[6,5,4,3,2,1,0].map(n=>(
-                  <div key={n} className={'leg-item '+kc(n)}>{n===0?'DONE':n+' LEFT'}</div>
+                  <div key={n} className={'leg-item pk'+n} style={{
+                    background: n===6?'rgba(46,160,67,.4)':n===5?'rgba(68,114,196,.4)':n===4?'rgba(255,224,102,.35)':n===3?'rgba(255,153,153,.35)':n===2?'rgba(244,169,66,.4)':n===1?'rgba(192,0,0,.45)':'rgba(20,20,20,.8)',
+                    color: n===6?'#7ee787':n===5?'#9ec5ff':n===4?'#ffe066':n===3?'#ffaaaa':n===2?'#f4a942':n===1?'#ff8080':'#444',
+                    border:'none'
+                  }}>{n===0?'DONE':n+' LEFT'}</div>
                 ))}
               </div>
             </div>
