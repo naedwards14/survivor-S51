@@ -66,7 +66,7 @@ html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:
 .tt{background:#D4A800;color:#000}
 .ss{background:#7B2D8B;color:#fff}
 .ee{background:#5D4037;color:#fff}
-.pname{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.5px;padding:5px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(255,255,255,.07)}
+.pname{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.5px;padding:4px 8px;background:rgba(255,255,255,.07)}
 .pname-t{color:#FFD700}
 .pname-s{color:#c77ddd}
 .pname-e{color:#bcaaa4}
@@ -75,7 +75,7 @@ html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:
 
 /* Legend */
 .legend{margin-top:8px;display:flex;flex-direction:column;gap:3px}
-.leg-item{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;text-align:center;padding:4px 6px}
+.leg-item{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;text-align:center;padding:5px 6px}
 
 /* Pick count colors */
 .k6{background:#4472C4;color:#fff}
@@ -111,26 +111,26 @@ html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:
 const { useState } = React;
 const BASE = 'https://turnto10.com/resources/media2/16x9/1280/800/center/80/';
 const CONTESTANTS = [
-  {id:'thienan', name:'Thien An',tribe:'Toka', ep1:0.50, photo:BASE+'1d72888c-3e41-4b2d-9d59-f356f2cbac64-TheinAnNguyen.png'},
-  {id:'jelly',   name:'Jelly',   tribe:'Toka', ep1:0.50, photo:BASE+'1d94ac9c-0787-46f2-91d6-fdb707b65637-JellyLoblack.png'},
-  {id:'brady',   name:'Brady',   tribe:'Toka', ep1:0.50, photo:BASE+'05d9ecae-69eb-46d0-a6c3-e24daa6a1c28-BradyBooker.png'},
-  {id:'kilby',   name:'Kilby',   tribe:'Toka', ep1:0.50, photo:BASE+'34e0d308-5c3e-4c09-bb32-14fee7b707b0-DannyKilby.png'},
-  {id:'devin',   name:'Devin',   tribe:'Toka', ep1:0.50, photo:BASE+'a7ab02ab-53f6-4f8e-a9d3-103de9a146e1-DevinWay.png'},
-  {id:'jenna',   name:'Jenna',   tribe:'Toka', ep1:0.50, photo:BASE+'06d841bb-cf45-4d48-8483-4351aa7cc147-JennaDoore.png'},
-  {id:'maggie',  name:'Maggie',  tribe:'Toka', ep1:0.50, photo:BASE+'a2d3b5e4-4e2e-4869-a1b5-ffc08030e03f-MaggieNestor.png'},
-  {id:'mikep',   name:'Mike P',  tribe:'Toka', ep1:0.50, photo:BASE+'76003c77-5106-4a3f-b7df-ad0971aad662-MikePinsky.png'},
-  {id:'patt',    name:'Patt',    tribe:'Toka', ep1:0.50, photo:BASE+'f10d2fde-caf7-4d9f-8c4f-d5b92fda5dd6-PattCannaday.png'},
-  {id:'alexis',  name:'Alexis',  tribe:'Savu', ep1:1.00, photo:BASE+'4c49b157-5964-45ca-963d-295eb24478da-AlexisLevine.png'},
-  {id:'ana',     name:'Ana',     tribe:'Savu', ep1:1.00, photo:BASE+'eb9e90cc-9964-4fca-bd9d-2940d1ef72eb-AnaSani.png'},
-  {id:'carter',  name:'Carter',  tribe:'Savu', ep1:1.00, photo:BASE+'28e202ec-6802-49b0-8fc7-f42504b8850f-CarterKrull.png'},
-  {id:'cristian',name:'Cristian',tribe:'Savu', ep1:1.00, photo:BASE+'c5fe29ca-1071-4fb5-81e6-e355894b6fe3-CristianChavez.png'},
-  {id:'eric',    name:'Eric',    tribe:'Savu', ep1:1.00, photo:BASE+'c6f23588-ed4d-48b3-b009-67a0b06911c0-EricMacksound.png'},
-  {id:'kristin', name:'Kristin', tribe:'Savu', ep1:1.00, photo:BASE+'7012944f-38af-4971-a5bf-9c4a41d3ca00-KristinFlickinger.png'},
-  {id:'linnea',  name:'Linnea',  tribe:'Savu', ep1:1.00, photo:BASE+'b6fac4a6-e910-4c00-906d-5c4b5a0248d4-LinneaCapobianco.png'},
-  {id:'ori',     name:'Ori',     tribe:'Savu', ep1:1.00, photo:BASE+'637f6f72-82c2-4a63-bb14-f8bb53c01959-OriJeanCharles.png'},
-  {id:'rob',     name:'Rob',     tribe:'Savu', ep1:1.00, idol:true,  photo:BASE+'12b3ddb4-fc45-49e2-aa40-9234adf28d25-RobAntonson.png'},
-  {id:'sharonda',name:'Sharonda',tribe:'Savu', ep1:1.00, photo:BASE+'bbb97a5d-5cdf-4728-9fa6-a196321f18a9-SharondaCox.png'},
-  {id:'lewis',   name:'Lewis',   tribe:'Exile',ep1:0.25, photo:BASE+'4ebc18d6-96a9-468c-aefd-3e49f6fd89ec-LewisKelly.png'},
+  {id:'thienan', name:'Thien An',tribe:'Toka', ep1:0.50, job:'Medical Student',    photo:BASE+'1d72888c-3e41-4b2d-9d59-f356f2cbac64-TheinAnNguyen.png'},
+  {id:'jelly',   name:'Jelly',   tribe:'Toka', ep1:0.50, job:'Sociology Prof.',    photo:BASE+'1d94ac9c-0787-46f2-91d6-fdb707b65637-JellyLoblack.png'},
+  {id:'brady',   name:'Brady',   tribe:'Toka', ep1:0.50, job:'Pro Wrestler',       photo:BASE+'05d9ecae-69eb-46d0-a6c3-e24daa6a1c28-BradyBooker.png'},
+  {id:'kilby',   name:'Kilby',   tribe:'Toka', ep1:0.50, job:'Game Designer',      photo:BASE+'34e0d308-5c3e-4c09-bb32-14fee7b707b0-DannyKilby.png'},
+  {id:'devin',   name:'Devin',   tribe:'Toka', ep1:0.50, job:'Actor',              photo:BASE+'a7ab02ab-53f6-4f8e-a9d3-103de9a146e1-DevinWay.png'},
+  {id:'jenna',   name:'Jenna',   tribe:'Toka', ep1:0.50, job:'Wedding Photographer',photo:BASE+'06d841bb-cf45-4d48-8483-4351aa7cc147-JennaDoore.png'},
+  {id:'maggie',  name:'Maggie',  tribe:'Toka', ep1:0.50, job:'Farmer',             photo:BASE+'a2d3b5e4-4e2e-4869-a1b5-ffc08030e03f-MaggieNestor.png'},
+  {id:'mikep',   name:'Mike P',  tribe:'Toka', ep1:0.50, job:'Baseball Executive', photo:BASE+'76003c77-5106-4a3f-b7df-ad0971aad662-MikePinsky.png'},
+  {id:'patt',    name:'Patt',    tribe:'Toka', ep1:0.50, job:'Airline Gate Agent', photo:BASE+'f10d2fde-caf7-4d9f-8c4f-d5b92fda5dd6-PattCannaday.png'},
+  {id:'alexis',  name:'Alexis',  tribe:'Savu', ep1:1.00, job:'Criminal Def. Atty', photo:BASE+'4c49b157-5964-45ca-963d-295eb24478da-AlexisLevine.png'},
+  {id:'ana',     name:'Ana',     tribe:'Savu', ep1:1.00, job:'Voice Actress',      photo:BASE+'eb9e90cc-9964-4fca-bd9d-2940d1ef72eb-AnaSani.png'},
+  {id:'carter',  name:'Carter',  tribe:'Savu', ep1:1.00, job:'Livestock Farmer',   photo:BASE+'28e202ec-6802-49b0-8fc7-f42504b8850f-CarterKrull.png'},
+  {id:'cristian',name:'Cristian',tribe:'Savu', ep1:1.00, job:'Head of HR',         photo:BASE+'c5fe29ca-1071-4fb5-81e6-e355894b6fe3-CristianChavez.png'},
+  {id:'eric',    name:'Eric',    tribe:'Savu', ep1:1.00, job:'Mental Health Counselor',photo:BASE+'c6f23588-ed4d-48b3-b009-67a0b06911c0-EricMacksound.png'},
+  {id:'kristin', name:'Kristin', tribe:'Savu', ep1:1.00, job:'Crisis Management',  photo:BASE+'7012944f-38af-4971-a5bf-9c4a41d3ca00-KristinFlickinger.png'},
+  {id:'linnea',  name:'Linnea',  tribe:'Savu', ep1:1.00, job:'Entrepreneur',       photo:BASE+'b6fac4a6-e910-4c00-906d-5c4b5a0248d4-LinneaCapobianco.png'},
+  {id:'ori',     name:'Ori',     tribe:'Savu', ep1:1.00, job:'Airline Gate Agent', photo:BASE+'637f6f72-82c2-4a63-bb14-f8bb53c01959-OriJeanCharles.png'},
+  {id:'rob',     name:'Rob',     tribe:'Savu', ep1:1.00, job:'Baseball Executive', idol:true, photo:BASE+'12b3ddb4-fc45-49e2-aa40-9234adf28d25-RobAntonson.png'},
+  {id:'sharonda',name:'Sharonda',tribe:'Savu', ep1:1.00, job:'Nurse',              photo:BASE+'bbb97a5d-5cdf-4728-9fa6-a196321f18a9-SharondaCox.png'},
+  {id:'lewis',   name:'Lewis',   tribe:'Exile',ep1:0.25, job:'Farmer',             photo:BASE+'4ebc18d6-96a9-468c-aefd-3e49f6fd89ec-LewisKelly.png'},
 ];
 const MGR=['Jack','Mel','Julie','Neil','Grayson','Brett/Emma','Dan','Dale','Charlie','Jenn','Sue','Jason','Jenny','Gab','David','Danielle','Debbie','Alex','Lindsay'];
 const N=MGR.length,PP=6,TOT=N*PP,MAX=6,SK='s51d_v7';
@@ -161,7 +161,10 @@ function App(){
     return(
       <div key={c.id} className={'prow'+(maxed?' done-row':'')} onClick={()=>draft(c.id)} title={maxed?c.name+' DONE':c.name+' · '+left+' left'}>
         
-        <div className={'pname '+(c.tribe==='Toka'?'pname-t':c.tribe==='Savu'?'pname-s':'pname-e')}>{c.name}{c.idol ? ' 🏺' : ''}</div>
+        <div className={'pname '+(c.tribe==='Toka'?'pname-t':c.tribe==='Savu'?'pname-s':'pname-e')}>
+          <div>{c.name}{c.idol ? ' 🏺' : ''}</div>
+          <div style={{fontSize:'9px',opacity:.5,fontFamily:"'Inter',sans-serif",fontWeight:400,letterSpacing:'.3px',marginTop:'1px'}}>{c.job}</div>
+        </div>
         <div className="pscore">+{c.ep1}</div>
         <div className={'pcount '+kc(left)}>{maxed?'✅':left}</div>
       </div>
