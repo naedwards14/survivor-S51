@@ -26,7 +26,7 @@ html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:
 .main{display:flex;height:calc(100vh - 52px);overflow:hidden}
 
 /* ── DRAFT BOARD ── */
-.dboard{width:680px;flex-shrink:0;display:flex;flex-direction:column;background:#111122;border-right:1px solid rgba(255,255,255,.08);padding:8px 12px}
+.dboard{width:780px;flex-shrink:0;display:flex;flex-direction:column;background:#111122;border-right:1px solid rgba(255,255,255,.08);padding:8px 12px}
 .dbt{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:#D4A017;text-align:center;margin-bottom:5px;flex-shrink:0}
 .rows{flex:1;display:flex;flex-direction:column;justify-content:space-between}
 .mr{display:flex;align-items:center;gap:4px;padding:2px 6px;border-radius:5px}
@@ -251,24 +251,22 @@ function App(){
         <div className="rp">
           {/* PLAYER TABLE */}
           <div className="ptable">
-            {/* TOKA */}
+            {/* TOKA + EXILE */}
             <div className="tribe-col">
               <div className="tribe-col-header tch-t">🟡 TOKA</div>
               <div className="col-sub"><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
               {toka.map(pRow)}
+              <div style={{marginTop:'6px',borderTop:'1px solid rgba(255,255,255,.08)',paddingTop:'6px'}}>
+                <div className="tribe-col-header tch-e" style={{marginBottom:'5px'}}>🟫 EXILE</div>
+                {exile.map(pRow)}
+              </div>
             </div>
-            {/* SAVU */}
+            {/* SAVU + LEGEND */}
             <div className="tribe-col">
               <div className="tribe-col-header tch-s">🟣 SAVU</div>
               <div className="col-sub"><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
               {savu.map(pRow)}
-            </div>
-            {/* EXILE + LEGEND */}
-            <div className="exile-col">
-              <div className="tribe-col-header tch-e">🟫 EXILE</div>
-              <div className="col-sub"><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
-              {exile.map(pRow)}
-              <div className="legend" style={{marginTop:'12px'}}>
+              <div className="legend" style={{marginTop:'10px'}}>
                 {[6,5,4,3,2,1,0].map(n=>(
                   <div key={n} className={'leg-item pk'+n} style={{
                     background: n===6?'rgba(46,160,67,.4)':n===5?'rgba(68,114,196,.4)':n===4?'rgba(255,224,102,.35)':n===3?'rgba(255,153,153,.35)':n===2?'rgba(244,169,66,.4)':n===1?'rgba(192,0,0,.45)':'rgba(20,20,20,.8)',
