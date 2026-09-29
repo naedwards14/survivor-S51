@@ -237,7 +237,7 @@ function App(){
                   <div className={'mn'+(isc?' cur':'')}>{isc?'▶ ':''}{m}</div>
                   {mp[mi].map((cid,si)=>{
                     const c=cid?CONTESTANTS.find(x=>x.id===cid):null;
-                    if(c){const nth=pickNth[`${mi}_${si}`]||1;return<div key={si} className={'ps pk'+(7-nth)}>{c.name}</div>;}
+                    if(c){const nth=pickNth[`${mi}_${si}`]||1;return<div key={si} className={'ps pk'+(6-nth)}>{c.name}</div>;}
                     if(isc&&si===filled)return<div key={si} className="ps pn">PICK</div>;
                     return<div key={si} className="ps pm">—</div>;
                   })}
