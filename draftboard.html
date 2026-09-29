@@ -1,299 +1,1185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Survivor 51 · Draft Board</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;background:#0d0d1a;color:#fff;font-family:'Inter',sans-serif}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survivor 51 Fantasy League</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-.hdr{background:linear-gradient(135deg,#1a1a3e,#0d0d1a);border-bottom:2px solid #D4A017;padding:7px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;height:52px}
-.ht{font-family:'Cinzel',serif;font-size:18px;font-weight:700;background:linear-gradient(135deg,#D4A017,#FF4500,#FF8C00);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hs{font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:4px;color:rgba(212,160,23,.6)}
-.now{background:linear-gradient(135deg,rgba(212,160,23,.2),rgba(255,69,0,.15));border:2px solid #D4A017;border-radius:7px;padding:3px 14px;text-align:center;min-width:160px}
-.nl{font-family:'Bebas Neue',sans-serif;font-size:8px;letter-spacing:3px;color:#D4A017}
-.nn{font-family:'Cinzel',serif;font-size:16px;font-weight:700}
-.ni{font-size:9px;color:rgba(255,255,255,.4)}
-.btn{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2px;padding:6px 12px;border:none;border-radius:6px;cursor:pointer}
-.bu{background:rgba(231,76,60,.2);color:#e74c3c;border:1px solid rgba(231,76,60,.35)}
-.br{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15)}
+        body {
+            font-family: 'Inter', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-.main{display:flex;height:calc(100vh - 52px);overflow:hidden}
+        .app-container { max-width: 1800px; margin: 0 auto; }
 
-/* ── DRAFT BOARD ── */
-.dboard{width:520px;flex-shrink:0;display:flex;flex-direction:column;background:#111122;border-right:1px solid rgba(255,255,255,.08);padding:8px 12px}
-.dbt{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:#D4A017;text-align:center;margin-bottom:5px;flex-shrink:0}
-.rows{flex:1;display:flex;flex-direction:column;justify-content:space-between}
-.mr{display:flex;align-items:center;gap:4px;padding:2px 6px;border-radius:5px}
-.mr.cur{background:rgba(212,160,23,.15);border:1px solid rgba(212,160,23,.3)}
-.mn{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.5px;width:90px;flex-shrink:0;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mn.cur{color:#D4A017;font-size:16px}
-.ps{flex:1;height:30px;border-radius:4px;font-size:13px;font-family:'Bebas Neue',sans-serif;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;border:1px solid rgba(255,255,255,.07);padding:0 2px}
-.pk6{background:rgba(46,160,67,.3);border-color:rgba(46,160,67,.6);color:#7ee787}
-.pk5{background:rgba(68,114,196,.3);border-color:rgba(68,114,196,.6);color:#9ec5ff}
-.pk4{background:rgba(255,224,102,.2);border-color:rgba(255,224,102,.5);color:#ffe066}
-.pk3{background:rgba(255,153,153,.2);border-color:rgba(255,153,153,.5);color:#ffaaaa}
-.pk2{background:rgba(244,169,66,.3);border-color:rgba(244,169,66,.6);color:#f4a942}
-.pk1{background:rgba(192,0,0,.3);border-color:rgba(192,0,0,.6);color:#ff8080}
-.pk0{background:rgba(20,20,20,.8);border-color:rgba(255,255,255,.15);color:#444}
+        /* ── WELCOME PAGE ── */
+        .welcome-wrap {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 0 60px;
+            font-family: 'Inter', sans-serif;
+        }
+        .welcome-header { text-align: center; margin-bottom: 48px; }
+        .welcome-torch { font-size: 60px; display: block; margin-bottom: 14px;
+            animation: torchFlicker 2.5s ease-in-out infinite alternate; }
+        @keyframes torchFlicker {
+            0%,100% { transform: scale(1) rotate(-2deg); filter: brightness(1); }
+            50%      { transform: scale(1.05) rotate(2deg); filter: brightness(1.3); }
+        }
+        .welcome-badge {
+            font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 5px;
+            color: #D4A017; margin-bottom: 8px; opacity: .8;
+        }
+        .welcome-h1 {
+            font-family: 'Cinzel', serif; font-size: clamp(48px,10vw,80px);
+            font-weight: 700; line-height: .93;
+            background: linear-gradient(135deg, #D4A017 0%, #FF4500 50%, #FF8C00 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 10px;
+        }
+        .welcome-sub {
+            font-family: 'Bebas Neue', sans-serif; font-size: 17px;
+            letter-spacing: 4px; color: #F5E6C8; opacity: .65;
+        }
+        .welcome-divider {
+            width: 80px; height: 2px; margin: 22px auto 0;
+            background: linear-gradient(90deg, transparent, #D4A017, transparent);
+        }
+        .congrats-box {
+            background: linear-gradient(135deg, rgba(212,160,23,.13), rgba(255,69,0,.08));
+            border: 1px solid rgba(212,160,23,.4); border-radius: 4px;
+            padding: 18px 26px; margin-bottom: 36px; text-align: center; position: relative; overflow: hidden;
+        }
+        .congrats-box::before {
+            content:''; position: absolute; top:0; left:0; right:0; height:2px;
+            background: linear-gradient(90deg, #D4A017, #FF4500, #D4A017);
+        }
+        .congrats-label { font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:4px; color:#D4A017; margin-bottom:6px; }
+        .congrats-box p { font-size:15px; line-height:1.6; color:#F5E6C8; }
+        .congrats-box strong { color:#D4A017; font-weight:500; }
+        .welcome-intro {
+            font-size: 15px; line-height: 1.75; color: rgba(245,230,200,.82);
+            margin-bottom: 40px; padding-left: 14px;
+            border-left: 2px solid rgba(255,69,0,.4);
+        }
+        .w-section { margin-bottom: 36px; }
+        .w-sec-header { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+        .w-sec-icon { font-size:20px; flex-shrink:0; }
+        .w-sec-title { font-family:'Cinzel',serif; font-size:14px; font-weight:700; letter-spacing:1px; color:#D4A017; text-transform:uppercase; }
+        .w-sec-line { flex:1; height:1px; background:linear-gradient(90deg, rgba(212,160,23,.4), transparent); }
+        .w-card {
+            background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+            border-radius: 4px; padding: 22px;
+        }
+        .prize-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:14px; }
+        .prize-item { text-align:center; padding:14px 8px; background:rgba(0,0,0,.3); border-radius:4px; border:1px solid rgba(212,160,23,.15); }
+        .prize-place { font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:2px; color:#D4A017; opacity:.7; margin-bottom:4px; }
+        .prize-amt { font-family:'Cinzel',serif; font-size:24px; font-weight:700; }
+        .prize-amt.gold  { color:#D4A017; }
+        .prize-amt.silver{ color:#C0C0C0; }
+        .prize-amt.bronze{ color:#CD7F32; }
+        .buy-in-note { font-size:13px; color:rgba(245,230,200,.6); text-align:center; }
+        .buy-in-note strong { color:#FF8C00; font-weight:500; }
+        .info-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+        .info-list li { font-size:14px; line-height:1.6; color:rgba(245,230,200,.8); padding-left:18px; position:relative; }
+        .info-list li::before { content:'›'; position:absolute; left:0; color:#FF4500; font-size:17px; line-height:1.4; }
+        .info-list strong { color:#F5E6C8; font-weight:500; }
+        .doodle-link {
+            display:flex; align-items:center; gap:10px; margin-top:14px;
+            background:linear-gradient(135deg,rgba(255,69,0,.18),rgba(212,160,23,.13));
+            border:1px solid rgba(255,69,0,.3); border-radius:4px; padding:14px 18px;
+            text-decoration:none; color:#F5E6C8; font-size:13px;
+            transition: all .2s; word-break:break-all;
+        }
+        .doodle-link:hover { background:linear-gradient(135deg,rgba(255,69,0,.28),rgba(212,160,23,.22)); }
+        .doodle-label { font-family:'Bebas Neue',sans-serif; letter-spacing:2px; font-size:11px; color:#FF4500; white-space:nowrap; flex-shrink:0; }
+        .score-tbl { width:100%; border-collapse:collapse; font-size:13px; }
+        .score-tbl tr { border-bottom:1px solid rgba(255,255,255,.06); }
+        .score-tbl tr:last-child { border-bottom:none; }
+        .score-tbl td { padding:9px 8px; color:rgba(245,230,200,.75); line-height:1.4; }
+        .score-tbl td:last-child { text-align:right; font-family:'Cinzel',serif; font-size:14px; color:#D4A017; white-space:nowrap; }
+        .score-cat { font-family:'Bebas Neue',sans-serif; font-size:10px; letter-spacing:3px; color:#FF4500; padding:14px 8px 5px !important; opacity:.8; }
+        .score-cat:first-child { padding-top:5px !important; }
+        .new-rule { background:rgba(255,69,0,.07); border-left:2px solid #FF4500; }
+        .new-rule td:first-child::after { content:' 🆕'; font-size:10px; }
+        .selfie-box {
+            background:rgba(212,160,23,.06); border:1px dashed rgba(212,160,23,.3);
+            border-radius:4px; padding:18px 22px; text-align:center;
+        }
+        .selfie-box p { font-size:14px; line-height:1.6; color:rgba(245,230,200,.8); }
+        .selfie-box strong { color:#D4A017; font-weight:500; }
+        .enter-btn {
+            display: block; margin: 48px auto 0; padding: 18px 60px;
+            font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            background: linear-gradient(135deg, #FF4500, #D4A017);
+            border: none; border-radius: 4px; color: white; cursor: pointer;
+            box-shadow: 0 8px 30px rgba(255,69,0,.4);
+            transition: all .3s;
+        }
+        .enter-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,69,0,.5); }
+        .welcome-footer { text-align:center; margin-top:50px; padding-top:28px; border-top:1px solid rgba(255,255,255,.06); }
+        .welcome-footer span { font-size:28px; display:block; margin-bottom:10px; }
+        .welcome-footer p { font-family:'Cinzel',serif; font-size:13px; color:rgba(212,160,23,.5); letter-spacing:1px; }
+        .welcome-footer small { font-family:'Inter',sans-serif; font-size:11px; font-weight:300; color:rgba(245,230,200,.3); letter-spacing:.3px; display:block; margin-top:10px; }
 
+        /* ── TRACKER STYLES (from S49 with tribe updates) ── */
+        .header {
+            text-align: center; margin-bottom: 40px; padding: 30px;
+            background: linear-gradient(135deg, #1abc9c 0%, #9b59b6 50%, #e67e22 100%);
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .header h1 { font-size: 3.5em; text-shadow: 3px 3px 6px rgba(0,0,0,0.5); margin-bottom: 10px; font-weight: bold; letter-spacing: 2px; }
+        .header .subtitle { font-size: 2em; opacity: .95; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); font-weight: bold; letter-spacing: 3px; }
 
-.pm{background:rgba(255,255,255,.03);color:rgba(255,255,255,.12)}
-.pn{background:rgba(212,160,23,.1);border:1px dashed #D4A017;color:#D4A017;animation:blink 1.4s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+        .navigation { display: flex; justify-content: center; gap: 12px; margin-bottom: 30px; flex-wrap: wrap; }
+        .nav-button {
+            padding: 12px 24px; font-size: 1em; font-weight: bold; border: none;
+            border-radius: 25px; cursor: pointer; transition: all .3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); color: white;
+        }
+        .nav-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .nav-button.active { transform: scale(1.05); box-shadow: 0 6px 25px rgba(0,0,0,0.4); }
+        .nav-button:nth-child(1) { background: linear-gradient(135deg, #FF4500, #D4A017); }
+        .nav-button:nth-child(2) { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .nav-button:nth-child(3) { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .nav-button:nth-child(4) { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .nav-button:nth-child(5) { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .nav-button:nth-child(6) { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .nav-button:nth-child(7) { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .nav-button:nth-child(8) { background: linear-gradient(135deg, #16a085, #1abc9c); }
 
-/* ── RIGHT PANEL ── */
-.rp{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+        .content-section {
+            background: rgba(255,255,255,.05); backdrop-filter: blur(10px);
+            border-radius: 15px; padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,.1);
+        }
+        .section-title {
+            font-size: 2em; margin-bottom: 25px; text-align: center;
+            background: linear-gradient(135deg, #fdcb6e, #e17055);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold;
+        }
 
-/* player table */
-.ptable{display:flex;gap:8px;padding:8px 10px 4px;flex-shrink:0}
-.tribe-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:0}
-.exile-col{width:160px;flex-shrink:0;display:flex;flex-direction:column;gap:0}
+        /* Leaderboard */
+        .leaderboard { display: grid; gap: 15px; }
+        .leaderboard-item {
+            display: grid; grid-template-columns: 60px 1fr 120px;
+            align-items: center; padding: 20px; background: rgba(255,255,255,.08);
+            border-radius: 10px; transition: all .3s; border-left: 5px solid transparent;
+        }
+        .leaderboard-item:hover { background: rgba(255,255,255,.12); transform: translateX(5px); }
+        .leaderboard-item.rank-1 { border-left-color:#f1c40f; background:linear-gradient(90deg,rgba(241,196,15,.3) 0%,rgba(255,255,255,.08) 100%); }
+        .leaderboard-item.rank-2 { border-left-color:#c0c0c0; background:linear-gradient(90deg,rgba(192,192,192,.3) 0%,rgba(255,255,255,.08) 100%); }
+        .leaderboard-item.rank-3 { border-left-color:#cd7f32; background:linear-gradient(90deg,rgba(205,127,50,.3) 0%,rgba(255,255,255,.08) 100%); }
+        .leaderboard-item.tier-teal  { border-left-color:#1abc9c; background:linear-gradient(90deg,rgba(26,188,156,.2) 0%,rgba(255,255,255,.08) 100%); }
+        .leaderboard-item.tier-blue  { border-left-color:#3498db; background:linear-gradient(90deg,rgba(52,152,219,.2) 0%,rgba(255,255,255,.08) 100%); }
+        .leaderboard-item.tier-orange{ border-left-color:#f39c12; background:linear-gradient(90deg,rgba(243,156,18,.2) 0%,rgba(255,255,255,.08) 100%); }
+        .leaderboard-item.tier-red   { border-left-color:#e74c3c; background:linear-gradient(90deg,rgba(231,76,60,.2) 0%,rgba(255,255,255,.08) 100%); }
+        .rank { font-size:2em; font-weight:bold; text-align:center; }
+        .player-name { font-size:1.4em; font-weight:bold; }
+        .player-stats { display:flex; gap:15px; font-size:.9em; color:#bbb; flex-wrap:wrap; }
+        .total-points { font-size:1.8em; font-weight:bold; text-align:right; color:#4ecca3; }
 
-.tribe-col-header{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;padding:5px 12px;border-radius:5px;margin-bottom:5px;display:flex;align-items:center;gap:6px}
-.tch-t{background:#D4A800;color:#000}
-.tch-s{background:#7B2D8B;color:#fff}
-.tch-e{background:#5D4037;color:#fff}
+        /* Tribes */
+        .tribe-toka   { background: #D4A800; color:white; font-weight:bold; }
+        .tribe-savu   { background: #7B2D8B; color:white; font-weight:bold; }
+        .tribe-exile  { background: #5D4037; color:white; font-weight:bold; }
+        .tribe-merged { background: linear-gradient(135deg,#D4A017,#FF8C00); color:white; font-weight:bold; }
+        .eliminated { background:#555 !important; opacity:.55; }
 
-/* col sub-header */
-.col-sub{display:grid;grid-template-columns:1fr 44px 38px;gap:3px;margin-bottom:3px;padding:0 2px}
-.cs{font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.3);text-align:center}
+        /* Draft Board */
+        .draft-board { overflow-x: auto; }
+        .draft-table { width:100%; border-collapse:collapse; min-width:900px; }
+        .draft-table th { background:rgba(255,255,255,.1); padding:15px 10px; font-size:1.1em; border:1px solid rgba(255,255,255,.1); position:sticky; top:0; z-index:10; }
+        .draft-table td { padding:12px 10px; border:1px solid rgba(255,255,255,.1); text-align:center; font-size:1em; font-weight:500; }
+        .draft-table tr:hover { background:rgba(255,255,255,.05); }
+        .draft-table th.sortable { cursor:pointer; user-select:none; }
+        .draft-table th.sortable:hover { background:rgba(255,255,255,.15); }
+        .draft-table th.sortable::after { content:' ⇅'; opacity:.5; }
+        .draft-table th.sorted-asc::after { content:' ↑'; opacity:1; }
+        .draft-table th.sorted-desc::after { content:' ↓'; opacity:1; }
+        .contestant-cell { transition:all .2s; }
+        .contestant-cell:hover { transform:scale(1.05); }
 
-/* Player row */
-.prow{display:grid;grid-template-columns:1fr 44px 38px;gap:3px;align-items:center;margin-bottom:3px;cursor:pointer;border-radius:5px;transition:all .12s}
-.prow:hover:not(.done-row){filter:brightness(1.2);transform:scale(1.01)}
-.prow.done-row{opacity:.25;cursor:not-allowed}
-.ptribe{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:10px;letter-spacing:.5px;text-align:center;padding:5px 2px}
-.tt{background:#D4A800;color:#000}
-.ss{background:#7B2D8B;color:#fff}
-.ee{background:#5D4037;color:#fff}
-.pname{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.5px;padding:4px 8px;background:rgba(255,255,255,.07)}
-.pname-t{color:#FFD700}
-.pname-s{color:#c77ddd}
-.pname-e{color:#bcaaa4}
-.pscore{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:13px;text-align:center;padding:5px 2px;background:rgba(78,204,163,.12);border:1px solid rgba(78,204,163,.25);color:#4ecca3}
-.pcount{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;text-align:center;padding:5px 2px}
+        /* Contestant Grid */
+        .contestant-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:18px; margin-top:20px; }
+        .contestant-card {
+            background:rgba(255,255,255,.08); border-radius:12px; padding:15px;
+            text-align:center; transition:all .3s; border:3px solid transparent; cursor:pointer;
+        }
+        .contestant-card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,0,0,0.3); }
+        .contestant-card.tribe-toka  { border-color:#D4A800; }
+        .contestant-card.tribe-savu  { border-color:#7B2D8B; }
+        .contestant-card.tribe-exile { border-color:#5D4037; }
+        .contestant-card.eliminated { opacity:.4; filter:grayscale(100%); }
+        .contestant-name { font-size:1.2em; font-weight:bold; margin-bottom:8px; }
+        .contestant-tribe { padding:5px 10px; border-radius:15px; font-size:.85em; display:inline-block; margin-bottom:8px; }
+        .contestant-points { font-size:1.4em; color:#4ecca3; font-weight:bold; }
 
-/* Legend */
-.legend{margin-top:8px;display:flex;flex-direction:column;gap:3px}
-.leg-item{border-radius:4px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;text-align:center;padding:5px 6px}
+        /* Weekly Scores */
+        .week-selector { display:flex; justify-content:center; gap:8px; margin-bottom:25px; flex-wrap:wrap; }
+        .week-button {
+            padding:10px 18px; font-size:.95em; font-weight:bold;
+            border:2px solid rgba(255,255,255,.3); background:rgba(255,255,255,.05);
+            color:white; border-radius:8px; cursor:pointer; transition:all .3s;
+        }
+        .week-button:hover { background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.5); }
+        .week-button.active { background:linear-gradient(135deg,#4ecca3,#00b894); border-color:#4ecca3; transform:scale(1.05); }
+        .scoring-table { width:100%; border-collapse:collapse; margin-top:20px; }
+        .scoring-table th, .scoring-table td { padding:10px; border:1px solid rgba(255,255,255,.1); text-align:center; font-size:.95em; }
+        .scoring-table th { background:rgba(255,255,255,.1); font-weight:bold; position:sticky; top:0; z-index:5; cursor:pointer; user-select:none; }
+        .scoring-table th:hover { background:rgba(255,255,255,.15); }
+        .scoring-table th.sortable::after { content:' ⇅'; opacity:.5; }
+        .scoring-table th.sorted-asc::after { content:' ↑'; opacity:1; }
+        .scoring-table th.sorted-desc::after { content:' ↓'; opacity:1; }
+        .scoring-table tr:hover { background:rgba(255,255,255,.05); }
+        .points-value { font-weight:bold; }
+        .positive-points { color:#4ecca3; }
+        .negative-points { color:#e74c3c; }
 
-/* Pick count colors */
-.k6{background:#4472C4;color:#fff}
-.k5{background:#FFE066;color:#222}
-.k4{background:#F4A942;color:#222}
-.k3{background:#FF9999;color:#222}
-.k2{background:#C00000;color:#fff}
-.k1{background:#C8C8C8;color:#333}
-.k0{background:#111;color:#555}
+        /* Grid Scoring */
+        .grid-scoring-table { width:100%; border-collapse:collapse; margin-top:20px; font-size:.9em; }
+        .grid-scoring-table th, .grid-scoring-table td { border:1px solid rgba(255,255,255,.2); padding:10px 8px; text-align:center; }
+        .grid-scoring-table th { background:rgba(255,255,255,.15); font-weight:bold; position:sticky; top:0; z-index:10; backdrop-filter:blur(10px); }
+        .grid-scoring-table .category-header { text-align:left; padding-left:15px; min-width:300px; background:rgba(255,255,255,.08); }
+        .grid-scoring-table .contestant-header { min-width:80px; writing-mode:vertical-rl; text-orientation:mixed; padding:15px 8px; font-size:1.05em; }
+        .grid-scoring-table tr:hover { background:rgba(255,255,255,.05); }
+        .grid-scoring-table .total-row { background:rgba(78,204,163,.15); font-weight:bold; font-size:1.1em; }
+        .grid-scoring-table .total-points-cell { color:#4ecca3; font-size:1.2em; }
+        .grid-scoring-table .category-points { color:#4ecca3; font-size:.85em; font-weight:bold; margin-left:8px; }
+        .grid-scoring-table .category-points.negative { color:#e74c3c; }
+        .checkbox-visual { width:20px; height:20px; border-radius:3px; display:inline-flex; align-items:center; justify-content:center; border:2px solid rgba(255,255,255,.3); }
+        .checkbox-visual.checked { background:#4ecca3; border-color:#4ecca3; }
+        .checkbox-visual.checked::after { content:'✓'; color:white; font-weight:bold; font-size:14px; }
 
-/* ── PHOTOS ── */
-.photos{padding:4px 10px 8px;display:flex;flex-direction:column;gap:6px;border-top:1px solid rgba(255,255,255,.08);flex:1;min-height:0}
-.photo-tribe{display:flex;gap:4px;flex:1;min-height:0}
-.ptl{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:2px;writing-mode:vertical-lr;transform:rotate(180deg);padding:4px 3px;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;min-width:22px}
-.ptl-t{background:#D4A800;color:#000}
-.ptl-s{background:#7B2D8B;color:#fff}
-.ptl-e{background:#5D4037;color:#fff}
-.photo-grid{display:flex;gap:4px;flex:1;min-height:0}
-.pc{flex:1;border-radius:6px;overflow:hidden;border:2px solid rgba(255,255,255,.12);min-width:0;max-width:10%;display:flex;flex-direction:column}
-.pc.t2{border-color:rgba(212,168,0,.5)}
-.pc.s2{border-color:rgba(123,45,139,.5)}
-.pc.e2{border-color:rgba(93,64,55,.5)}
-.pc img{width:100%;flex:1;object-fit:cover;object-position:center 15%;display:block;background:#1a1a2e;min-height:0}
-.pc .pn2{background:rgba(0,0,0,.85);font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:.5px;text-align:center;padding:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+        /* Attendance */
+        .attendance-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:15px; margin-top:20px; }
+        .attendance-card { background:rgba(255,255,255,.08); border-radius:10px; padding:18px; text-align:center; transition:all .3s; }
+        .attendance-card:hover { background:rgba(255,255,255,.12); transform:translateY(-3px); }
+        .attendance-name { font-size:1.1em; font-weight:bold; margin-bottom:8px; }
+        .attendance-count { font-size:2em; color:#4ecca3; font-weight:bold; }
+        .attendance-weeks { margin-top:8px; font-size:.82em; color:#bbb; }
 
-.done-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:100;flex-direction:column;gap:16px}
-.done-title{font-family:'Cinzel',serif;font-size:44px;font-weight:700;background:linear-gradient(135deg,#D4A017,#FF4500);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-</style>
+        /* Tribe legend */
+        .tribe-legend { display:flex; justify-content:center; gap:28px; margin:20px 0; flex-wrap:wrap; }
+        .legend-item { display:flex; align-items:center; gap:8px; font-size:1.05em; font-weight:bold; }
+        .legend-color { width:28px; height:28px; border-radius:5px; }
+
+        /* Summary stats */
+        .summary-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:18px; margin-top:20px; }
+        .stat-card { background:rgba(255,255,255,.08); border-radius:12px; padding:18px; text-align:center; }
+        .stat-value { font-size:2.5em; font-weight:bold; color:#4ecca3; margin:8px 0; }
+        .stat-label { font-size:1em; color:#bbb; }
+
+        /* Eliminations */
+        .elimination-timeline { display:flex; flex-direction:column; gap:18px; margin-top:20px; }
+        .elimination-item { background:rgba(255,255,255,.08); border-radius:12px; padding:18px; border-left:5px solid #e74c3c; transition:all .3s; }
+        .elimination-item:hover { background:rgba(255,255,255,.12); transform:translateX(5px); }
+        .elimination-item.medical { border-left-color:#f39c12; background:linear-gradient(90deg,rgba(243,156,18,.15) 0%,rgba(255,255,255,.08) 100%); }
+        .elimination-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+        .elimination-week { font-size:1.4em; font-weight:bold; color:#4ecca3; }
+        .elimination-name { font-size:1.7em; font-weight:bold; }
+        .elimination-badge { padding:5px 14px; border-radius:20px; font-size:.9em; font-weight:bold; }
+        .elimination-badge.voted { background:linear-gradient(135deg,#e74c3c,#c0392b); }
+        .elimination-badge.medical { background:linear-gradient(135deg,#f39c12,#e67e22); }
+        .elimination-reason { font-size:1em; line-height:1.6; color:#ddd; margin-top:8px; }
+
+        /* Winner Circles */
+        .winner-circles-grid { display:grid; gap:28px; margin-top:20px; }
+        .season-card { background:rgba(255,255,255,.08); border-radius:15px; padding:28px; border:2px solid rgba(255,255,255,.1); transition:all .3s; }
+        .season-card:hover { transform:translateY(-5px); box-shadow:0 10px 30px rgba(0,0,0,0.3); border-color:rgba(255,215,0,.3); }
+        .season-header { font-size:1.8em; font-weight:bold; text-align:center; margin-bottom:22px; color:#4ecca3; text-shadow:0 2px 10px rgba(78,204,163,.3); }
+        .podium { display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; align-items:flex-end; }
+        .podium-position { text-align:center; padding:18px; border-radius:12px; transition:all .3s; }
+        .podium-position:hover { transform:scale(1.05); }
+        .podium-first  { background:linear-gradient(135deg,rgba(241,196,15,.3),rgba(243,156,18,.2)); border:3px solid #f1c40f; grid-column:2; padding-top:28px; padding-bottom:28px; }
+        .podium-second { background:linear-gradient(135deg,rgba(149,165,166,.3),rgba(127,140,141,.2)); border:3px solid #95a5a6; grid-column:1; }
+        .podium-third  { background:linear-gradient(135deg,rgba(205,127,50,.3),rgba(184,115,51,.2)); border:3px solid #cd7f32; grid-column:3; }
+        .podium-rank { font-size:2.8em; margin-bottom:8px; }
+        .podium-label { font-size:.85em; text-transform:uppercase; letter-spacing:2px; color:#bbb; margin-bottom:8px; }
+        .podium-name { font-size:1.7em; font-weight:bold; }
+        .podium-first .podium-rank { font-size:3.8em; }
+        .podium-first .podium-name { font-size:2em; }
+
+        /* Info banner */
+        .info-banner { background:rgba(78,204,163,.15); border:1px solid rgba(78,204,163,.3); border-radius:10px; padding:14px 18px; margin-bottom:18px; text-align:center; }
+        .info-banner.warning { background:rgba(243,156,18,.15); border-color:rgba(243,156,18,.3); }
+
+        /* Score entry table */
+        .score-entry-table { width:100%; border-collapse:collapse; margin-top:20px; }
+        .score-entry-table th, .score-entry-table td { padding:12px 8px; border:1px solid rgba(255,255,255,.1); text-align:center; }
+        .score-entry-table th { background:rgba(255,255,255,.1); font-weight:bold; font-size:.95em; position:sticky; top:0; z-index:10; backdrop-filter:blur(10px); }
+
+        @media (max-width:768px) {
+            .header .subtitle { font-size:1.2em; }
+            .leaderboard-item { grid-template-columns:50px 1fr 80px; font-size:.9em; padding:14px; }
+            .player-stats { display:none; }
+            .nav-button { padding:10px 12px; font-size:.8em; cursor:pointer; touch-action:manipulation; }
+            .navigation { gap:6px; }
+        }
+    </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const { useState } = React;
-const BASE = 'https://turnto10.com/resources/media2/16x9/1280/800/center/80/';
-const CONTESTANTS = [
-  {id:'thienan', name:'Thien An',tribe:'Toka', ep1:0.50, job:'Medical Student',    photo:BASE+'1d72888c-3e41-4b2d-9d59-f356f2cbac64-TheinAnNguyen.png'},
-  {id:'jelly',   name:'Jelly',   tribe:'Toka', ep1:0.50, job:'Sociology Prof.',    photo:BASE+'1d94ac9c-0787-46f2-91d6-fdb707b65637-JellyLoblack.png'},
-  {id:'brady',   name:'Brady',   tribe:'Toka', ep1:0.50, job:'Pro Wrestler',       photo:BASE+'05d9ecae-69eb-46d0-a6c3-e24daa6a1c28-BradyBooker.png'},
-  {id:'kilby',   name:'Kilby',   tribe:'Toka', ep1:0.50, job:'Game Designer',      photo:BASE+'34e0d308-5c3e-4c09-bb32-14fee7b707b0-DannyKilby.png'},
-  {id:'devin',   name:'Devin',   tribe:'Toka', ep1:0.50, job:'Actor',              photo:BASE+'a7ab02ab-53f6-4f8e-a9d3-103de9a146e1-DevinWay.png'},
-  {id:'jenna',   name:'Jenna',   tribe:'Toka', ep1:0.50, job:'Wedding Photographer',photo:BASE+'06d841bb-cf45-4d48-8483-4351aa7cc147-JennaDoore.png'},
-  {id:'maggie',  name:'Maggie',  tribe:'Toka', ep1:0.50, job:'Farmer',             photo:BASE+'a2d3b5e4-4e2e-4869-a1b5-ffc08030e03f-MaggieNestor.png'},
-  {id:'mikep',   name:'Mike P',  tribe:'Toka', ep1:0.50, job:'Baseball Executive', photo:BASE+'76003c77-5106-4a3f-b7df-ad0971aad662-MikePinsky.png'},
-  {id:'patt',    name:'Patt',    tribe:'Toka', ep1:0.50, job:'Federal Prosecutor', photo:BASE+'f10d2fde-caf7-4d9f-8c4f-d5b92fda5dd6-PattCannaday.png'},
-  {id:'alexis',  name:'Alexis',  tribe:'Savu', ep1:1.00, job:'Criminal Def. Atty', photo:BASE+'4c49b157-5964-45ca-963d-295eb24478da-AlexisLevine.png'},
-  {id:'ana',     name:'Ana',     tribe:'Savu', ep1:1.00, job:'Voice Actress',      photo:BASE+'eb9e90cc-9964-4fca-bd9d-2940d1ef72eb-AnaSani.png'},
-  {id:'carter',  name:'Carter',  tribe:'Savu', ep1:1.00, job:'Livestock Farmer',   photo:BASE+'28e202ec-6802-49b0-8fc7-f42504b8850f-CarterKrull.png'},
-  {id:'cristian',name:'Cristian',tribe:'Savu', ep1:1.00, job:'Head of HR',         photo:BASE+'c5fe29ca-1071-4fb5-81e6-e355894b6fe3-CristianChavez.png'},
-  {id:'eric',    name:'Eric',    tribe:'Savu', ep1:1.00, job:'Mental Health Counselor',photo:BASE+'c6f23588-ed4d-48b3-b009-67a0b06911c0-EricMacksound.png'},
-  {id:'kristin', name:'Kristin', tribe:'Savu', ep1:1.00, job:'Crisis Management',  photo:BASE+'7012944f-38af-4971-a5bf-9c4a41d3ca00-KristinFlickinger.png'},
-  {id:'linnea',  name:'Linnea',  tribe:'Savu', ep1:1.00, job:'Entrepreneur',       photo:BASE+'b6fac4a6-e910-4c00-906d-5c4b5a0248d4-LinneaCapobianco.png'},
-  {id:'ori',     name:'Ori',     tribe:'Savu', ep1:1.00, job:'Personal Trainer',   photo:BASE+'637f6f72-82c2-4a63-bb14-f8bb53c01959-OriJeanCharles.png'},
-  {id:'rob',     name:'Rob',     tribe:'Savu', ep1:1.00, job:'Airline Gate Agent', idol:true, photo:BASE+'12b3ddb4-fc45-49e2-aa40-9234adf28d25-RobAntonson.png'},
-  {id:'sharonda',name:'Sharonda',tribe:'Savu', ep1:1.00, job:'OBGYN Resident',     photo:BASE+'bbb97a5d-5cdf-4728-9fa6-a196321f18a9-SharondaCox.png'},
-  {id:'lewis',   name:'Lewis',   tribe:'Exile',ep1:0.25, job:'Farmer',             photo:BASE+'4ebc18d6-96a9-468c-aefd-3e49f6fd89ec-LewisKelly.png'},
+const { useState, useEffect, useMemo } = React;
+
+const ALL_CONTESTANTS = [
+    "Aaliyah","Thien An","Jelly","Brady","Kilby","Devin","Jenna","Maggie","Mike P","Patt",
+    "Alexis","Ana","Carter","Cristian","Eric","Kristin","Linnea","Ori","Rob","Sharonda","Lewis"
 ];
-const MGR=['Jack','Mel','Julie','Neil','Grayson','Brett/Emma','Dan','Dale','Charlie','Jenn','Sue','Jason','Jenny','Gab','David','Shannon/Tyler','Danielle','Debbie','Alex','Lindsay'];
-const N=MGR.length,PP=6,TOT=N*PP,MAX=6,SK='s51d_v7';
-const SNAKE=[];
-for(let r=0;r<PP;r++){if(r%2===0){for(let i=0;i<N;i++)SNAKE.push(i);}else{for(let i=N-1;i>=0;i--)SNAKE.push(i);}}
-function load(){try{const s=localStorage.getItem(SK);if(s)return JSON.parse(s);}catch(e){}return{picks:[]};}
-function sv(s){try{localStorage.setItem(SK,JSON.stringify(s));}catch(e){}}
-function kc(l){return['k0','k1','k2','k3','k4','k5','k6'][Math.min(l,6)];}
-function psc(t){return t==='Toka'?'pt':t==='Savu'?'pv':'pe';}
-function tc(t){return t==='Toka'?'tt':t==='Savu'?'ss':'ee';}
-function pc2(t){return t==='Toka'?'t2':t==='Savu'?'s2':'e2';}
 
-function App(){
-  const [st,setSt]=useState(load);
-  const picks=st.picks,cur=picks.length,done=cur>=TOT;
-  const cmi=done?null:SNAKE[cur],cm=done?null:MGR[cmi];
-  const dc={};CONTESTANTS.forEach(c=>dc[c.id]=0);
-  picks.forEach(p=>{if(p.cid in dc)dc[p.cid]++;});
-  const mp=MGR.map(()=>Array(PP).fill(null));
-  picks.forEach(p=>{mp[p.mi][Math.floor(p.num/N)]=p.cid;});
+const scoringCategories = [
+    { id:'team_reward',        name:'Won team reward (worth nothing if combined)',            points: 1 },
+    { id:'team_immunity',      name:'Won team immunity',                                      points: 1 },
+    { id:'second_team_immunity',name:'Second in team immunity',                               points: 0.5 },
+    { id:'individual_reward',  name:'Won individual reward (worth nothing if combined)',       points: 2 },
+    { id:'individual_immunity',name:'Won individual immunity',                                points: 2 },
+    { id:'taken_reward',       name:'Taken on individual reward',                             points: 1 },
+    { id:'mini_reward',        name:'Mini reward victory',                                    points: 0.5 },
+    { id:'title_quote',        name:'Episode title quote',                                    points: 0.25 },
+    { id:'idol_tribal',        name:'Has idol at end of episode and was at tribal',           points: 1 },
+    { id:'idol_used',          name:'Uses idol (or successful dice)',                         points: 0.5 },
+    { id:'voted_idol',         name:'Voted off with idol',                                    points: -3 },
+    { id:'advantage_held',     name:'Holds any advantage at end of episode (not idol)',       points: 0.5, isNew: true },
+    { id:'premerge_survive',   name:'Pre-merge surviving an elimination',                     points: 0.5 },
+    { id:'postmerge_survive',  name:'Post-merge surviving an elimination',                    points: 1 },
+    { id:'shot_in_dark',       name:'Goes home with shot in the dark',                       points: -0.5 },
+    { id:'quits',              name:'Quits',                                                  points: -3 },
+    { id:'final_group',        name:'Made final group',                                       points: 2 },
+    { id:'vote_final',         name:'Vote in final group',                                    points: 0.5 },
+    { id:'won_survivor',       name:'Won survivor',                                           points: 7.5 }
+];
 
-  // For each pick, record which number draft it was for that player (1st, 2nd, 3rd...)
-  const pickNth = {}; // key: `${mi}_${slot}` → nth time that player was picked
-  const cidCount = {};
-  picks.forEach(p=>{
-    cidCount[p.cid] = (cidCount[p.cid]||0) + 1;
-    const slot = Math.floor(p.num/N);
-    pickNth[`${p.mi}_${slot}`] = cidCount[p.cid];
-  });
+const TOTAL_WEEKS = 13;
 
-  function draft(cid){if(done||dc[cid]>=MAX)return;const ns={picks:[...picks,{num:cur,mi:cmi,cid}]};setSt(ns);sv(ns);}
-  function undo(){if(!picks.length)return;const ns={picks:picks.slice(0,-1)};setSt(ns);sv(ns);}
-  function reset(){if(!confirm('Reset draft board?'))return;const ns={picks:[]};setSt(ns);sv(ns);}
-
-  function pRow(c){
-    const left=MAX-dc[c.id],maxed=left===0;
-    return(
-      <div key={c.id} className={'prow'+(maxed?' done-row':'')} onClick={()=>draft(c.id)} title={maxed?c.name+' DONE':c.name+' · '+left+' left'}>
-        
-        <div className={'pname '+(c.tribe==='Toka'?'pname-t':c.tribe==='Savu'?'pname-s':'pname-e')}>
-          <div>{c.name}{c.idol ? ' 🏺' : ''}</div>
-          <div style={{fontSize:'9px',opacity:.5,fontFamily:"'Inter',sans-serif",fontWeight:400,letterSpacing:'.3px',marginTop:'1px'}}>{c.job}</div>
-        </div>
-        <div className="pscore">+{c.ep1}</div>
-        <div className={'pcount '+kc(left)}>{maxed?'✅':left}</div>
-      </div>
-    );
-  }
-
-  function photoCard(c){
-    const left=MAX-dc[c.id],maxed=left===0;
-    return(
-      <div key={c.id} className={'pc '+pc2(c.tribe)} style={{opacity:maxed?.25:1}} title={c.name+' · '+left+' left'}>
-        <img src={c.photo} alt={c.name} onError={e=>{e.target.style.background='#2a2a3a';}}/>
-        <div className="pn2">{c.name}</div>
-      </div>
-    );
-  }
-
-  const toka=CONTESTANTS.filter(c=>c.tribe==='Toka');
-  const savu=CONTESTANTS.filter(c=>c.tribe==='Savu');
-  const exile=CONTESTANTS.filter(c=>c.tribe==='Exile');
-
-  return(
-    <div style={{display:'flex',flexDirection:'column',height:'100vh'}}>
-      {done&&(
-        <div className="done-overlay">
-          <div style={{fontSize:'52px'}}>🔥</div>
-          <div className="done-title">DRAFT COMPLETE!</div>
-          <div style={{fontFamily:"'Bebas Neue',sans-serif",letterSpacing:'3px',color:'rgba(255,255,255,.4)'}}>MAY THE BEST TEAM WIN</div>
-          <button className="btn br" onClick={reset} style={{marginTop:'10px'}}>RESET BOARD</button>
-        </div>
-      )}
-      <div className="hdr">
-        <div><div className="hs">FANTASY LEAGUE · THE OPEN ERA</div><div className="ht">SURVIVOR 51 · LIVE DRAFT</div></div>
-        <img src="https://www.paramountpressexpress.com/cbs-entertainment/shows/survivor/images/asset/MTkyOTI4My9zdXJ2aXZvci9pbWFnZXMvc2hvd19pbWFnZXMvU3Vydml2b3JfUzUxX0tleUFydC5qcGc=" 
-          alt="Survivor 51" 
-          style={{height:'42px',objectFit:'contain'}}
-          onError={e=>{e.target.style.display='none'}}
-        />
-        {!done&&(<div className="now"><div className="nl">Now Drafting</div><div className="nn">{cm}</div><div className="ni">Pick #{cur+1} · Round {Math.floor(cur/N)+1} · {(cur%N)+1} of {N}</div></div>)}
-        <div style={{display:'flex',gap:'7px',alignItems:'center'}}>
-          <div style={{fontSize:'10px',color:'rgba(255,255,255,.35)',textAlign:'right',lineHeight:'1.7'}}><div>{picks.length}/{TOT} picks</div><div>19 mgrs · 6 picks · max 6</div></div>
-          <button className="btn bu" onClick={undo} disabled={!picks.length}>↩ UNDO</button>
-          <button className="btn br" onClick={reset}>RESET</button>
-        </div>
-      </div>
-
-      <div className="main">
-        {/* DRAFT BOARD */}
-        <div className="dboard">
-          <div className="dbt">📋 DRAFT BOARD</div>
-          <div className="rows">
-            {MGR.map((m,mi)=>{
-              const isc=mi===cmi&&!done,filled=picks.filter(p=>p.mi===mi).length;
-              return(
-                <div key={m} className={'mr'+(isc?' cur':'')}>
-                  <div className={'mn'+(isc?' cur':'')}>{isc?'▶ ':''}{m}</div>
-                  {mp[mi].map((cid,si)=>{
-                    const c=cid?CONTESTANTS.find(x=>x.id===cid):null;
-                    if(c){const nth=pickNth[`${mi}_${si}`]||1;return<div key={si} className={'ps pk'+(6-nth)}>{c.name}</div>;}
-                    if(isc&&si===filled)return<div key={si} className="ps pn">PICK</div>;
-                    return<div key={si} className="ps pm">—</div>;
-                  })}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* RIGHT */}
-        <div className="rp">
-          {/* PLAYER TABLE */}
-          <div className="ptable">
-            {/* TOKA */}
-            <div className="tribe-col">
-              <div className="tribe-col-header tch-t">🟡 TOKA</div>
-              <div className="col-sub"><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
-              {toka.map(pRow)}
-            </div>
-            {/* SAVU */}
-            <div className="tribe-col">
-              <div className="tribe-col-header tch-s">🟣 SAVU</div>
-              <div className="col-sub"><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
-              {savu.map(pRow)}
-            </div>
-            {/* EXILE + LEGEND */}
-            <div className="exile-col">
-              <div className="tribe-col-header tch-e">🟫 EXILE</div>
-              <div className="col-sub"><div className="cs">NAME</div><div className="cs">EP1</div><div className="cs">LEFT</div></div>
-              {exile.map(pRow)}
-              <div className="legend" style={{marginTop:'12px'}}>
-                {[6,5,4,3,2,1,0].map(n=>(
-                  <div key={n} className={'leg-item pk'+n} style={{
-                    background: n===6?'rgba(46,160,67,.4)':n===5?'rgba(68,114,196,.4)':n===4?'rgba(255,224,102,.35)':n===3?'rgba(255,153,153,.35)':n===2?'rgba(244,169,66,.4)':n===1?'rgba(192,0,0,.45)':'rgba(20,20,20,.8)',
-                    color: n===6?'#7ee787':n===5?'#9ec5ff':n===4?'#ffe066':n===3?'#ffaaaa':n===2?'#f4a942':n===1?'#ff8080':'#444',
-                    border:'none'
-                  }}>{n===0?'DONE':n+' LEFT'}</div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* PHOTOS */}
-          <div className="photos">
-            <img 
-              src="https://naedwards14.github.io/survivor-S51/cast.png"
-              alt="Survivor 51 Cast"
-              style={{width:'100%',height:'100%',objectFit:'contain',objectPosition:'center',display:'block'}}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+function makeEmptyWeekScores() {
+    const ws = {};
+    for (let w = 1; w <= TOTAL_WEEKS; w++) {
+        ws[w] = {};
+        ALL_CONTESTANTS.forEach(n => { ws[w][n] = 0; });
+    }
+    return ws;
 }
-ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+
+function makeEmptyCheckboxStates() {
+    const cb = {};
+    for (let w = 1; w <= TOTAL_WEEKS; w++) {
+        cb[w] = {};
+        ALL_CONTESTANTS.forEach(n => { cb[w][n] = {}; });
+    }
+    return cb;
+}
+
+const SurvivorLeague = () => {
+    const [activeView, setActiveView] = useState('welcome');
+    const [selectedWeek, setSelectedWeek] = useState(1);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'desc' });
+    const [draftSortConfig, setDraftSortConfig] = useState({ key: 'left', direction: 'desc' });
+    const [expandedPlayer, setExpandedPlayer] = useState(null);
+
+    const getInitialData = () => {
+        const DATA_VERSION = 10; // Ep1 scores corrected // Ep5 scores, Charlie+Angelina eliminated, attendance wks 4-5
+        const savedVersion = localStorage.getItem('survivor51DataVersion');
+        if (savedVersion != DATA_VERSION) {
+            localStorage.removeItem('survivor51LeagueData');
+            localStorage.setItem('survivor51DataVersion', DATA_VERSION);
+        }
+        const savedData = localStorage.getItem('survivor51LeagueData');
+        if (savedData && savedVersion == DATA_VERSION) return JSON.parse(savedData);
+
+        return {
+            contestants: [
+                // ── TOKA TRIBE (Yellow) ──
+                { name:"Aaliyah",  tribe:"Voted Out", originalTribe:"Toka", eliminated:true,  eliminatedWeek:1,    advantages:[] },
+                { name:"Thien An", tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Jelly",    tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Brady",    tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Kilby",    tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Devin",    tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Jenna",    tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Maggie",   tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Mike P",   tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Patt",     tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                // ── SAVU TRIBE (Purple) ──
+                { name:"Alexis",   tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Ana",      tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Carter",   tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Cristian", tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Eric",     tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Kristin",  tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Linnea",   tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Ori",      tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Rob",      tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:["Hidden Idol"] },
+                { name:"Sharonda", tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                // ── EXILE ──
+                { name:"Lewis",    tribe:"Exile",     originalTribe:"Exile", eliminated:false, eliminatedWeek:null, advantages:[] },
+            ],
+            weeklyScores: {
+                1: {
+                    "Aaliyah":-0.5,"Thien An":0.5,"Jelly":0.5,"Brady":0.5,"Kilby":0.5,
+                    "Devin":0.5,"Jenna":0.5,"Maggie":0.5,"Mike P":0.5,"Patt":0.5,
+                    "Alexis":1,"Ana":1,"Carter":1,"Cristian":1,"Eric":1,
+                    "Kristin":1,"Linnea":1,"Ori":1,"Rob":1,"Sharonda":1,
+                    "Lewis":0.25
+                },
+                ...Object.fromEntries(Array.from({length:12},(_,i)=>[i+2, Object.fromEntries([
+                    "Aaliyah","Thien An","Jelly","Brady","Kilby","Devin","Jenna","Maggie","Mike P","Patt",
+                    "Alexis","Ana","Carter","Cristian","Eric","Kristin","Linnea","Ori","Rob","Sharonda","Lewis"
+                ].map(n=>[n,0]))]))
+            },
+            weeklyCheckboxStates: {
+                1: {
+                    "Aaliyah":  { shot_in_dark:true },
+                    "Thien An": { premerge_survive:true },
+                    "Jelly":    { premerge_survive:true },
+                    "Brady":    { premerge_survive:true },
+                    "Kilby":    { premerge_survive:true },
+                    "Devin":    { premerge_survive:true },
+                    "Jenna":    { premerge_survive:true },
+                    "Maggie":   { premerge_survive:true },
+                    "Mike P":   { premerge_survive:true },
+                    "Patt":     { premerge_survive:true },
+                    "Alexis":   { team_immunity:true },
+                    "Ana":      { team_immunity:true },
+                    "Carter":   { team_immunity:true },
+                    "Cristian": { team_immunity:true },
+                    "Eric":     { team_immunity:true },
+                    "Kristin":  { team_immunity:true },
+                    "Linnea":   { team_immunity:true },
+                    "Ori":      { team_immunity:true },
+                    "Rob":      { team_immunity:true },
+                    "Sharonda": { team_immunity:true },
+                    "Lewis":    { title_quote:true },
+                },
+                ...Object.fromEntries(Array.from({length:12},(_,i)=>[i+2, Object.fromEntries([
+                    "Aaliyah","Thien An","Jelly","Brady","Kilby","Devin","Jenna","Maggie","Mike P","Patt",
+                    "Alexis","Ana","Carter","Cristian","Eric","Kristin","Linnea","Ori","Rob","Sharonda","Lewis"
+                ].map(n=>[n,{}]))]))
+            },
+            draftData: [
+                { player:"Jack",         picks:["","","","","",""], left:0 },
+                { player:"Mel",          picks:["","","","","",""], left:0 },
+                { player:"Julie",        picks:["","","","","",""], left:0 },
+                { player:"Neil",         picks:["","","","","",""], left:0 },
+                { player:"Grayson",      picks:["","","","","",""], left:0 },
+                { player:"Brett/Emma",   picks:["","","","","",""], left:0 },
+                { player:"Dan",          picks:["","","","","",""], left:0 },
+                { player:"Dale",         picks:["","","","","",""], left:0 },
+                { player:"Charlie",      picks:["","","","","",""], left:0 },
+                { player:"Jenn",         picks:["","","","","",""], left:0 },
+                { player:"Sue",          picks:["","","","","",""], left:0 },
+                { player:"Jason",        picks:["","","","","",""], left:0 },
+                { player:"Jenny",        picks:["","","","","",""], left:0 },
+                { player:"Gab",          picks:["","","","","",""], left:0 },
+                { player:"David",        picks:["","","","","",""], left:0 },
+                { player:"Shannon/Tyler",picks:["","","","","",""], left:0 },
+                { player:"Danielle",     picks:["","","","","",""], left:0 },
+                { player:"Debbie",       picks:["","","","","",""], left:0 },
+                { player:"Alex",         picks:["","","","","",""], left:0 },
+                { player:"Lindsay",      picks:["","","","","",""], left:0 },
+            ],
+            attendanceData: {
+                "Neil":[],"Julie":[],"Lindsay":[],"Jason":[],"Debbie":[],
+                "David":[],"Shannon/Tyler":[],"Jenny":[],"Alex":[],"Mel":[],"Brett/Emma":[],
+                "Dan":[],"Danielle":[],"Gab":[],"Grayson":[],"Jenn":[],
+                "Jack":[],"Dale":[],"Sue":[],"Charlie":[]
+            },
+            eliminationTimeline: [
+                { week:1, contestant:"Aaliyah", reason:"First boot of Survivor 51's Open Era. Toka lost the first immunity challenge after Aaliyah struggled in a key phase. The vote came down to her vs. Jenna — both played their Shots in the Dark unsuccessfully. Aaliyah was voted out 6-2, refusing to betray her Helicopter Alliance with Devin and Jelly even to save herself." },
+            ],
+            winnerCircles: [
+                { season:50, first:"Neil",    second:"Alex",    third:"Jenny" },
+                { season:49, first:"Dan",     second:"Alex",    third:"Jenny" },
+                { season:48, first:"Julie",   second:"Jack",    third:"Gab" },
+                { season:47, first:"Ian",     second:"Neil",    third:"Julie" },
+                { season:46, first:"Julie",   second:"Lindsay", third:"Jenn" },
+                { season:45, first:"Ryan",    second:"Ian",     third:null }
+            ],
+            surveyPoints: {
+                "Neil":0,"Julie":0,"Lindsay":0,"Jason":0,"Debbie":0,
+                "David":0,"Shannon/Tyler":0,"Jenny":0,"Alex":0,"Mel":0,"Brett/Emma":0,
+                "Dan":0,"Danielle":0,"Gab":0,"Grayson":0,"Jenn":0,
+                "Jack":0,"Dale":0,"Sue":0,"Charlie":0
+            }
+        };
+    };
+
+    const [data, setData] = useState(() => getInitialData());
+    useEffect(() => { localStorage.setItem('survivor51LeagueData', JSON.stringify(data)); }, [data]);
+
+    const contestantTotals = useMemo(() => {
+        const totals = {};
+        data.contestants.forEach(c => {
+            let t = 0;
+            for (let w = 1; w <= TOTAL_WEEKS; w++) t += (data.weeklyScores[w] && data.weeklyScores[w][c.name]) || 0;
+            totals[c.name] = t;
+        });
+        return totals;
+    }, [data.weeklyScores, data.contestants]);
+
+    const sortedContestants = useMemo(() => {
+        return [...data.contestants].sort((a, b) => {
+            const tribeOrder = { "Winner":1,"Finalist":2,"Cila":3,"Kalo":4,"Vatu":5,"Voted Out":6 };
+            const diff = (tribeOrder[a.tribe]||99)-(tribeOrder[b.tribe]||99);
+            return diff !== 0 ? diff : a.name.localeCompare(b.name);
+        });
+    }, [data.contestants]);
+
+    const leaderboard = useMemo(() => {
+        const scores = data.draftData.map(entry => {
+            let contestantPoints = 0, attendancePoints = 0, surveyPoints = 0;
+            entry.picks.forEach(pick => { if(pick) contestantPoints += contestantTotals[pick] || 0; });
+            if (data.attendanceData[entry.player]) attendancePoints = data.attendanceData[entry.player].reduce((s,v)=>s+v,0);
+            if (data.surveyPoints && data.surveyPoints[entry.player]) surveyPoints = data.surveyPoints[entry.player];
+            return { player:entry.player, totalPoints:contestantPoints+attendancePoints+surveyPoints, contestantPoints, attendancePoints, surveyPoints, contestantsLeft:entry.left };
+        });
+        return scores.sort((a,b)=>b.totalPoints-a.totalPoints);
+    }, [contestantTotals, data.draftData, data.attendanceData, data.surveyPoints]);
+
+    const handleSort = key => {
+        let dir = 'desc';
+        if (sortConfig.key===key && sortConfig.direction==='desc') dir='asc';
+        setSortConfig({key,direction:dir});
+    };
+
+    const getTribeCss = tribe => {
+        if (!tribe) return '';
+        const t = tribe.toLowerCase();
+        if (t==='toka')   return 'tribe-toka';
+        if (t==='savu')   return 'tribe-savu';
+        if (t==='exile')  return 'tribe-exile';
+        if (t==='merged') return 'tribe-merged';
+        return '';
+    };
+
+    const getSortedWeeklyData = () => {
+        let sorted = sortedContestants.filter(c => !c.eliminated || c.eliminatedWeek >= selectedWeek);
+        if (sortConfig.key==='name') sorted.sort((a,b)=>{ const r=a.name.localeCompare(b.name); return sortConfig.direction==='asc'?r:-r; });
+        else if (sortConfig.key==='weekPoints') sorted.sort((a,b)=>{ const ap=(data.weeklyScores[selectedWeek]&&data.weeklyScores[selectedWeek][a.name])||0; const bp=(data.weeklyScores[selectedWeek]&&data.weeklyScores[selectedWeek][b.name])||0; return sortConfig.direction==='asc'?ap-bp:bp-ap; });
+        else if (sortConfig.key==='totalPoints') sorted.sort((a,b)=>{ let at=0,bt=0; for(let w=1;w<=selectedWeek;w++){at+=(data.weeklyScores[w]&&data.weeklyScores[w][a.name])||0; bt+=(data.weeklyScores[w]&&data.weeklyScores[w][b.name])||0;} return sortConfig.direction==='asc'?at-bt:bt-at; });
+        return sorted;
+    };
+
+    // ─── WELCOME VIEW ───────────────────────────────────────────────
+    const renderWelcome = () => (
+        <div className="welcome-wrap">
+            <p className="welcome-intro">
+                The Open Era is here. 21 brand new players, zero experience, and permanent uncertainty baked into every episode. Any twist, any idol, any advantage from Survivor history could show up at any time. Good luck drafting for that.
+            </p>
+
+            <div className="w-section">
+                <div className="w-sec-header"><span className="w-sec-icon">💰</span><span className="w-sec-title">Buy-In & Prize Pool</span><div className="w-sec-line"></div></div>
+                <div className="w-card">
+                    <div className="prize-grid">
+                        <div className="prize-item"><div className="prize-place">1st Place</div><div className="prize-amt gold">$300</div></div>
+                        <div className="prize-item"><div className="prize-place">2nd Place</div><div className="prize-amt silver">$150</div></div>
+                        <div className="prize-item"><div className="prize-place">3rd Place</div><div className="prize-amt bronze">$50</div></div>
+                    </div>
+                    <p className="buy-in-note">$25 buy-in · Venmo <strong>@Neil-Edwards17</strong> to lock in your spot · <strong>$500 total pool</strong></p>
+                    <p className="buy-in-note" style={{marginTop:'8px',color:'rgba(255,140,0,.75)',fontStyle:'italic'}}>* Prize pool subject to change based on final number of players</p>
+                </div>
+            </div>
+
+            <div className="w-section">
+                <div className="w-sec-header"><span className="w-sec-icon">📋</span><span className="w-sec-title">Draft Details</span><div className="w-sec-line"></div></div>
+                <div className="w-card">
+                    <ul className="info-list">
+                        <li>Snake draft — <strong>Sunday September 28th at 8pm</strong></li>
+                        <li>Each manager drafts <strong>6 Survivor contestants</strong></li>
+                        <li>Any contestant can be drafted by a <strong>maximum of 6 different people</strong></li>
+                        <li>21-person cast — two tribes (Toka 🟡 &amp; Savu 🟣) plus Lewis on Exile Island</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div className="w-section">
+                <div className="w-sec-header"><span className="w-sec-icon">🏆</span><span className="w-sec-title">Scoring System</span><div className="w-sec-line"></div></div>
+                <div className="w-card">
+                    <table className="score-tbl">
+                        <tbody>
+                            <tr><td className="score-cat" colSpan="2">Challenges</td></tr>
+                            <tr><td>Won team reward <span style={{fontSize:'11px',opacity:.55}}>(nothing if combined)</span></td><td>+1 pt</td></tr>
+                            <tr><td>Won team immunity</td><td>+1 pt</td></tr>
+                            <tr><td>Second in team immunity <span style={{fontSize:'11px',opacity:.55}}>(3 tribes only — no 2nd place with 2 tribes)</span></td><td>+0.5 pts</td></tr>
+                            <tr><td>Won individual reward <span style={{fontSize:'11px',opacity:.55}}>(nothing if combined)</span></td><td>+2 pts</td></tr>
+                            <tr><td>Won individual immunity</td><td>+2 pts</td></tr>
+                            <tr><td>Taken on individual reward</td><td>+1 pt</td></tr>
+                            <tr><td>Mini reward victory</td><td>+0.5 pts</td></tr>
+                            <tr><td className="score-cat" colSpan="2">Idols & Advantages</td></tr>
+                            <tr><td>Has idol at end of episode and was at tribal</td><td>+1 pt</td></tr>
+                            <tr><td>Uses idol or successful dice <span style={{fontSize:'11px',opacity:.55}}>(per vote saved)</span></td><td>+0.5 pts</td></tr>
+                            <tr><td>Voted off with idol in pocket</td><td>−3 pts</td></tr>
+                            <tr className="new-rule"><td>Holds any advantage at end of episode <span style={{fontSize:'11px',opacity:.55}}>(extra vote, KIP, etc. — not idols)</span></td><td>+0.5 pts</td></tr>
+                            <tr><td className="score-cat" colSpan="2">Survival</td></tr>
+                            <tr><td>Survives an elimination (pre-merge, 2 tribes) <span style={{fontSize:'11px',opacity:.55}}>(losing tribe only)</span></td><td>+0.50 pts</td></tr>
+                            <tr><td>Survives an elimination (pre-merge, 3 tribes) <span style={{fontSize:'11px',opacity:.55}}>(losing tribe only)</span></td><td>+0.75 pts</td></tr>
+                            <tr><td>Survives an elimination (post-merge)</td><td>+1 pt</td></tr>
+                            <tr><td>Made final group</td><td>+2 pts</td></tr>
+                            <tr><td>Vote in final group</td><td>+0.5 pts</td></tr>
+                            <tr><td>Won Survivor</td><td>+7.5 pts</td></tr>
+                            <tr><td className="score-cat" colSpan="2">Penalties</td></tr>
+                            <tr><td>Goes home with shot in the dark</td><td>−0.5 pts</td></tr>
+                            <tr><td>Quits</td><td>−3 pts</td></tr>
+                            <tr><td className="score-cat" colSpan="2">Bonus</td></tr>
+                            <tr><td>Episode title quote</td><td>+0.25 pts</td></tr>
+                            <tr><td>Selfie watching episode</td><td>+2 pts</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div className="w-section">
+                <div className="w-sec-header"><span className="w-sec-icon">📸</span><span className="w-sec-title">Attendance Bonus</span><div className="w-sec-line"></div></div>
+                <div className="selfie-box">
+                    <p>Earn <strong>+2 points each week</strong> by sending Neil a selfie while watching the episode live. Watch parties are strongly encouraged and spiritually mandatory. 🌴</p>
+                </div>
+            </div>
+
+            <div className="welcome-footer">
+                <span>🪱🔥</span>
+                <p>Season 51 · The Open Era · May the best team win</p>
+            </div>
+        </div>
+    );
+
+    // ─── LEADERBOARD ─────────────────────────────────────────────
+    const renderLeaderboard = () => (
+        <div className="content-section">
+            <h2 className="section-title">🏆 Current Standings 🏆</h2>
+            <div className="info-banner">📸 Send a selfie watching each episode for <strong>+2 pts</strong> &nbsp;·&nbsp; 📋 Submit your weekly winner prediction survey — bonus points awarded at end of season for every correct answer</div>
+            <div className="leaderboard">
+                {leaderboard.map((entry, index) => {
+                    const total = leaderboard.length;
+                    const isExpanded = expandedPlayer === entry.player;
+                    let tierClass = index===0?'rank-1':index===1?'rank-2':index===2?'rank-3':
+                        index<=Math.ceil(total*.25)?'tier-teal':index<=Math.ceil(total*.5)?'tier-blue':
+                        index<=Math.ceil(total*.75)?'tier-orange':'tier-red';
+                    // get draft picks for this player
+                    const draftEntry = data.draftData.find(d => d.player === entry.player);
+                    const picks = draftEntry ? draftEntry.picks.filter(p => p) : [];
+                    return (
+                        <div key={entry.player}>
+                            <div
+                                className={`leaderboard-item ${tierClass}`}
+                                onClick={() => setExpandedPlayer(isExpanded ? null : entry.player)}
+                                style={{cursor:'pointer'}}
+                            >
+                                <div className="rank">{index===0?'🥇':index===1?'🥈':index===2?'🥉':`#${index+1}`}</div>
+                                <div>
+                                    <div className="player-name">{entry.player} <span style={{fontSize:'.75em',opacity:.5,marginLeft:'6px'}}>{isExpanded?'▲':'▼'}</span></div>
+                                    <div className="player-stats">
+                                        <span>Contestants: {entry.contestantPoints.toFixed(2)} pts</span>
+                                        <span>Attendance: {entry.attendancePoints} pts</span>
+                                        <span>Survey: {entry.surveyPoints} pts</span>
+                                    </div>
+                                </div>
+                                <div className="total-points">{entry.totalPoints.toFixed(2)}</div>
+                            </div>
+                            {isExpanded && (
+                                <div style={{background:'rgba(0,0,0,.25)',borderRadius:'0 0 12px 12px',padding:'12px 0 14px',marginBottom:'8px',marginTop:'-8px'}}>
+                                    <div style={{display:'grid',gridTemplateColumns:'repeat(6,1fr)',gap:'8px',padding:'0 12px'}}>
+                                        {picks.map((pick, pi) => {
+                                            const c = data.contestants.find(x => x.name === pick);
+                                            const pts = contestantTotals[pick] || 0;
+                                            const isElim = c?.eliminated || false;
+                                            const tribe = c?.originalTribe || c?.tribe || '';
+                                            const tc = getTribeCss(tribe);
+                                            return (
+                                                <div key={pi} style={{
+                                                    background:'rgba(255,255,255,.07)',
+                                                    borderRadius:'10px',
+                                                    padding:'10px 14px',
+                                                    opacity: isElim ? 0.5 : 1,
+                                                    borderLeft: `4px solid ${tribe==='Cila'?'#D4521E':tribe==='Kalo'?'#2A9D8F':tribe==='Vatu'?'#C2185B':tribe==='Merged'?'#D4A017':'#555'}`
+                                                }}>
+                                                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'4px'}}>
+                                                        <div style={{fontFamily:"'Cinzel',serif",fontSize:'.9em',fontWeight:'bold',color:isElim?'#888':'#fff'}}>{pick}{isElim?' 💀':''}</div>
+                                                        {!isElim && c?.advantages?.length > 0 && (
+                                                            <div style={{display:'flex',flexDirection:'column',gap:'2px',alignItems:'flex-end'}}>
+                                                                {c.advantages.map((adv,ai)=>{
+                                                                    const isIdol = adv.toLowerCase().includes('idol');
+                                                                    const isVote = adv.toLowerCase().includes('vote');
+                                                                    const icon = isIdol ? '🏺' : isVote ? '🗳️' : '⭐';
+                                                                    const col = isIdol ? '#f39c12' : isVote ? '#9b59b6' : '#3498db';
+                                                                    return <span key={ai} style={{fontSize:'.65em',padding:'1px 5px',borderRadius:'5px',background:col+'33',border:`1px solid ${col}88`,color:col,whiteSpace:'nowrap'}}>{icon} {adv}</span>;
+                                                                })}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div style={{fontSize:'.75em',color:'rgba(255,255,255,.4)',margin:'2px 0 4px'}}>{tribe}</div>
+                                                    <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'1.4em',color:isElim?'#888':pts>0?'#4ecca3':'#e74c3c'}}>{pts.toFixed(2)} pts</div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+            <div className="summary-stats">
+                <div className="stat-card"><div className="stat-label">Current Season</div><div className="stat-value">50</div></div>
+                <div className="stat-card"><div className="stat-label">Episodes Aired</div><div className="stat-value">1/{TOTAL_WEEKS}</div></div>
+                <div className="stat-card"><div className="stat-label">Cast Remaining</div><div className="stat-value">{data.contestants.filter(c=>!c.eliminated).length}</div></div>
+                <div className="stat-card"><div className="stat-label">League Players</div><div className="stat-value">{leaderboard.length}</div></div>
+                <div className="stat-card"><div className="stat-label">🏆 Current Leader</div><div className="stat-value" style={{color:'#D4A017'}}>{leaderboard[0]?.player || '—'}</div></div>
+                <div className="stat-card"><div className="stat-label">💀 Most Eliminations</div><div className="stat-value" style={{color:'#e74c3c'}}>{(() => { const counts = {}; data.draftData.forEach(m => m.picks.forEach(p => { if(data.contestants.find(c=>c.name===p&&c.eliminated)) counts[m.player]=(counts[m.player]||0)+1; })); const top = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0]; return top ? `${top[0]} (${top[1]})` : '—'; })()}</div></div>
+            </div>
+        </div>
+    );
+
+    // ─── DRAFT BOARD ──────────────────────────────────────────────
+    const renderDraftBoard = () => {
+        const handleDraftSort = key => {
+            let dir='desc';
+            if (draftSortConfig.key===key && draftSortConfig.direction==='desc') dir='asc';
+            setDraftSortConfig({key,direction:dir});
+        };
+        // compute live "left" count for each manager
+        const getLeft = (entry) => entry.picks.filter(p => {
+            if (!p) return false;
+            const c = data.contestants.find(x => x.name === p);
+            return c && !c.eliminated;
+        }).length;
+
+        const sortedDraft = [...data.draftData].sort((a,b)=>{
+            if (draftSortConfig.key==='player') return draftSortConfig.direction==='asc'?a.player.localeCompare(b.player):b.player.localeCompare(a.player);
+            if (draftSortConfig.key==='left') {
+                const aL=getLeft(a), bL=getLeft(b);
+                if (aL!==bL) return draftSortConfig.direction==='asc'?aL-bL:bL-aL;
+                let ap=0,bp=0;
+                a.picks.forEach(p=>{if(p) ap+=contestantTotals[p]||0;});
+                b.picks.forEach(p=>{if(p) bp+=contestantTotals[p]||0;});
+                const aAtt=data.attendanceData[a.player]?data.attendanceData[a.player].reduce((s,v)=>s+v,0):0;
+                const bAtt=data.attendanceData[b.player]?data.attendanceData[b.player].reduce((s,v)=>s+v,0):0;
+                return (bp+bAtt)-(ap+aAtt);
+            }
+            if (draftSortConfig.key==='points') {
+                let ap=0,bp=0;
+                a.picks.forEach(p=>{if(p) ap+=contestantTotals[p]||0;});
+                b.picks.forEach(p=>{if(p) bp+=contestantTotals[p]||0;});
+                const aAtt=data.attendanceData[a.player]?data.attendanceData[a.player].reduce((s,v)=>s+v,0):0;
+                const bAtt=data.attendanceData[b.player]?data.attendanceData[b.player].reduce((s,v)=>s+v,0):0;
+                return draftSortConfig.direction==='asc'?(ap+aAtt)-(bp+bAtt):(bp+bAtt)-(ap+aAtt);
+            }
+            return 0;
+        });
+        return (
+            <div className="content-section">
+                <h2 className="section-title">📋 Draft Board 📋</h2>
+                
+                <div className="draft-board">
+                    <table className="draft-table">
+                        <thead><tr>
+                            <th className={`sortable ${draftSortConfig.key==='left'?`sorted-${draftSortConfig.direction}`:''}`} onClick={()=>handleDraftSort('left')}>Left</th>
+                            <th className={`sortable ${draftSortConfig.key==='player'?`sorted-${draftSortConfig.direction}`:''}`} onClick={()=>handleDraftSort('player')}>Player</th>
+                            <th className={`sortable ${draftSortConfig.key==='points'?`sorted-${draftSortConfig.direction}`:''}`} onClick={()=>handleDraftSort('points')}>Total Pts</th>
+                            <th>Pick 1</th><th>Pick 2</th><th>Pick 3</th><th>Pick 4</th><th>Pick 5</th><th>Pick 6</th>
+                        </tr></thead>
+                        <tbody>
+                            {sortedDraft.map((entry, idx) => {
+                                let cp=0;
+                                entry.picks.forEach(p=>{if(p) cp+=contestantTotals[p]||0;});
+                                const att=data.attendanceData[entry.player]?data.attendanceData[entry.player].reduce((s,v)=>s+v,0):0;
+                                return (
+                                    <tr key={idx}>
+                                        <td style={{fontWeight:'bold',fontSize:'1.1em'}}>{getLeft(entry)}</td>
+                                        <td style={{fontWeight:'bold',textAlign:'left',paddingLeft:'15px'}}>{entry.player}</td>
+                                        <td style={{fontWeight:'bold',color:'#4ecca3',fontSize:'1.1em'}}>{(cp+att).toFixed(2)}</td>
+                                        {entry.picks.map((pick,pi)=>{
+                                            if (!pick) return <td key={pi}><span style={{color:'#666',fontSize:'.85em'}}>TBD</span></td>;
+                                            const c=data.contestants.find(x=>x.name===pick);
+                                            const isElim=c?.eliminated||false;
+                                            const tribe=c?.originalTribe||c?.tribe||'';
+                                            const tc=getTribeCss(tribe);
+                                            return (
+                                                <td key={pi} className="contestant-cell">
+                                                    <span className={`contestant-tribe ${tc} ${isElim?'eliminated':''}`} style={{padding:'5px 10px',borderRadius:'8px',display:'inline-block',fontSize:'.88em'}}>
+                                                        {pick}
+                                                    </span>
+                                                </td>
+                                            );
+                                        })}
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        );
+    };
+
+    // ─── CONTESTANTS ──────────────────────────────────────────────
+    const renderContestants = () => {
+        const episodesAired = Object.values(data.weeklyScores).filter(w=>Object.values(w).some(v=>v!==0)).length || 0;
+        const sorted = [...sortedContestants].sort((a,b)=>{
+            if (!a.eliminated && b.eliminated) return -1;
+            if (a.eliminated && !b.eliminated) return 1;
+            const ap=contestantTotals[a.name]||0, bp=contestantTotals[b.name]||0;
+            return bp-ap;
+        });
+        const getTribeGrad = tribe => {
+            if (tribe==='Toka')  return '#D4A800';
+            if (tribe==='Savu')  return '#7B2D8B';
+            if (tribe==='Exile') return '#5D4037';
+            return '#555';
+        };
+        return (
+            <div className="content-section">
+                <h2 className="section-title">🌴 All Contestants 🌴</h2>
+                <div className="tribe-legend">
+                    <div className="legend-item"><div className="legend-color" style={{background:'#D4A800'}}></div><span>Toka ({data.contestants.filter(c=>c.originalTribe==='Toka').length})</span></div>
+                    <div className="legend-item"><div className="legend-color" style={{background:'#7B2D8B'}}></div><span>Savu ({data.contestants.filter(c=>c.originalTribe==='Savu').length})</span></div>
+                    <div className="legend-item"><div className="legend-color" style={{background:'#5D4037'}}></div><span>Exile ({data.contestants.filter(c=>c.originalTribe==='Exile').length})</span></div>
+                </div>
+                <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+                    {sorted.map((c,i)=>{
+                        const tc=getTribeCss(c.originalTribe||c.tribe);
+                        const pts=contestantTotals[c.name]||0;
+                        const tribeColor = c.originalTribe==='Cila'?'#D4521E':c.originalTribe==='Kalo'?'#2A9D8F':c.originalTribe==='Vatu'?'#C2185B':'#D4A017';
+                        const isExpanded = expandedPlayer === ('contestant_'+c.name);
+                        const epScores = Array.from({length:TOTAL_WEEKS},(_,wi)=>({
+                            ep: wi+1,
+                            pts: (data.weeklyScores[wi+1]&&data.weeklyScores[wi+1][c.name]) || 0
+                        })).filter(e => e.pts !== 0 || (c.eliminatedWeek && e.ep <= c.eliminatedWeek) || (!c.eliminated && e.ep <= episodesAired));
+                        const aimedEps = epScores.filter(e=>e.pts!==0);
+                        return (
+                            <div key={i}>
+                                <div
+                                    onClick={()=>setExpandedPlayer(isExpanded?null:'contestant_'+c.name)}
+                                    style={{
+                                        display:'grid', gridTemplateColumns:'4px 1fr auto auto',
+                                        alignItems:'center', gap:'0',
+                                        background: c.eliminated?'rgba(255,255,255,.04)':'rgba(255,255,255,.08)',
+                                        borderRadius: isExpanded?'12px 12px 0 0':'12px',
+                                        overflow:'hidden', cursor:'pointer',
+                                        opacity: c.eliminated ? 0.6 : 1,
+                                        transition:'all .2s'
+                                    }}
+                                >
+                                    <div style={{background:tribeColor,alignSelf:'stretch'}}></div>
+                                    <div style={{padding:'12px 16px'}}>
+                                        <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
+                                            <span style={{fontFamily:"'Cinzel',serif",fontWeight:'bold',fontSize:'1em'}}>{c.name}</span>
+                                            {c.eliminated && <span style={{fontSize:'.75em',color:'#e74c3c'}}>💀 Ep {c.eliminatedWeek}</span>}
+                                            {!c.eliminated && c.advantages?.length>0 && c.advantages.map((adv,ai)=>{
+                                                const isIdol=adv.toLowerCase().includes('idol');
+                                                const isVote=adv.toLowerCase().includes('vote');
+                                                const col=isIdol?'#f39c12':'#9b59b6';
+                                                return <span key={ai} style={{fontSize:'.65em',padding:'1px 6px',borderRadius:'5px',background:col+'33',border:`1px solid ${col}88`,color:col}}>{isIdol?'🏺':'🗳️'} {adv}</span>;
+                                            })}
+                                        </div>
+                                        <div style={{fontSize:'.78em',color:'rgba(255,255,255,.4)',marginTop:'2px'}}>{c.originalTribe} · {c.eliminated?'Voted Out':c.tribe}</div>
+                                    </div>
+                                    <div style={{padding:'12px 8px',fontSize:'.75em',color:'rgba(255,255,255,.35)'}}>{isExpanded?'▲':'▼'}</div>
+                                    <div style={{padding:'12px 16px',fontFamily:"'Bebas Neue',sans-serif",fontSize:'1.4em',color:c.eliminated?'#888':pts>0?'#4ecca3':'#fff',minWidth:'80px',textAlign:'right'}}>{pts.toFixed(2)} pts</div>
+                                </div>
+                                {isExpanded && (
+                                    <div style={{background:'rgba(0,0,0,.3)',borderRadius:'0 0 12px 12px',padding:'14px 16px',borderTop:`2px solid ${tribeColor}44`}}>
+                                        <div style={{display:'flex',gap:'10px',flexWrap:'wrap'}}>
+                                            {Array.from({length:TOTAL_WEEKS},(_,wi)=>{
+                                                const ep=wi+1;
+                                                const epPts=(data.weeklyScores[ep]&&data.weeklyScores[ep][c.name])||0;
+                                                const isElimEp = c.eliminatedWeek===ep;
+                                                const isFuture = ep > episodesAired;
+                                                if (isFuture) return null;
+                                                if (c.eliminated && ep > c.eliminatedWeek) return null;
+                                                const cbState=(data.weeklyCheckboxStates[ep]&&data.weeklyCheckboxStates[ep][c.name])||{};
+                                                const firedEvents = scoringCategories.filter(cat=>cbState[cat.id]);
+                                                return (
+                                                    <div key={ep} style={{
+                                                        flex:'1 1 140px',
+                                                        background: isElimEp?'rgba(231,76,60,.1)':'rgba(255,255,255,.05)',
+                                                        border:`1px solid ${isElimEp?'#e74c3c44':epPts>0?'rgba(78,204,163,.3)':'rgba(255,255,255,.1)'}`,
+                                                        borderRadius:'10px', padding:'10px 12px', minWidth:'130px'
+                                                    }}>
+                                                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px',paddingBottom:'6px',borderBottom:'1px solid rgba(255,255,255,.1)'}}>
+                                                            <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'.95em',letterSpacing:'1px',color:'rgba(255,255,255,.5)'}}>EP {ep}</span>
+                                                            <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'1.2em',color:isElimEp?'#e74c3c':epPts>0?'#4ecca3':epPts<0?'#e74c3c':'#888'}}>
+                                                                {isElimEp&&epPts===0?'💀':(epPts>0?'+':'')+epPts.toFixed(2)}
+                                                            </span>
+                                                        </div>
+                                                        {firedEvents.length>0 ? (
+                                                            <div style={{display:'flex',flexDirection:'column',gap:'3px'}}>
+                                                                {firedEvents.map(cat=>(
+                                                                    <div key={cat.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:'6px'}}>
+                                                                        <span style={{fontSize:'.7em',color:'rgba(255,255,255,.55)',lineHeight:'1.3'}}>{cat.name.replace(' (worth nothing if combined)','').replace(' (not idol)','').replace(' (or successful dice)','')}</span>
+                                                                        <span style={{fontSize:'.75em',fontWeight:'bold',whiteSpace:'nowrap',color:cat.points>0?'#4ecca3':'#e74c3c'}}>{cat.points>0?'+':''}{cat.points}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            <div style={{fontSize:'.7em',color:'rgba(255,255,255,.25)',fontStyle:'italic'}}>{isElimEp?'Eliminated':'No scoring events'}</div>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                        <div style={{marginTop:'10px',paddingTop:'10px',borderTop:'1px solid rgba(255,255,255,.1)',display:'flex',justifyContent:'flex-end',alignItems:'center',gap:'8px'}}>
+                                            <span style={{fontSize:'.8em',color:'rgba(255,255,255,.4)'}}>Total:</span>
+                                            <span style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'1.3em',color:'#4ecca3'}}>{pts.toFixed(2)} pts</span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        );
+    };
+
+    // ─── WEEKLY SCORES ────────────────────────────────────────────
+    const renderWeeklyScores = () => {
+        const sortedData = getSortedWeeklyData();
+        const weekCB = (data.weeklyCheckboxStates&&data.weeklyCheckboxStates[selectedWeek]) || {};
+        const weeks = Array.from({length:TOTAL_WEEKS},(_,i)=>i+1);
+        return (
+            <div className="content-section">
+                <h2 className="section-title">📊 Weekly Scores 📊</h2>
+                <div className="week-selector">
+                    {weeks.map(w=>(
+                        <button key={w} className={`week-button ${selectedWeek===w?'active':''}`} onClick={()=>setSelectedWeek(w)}>
+                            Ep {w}
+                        </button>
+                    ))}
+                </div>
+                <div className="info-banner warning">📊 Episode {selectedWeek} — {sortedData.length} contestants active</div>
+                <div style={{overflowX:'auto'}}>
+                    <table className="scoring-table">
+                        <thead><tr>
+                            <th className={`sortable ${sortConfig.key==='name'?`sorted-${sortConfig.direction}`:''}`} onClick={()=>handleSort('name')}>Contestant</th>
+                            <th>Tribe</th>
+                            <th className={`sortable ${sortConfig.key==='weekPoints'?`sorted-${sortConfig.direction}`:''}`} onClick={()=>handleSort('weekPoints')}>Ep {selectedWeek} Pts</th>
+                            <th className={`sortable ${sortConfig.key==='totalPoints'?`sorted-${sortConfig.direction}`:''}`} onClick={()=>handleSort('totalPoints')}>Total (thru Ep {selectedWeek})</th>
+                            <th>Status</th>
+                        </tr></thead>
+                        <tbody>
+                            {sortedData.map((c,i)=>{
+                                const wp=(data.weeklyScores[selectedWeek]&&data.weeklyScores[selectedWeek][c.name])||0;
+                                let tot=0; for(let w=1;w<=selectedWeek;w++) tot+=(data.weeklyScores[w]&&data.weeklyScores[w][c.name])||0;
+                                const isElim=c.eliminated&&c.eliminatedWeek<=selectedWeek;
+                                const tc=getTribeCss(c.tribe);
+                                return (
+                                    <tr key={i} style={isElim?{opacity:.6}:{}}>
+                                        <td style={{fontWeight:'bold',textAlign:'left',paddingLeft:'15px'}}>
+                                            {c.name}{isElim&&c.eliminatedWeek===selectedWeek&&<span style={{color:'#e74c3c',marginLeft:'8px',fontSize:'.85em'}}>(Eliminated)</span>}
+                                        </td>
+                                        <td><span className={`contestant-tribe ${tc}`} style={{padding:'5px 12px',borderRadius:'12px',display:'inline-block',fontSize:'.88em'}}>{isElim?'Voted Out':c.tribe}</span></td>
+                                        <td className={`points-value ${wp>=0?'positive-points':'negative-points'}`}>{wp>=0?'+':''}{wp.toFixed(2)}</td>
+                                        <td className="positive-points" style={{fontWeight:'bold'}}>{tot.toFixed(2)}</td>
+                                        <td>{isElim?<span style={{color:'#e74c3c'}}>❌ Out</span>:<span style={{color:'#4ecca3'}}>✓ Active</span>}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+                <div style={{marginTop:'36px'}}>
+                    <h3 style={{fontSize:'1.4em',marginBottom:'18px',textAlign:'center',color:'#4ecca3'}}>📋 Scoring Breakdown — Episode {selectedWeek}</h3>
+                    <div className="info-banner" style={{marginBottom:'14px'}}>Green ✓ = event occurred for that contestant this episode.</div>
+                    <div style={{overflowX:'auto'}}>
+                        <table className="grid-scoring-table">
+                            <thead><tr>
+                                <th className="category-header">Scoring Category</th>
+                                {sortedData.map(c=>{
+                                    const tc=getTribeCss(c.originalTribe||c.tribe);
+                                    const isElimNow=c.eliminated&&c.eliminatedWeek===selectedWeek;
+                                    return (
+                                        <th key={c.name} className="contestant-header">
+                                            <span className={`contestant-tribe ${tc}`} style={{padding:'7px 10px',borderRadius:'8px',display:'inline-block',fontSize:'.95em',writingMode:'horizontal-tb',whiteSpace:'nowrap'}}>
+                                                {c.name}{isElimNow&&<div style={{color:'#e74c3c',fontSize:'.7em',marginTop:'3px'}}>🔥 OUT</div>}
+                                            </span>
+                                        </th>
+                                    );
+                                })}
+                            </tr></thead>
+                            <tbody>
+                                {scoringCategories.map(cat=>(
+                                    <tr key={cat.id} style={cat.isNew?{background:'rgba(255,69,0,.06)',borderLeft:'2px solid #FF4500'}:{}}>
+                                        <td className="category-header">
+                                            {cat.name}{cat.isNew&&<span style={{fontSize:'10px',marginLeft:'4px'}}>🆕</span>}
+                                            <span className={`category-points ${cat.points<0?'negative':''}`}>({cat.points>=0?'+':''}{cat.points})</span>
+                                        </td>
+                                        {sortedData.map(c=>{
+                                            const checked=weekCB[c.name]&&weekCB[c.name][cat.id]||false;
+                                            return <td key={c.name}><div className={`checkbox-visual ${checked?'checked':''}`}></div></td>;
+                                        })}
+                                    </tr>
+                                ))}
+                                <tr className="total-row">
+                                    <td className="category-header"><strong>TOTAL POINTS</strong></td>
+                                    {sortedData.map(c=>{
+                                        const t=(data.weeklyScores[selectedWeek]&&data.weeklyScores[selectedWeek][c.name])||0;
+                                        return <td key={c.name} className="total-points-cell">{t>=0?'+':''}{t.toFixed(2)}</td>;
+                                    })}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    // ─── ELIMINATIONS ─────────────────────────────────────────────
+    const renderEliminations = () => (
+        <div className="content-section">
+            <h2 className="section-title">🔥 Elimination Timeline 🔥</h2>
+            {data.eliminationTimeline.length === 0 && (
+                <div className="info-banner">No eliminations yet — season premieres February 26, 2026!</div>
+            )}
+            <div className="elimination-timeline">
+                {data.eliminationTimeline.map((elim,i)=>(
+                    <div key={i} className={`elimination-item ${elim.medical?'medical':''}`}>
+                        <div className="elimination-header">
+                            <div>
+                                <div className="elimination-week">Episode {elim.week}</div>
+                                <div className="elimination-name">{elim.contestant}</div>
+                            </div>
+                            <div className={`elimination-badge ${elim.medical?'medical':'voted'}`}>{elim.medical?'🏥 Medical':'🔥 Voted Out'}</div>
+                        </div>
+                        <div className="elimination-reason">{elim.reason}</div>
+                    </div>
+                ))}
+            </div>
+            <div className="summary-stats" style={{marginTop:'28px'}}>
+                <div className="stat-card"><div className="stat-label">Remaining</div><div className="stat-value">{data.contestants.filter(c=>!c.eliminated).length}</div></div>
+                <div className="stat-card"><div className="stat-label">Voted Out</div><div className="stat-value">{data.eliminationTimeline.filter(e=>!e.medical).length}</div></div>
+                <div className="stat-card"><div className="stat-label">Medical / Fire</div><div className="stat-value">{data.eliminationTimeline.filter(e=>e.medical).length}</div></div>
+                <div className="stat-card"><div className="stat-label">Episodes Aired</div><div className="stat-value">{data.eliminationTimeline.length>0?Math.max(...data.eliminationTimeline.map(e=>e.week)):0}</div></div>
+            </div>
+        </div>
+    );
+
+    // ─── ATTENDANCE ───────────────────────────────────────────────
+    const renderAttendance = () => {
+        const sorted = Object.entries(data.attendanceData)
+            .sort((a,b)=>b[1].reduce((s,v)=>s+v,0)-a[1].reduce((s,v)=>s+v,0));
+        const weeksAired = Object.values(data.weeklyScores).filter(w=>Object.values(w).some(v=>v!==0)).length || 0;
+        const weeks = Array.from({length:TOTAL_WEEKS},(_,i)=>i+1);
+        return (
+            <div className="content-section">
+                <h2 className="section-title">📅 Attendance Tracker 📅</h2>
+                <div className="attendance-grid">
+                    {sorted.map(([player,wks])=>{
+                        const total=wks.reduce((s,v)=>s+v,0);
+                        const attended=wks.filter(v=>v>0).length;
+                        return (
+                            <div key={player} className="attendance-card">
+                                <div className="attendance-name">{player}</div>
+                                <div className="attendance-count">{total}</div>
+                                <div className="attendance-weeks">{attended} of {weeksAired} episodes</div>
+                            </div>
+                        );
+                    })}
+                </div>
+                <div style={{marginTop:'36px'}}>
+                    <h3 style={{fontSize:'1.4em',marginBottom:'18px',textAlign:'center',color:'#4ecca3'}}>📋 Attendance Breakdown</h3>
+                    <div style={{overflowX:'auto'}}>
+                        <table className="score-entry-table">
+                            <thead><tr>
+                                <th style={{textAlign:'left',paddingLeft:'15px'}}>Player</th>
+                                {weeks.map(w=><th key={w}>Ep {w}</th>)}
+                                <th style={{background:'rgba(78,204,163,.2)'}}>Total</th>
+                            </tr></thead>
+                            <tbody>
+                                {sorted.map(([player,wks])=>{
+                                    const total=wks.reduce((s,v)=>s+v,0);
+                                    return (
+                                        <tr key={player}>
+                                            <td style={{fontWeight:'bold',textAlign:'left',paddingLeft:'15px'}}>{player}</td>
+                                            {weeks.map((w,i)=>(
+                                                <td key={i} style={{fontWeight:'bold',color:wks[i]>0?'#4ecca3':'#555',background:wks[i]>0?'rgba(78,204,163,.1)':'transparent'}}>
+                                                    {wks[i]!==undefined?wks[i]:'—'}
+                                                </td>
+                                            ))}
+                                            <td style={{fontWeight:'bold',color:'#4ecca3',fontSize:'1.1em',background:'rgba(78,204,163,.2)'}}>{total}</td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    // ─── WINNER CIRCLES ───────────────────────────────────────────
+    const renderWinnerCircles = () => {
+        const sorted = [...data.winnerCircles].sort((a,b)=>b.season-a.season);
+        return (
+            <div className="content-section">
+                <h2 className="section-title">🏆 Winner Circles 🏆</h2>
+                <div className="info-banner" style={{marginBottom:'28px'}}>Hall of Champions — celebrating our league's greatest competitors across the seasons!</div>
+                <div className="winner-circles-grid">
+                    {sorted.map((s,i)=>(
+                        <div key={i} className="season-card">
+                            <div className="season-header">🏝️ SURVIVOR {s.season} 🏝️</div>
+                            <div className="podium">
+                                <div className="podium-position podium-second"><div className="podium-rank">🥈</div><div className="podium-label">Second Place</div><div className="podium-name">{s.second}</div></div>
+                                <div className="podium-position podium-first"><div className="podium-rank">🏆</div><div className="podium-label">Champion</div><div className="podium-name">{s.first}</div></div>
+                                {s.third&&<div className="podium-position podium-third"><div className="podium-rank">🥉</div><div className="podium-label">Third Place</div><div className="podium-name">{s.third}</div></div>}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className="summary-stats" style={{marginTop:'36px'}}>
+                    <div className="stat-card"><div className="stat-label">Total Seasons</div><div className="stat-value">{data.winnerCircles.length}</div></div>
+                    <div className="stat-card"><div className="stat-label">Most Championships</div><div className="stat-value">Julie (2)</div></div>
+                    <div className="stat-card"><div className="stat-label">Most Podium Finishes</div><div className="stat-value">Julie (4)</div></div>
+                    <div className="stat-card"><div className="stat-label">Current Season</div><div className="stat-value">50</div></div>
+                </div>
+            </div>
+        );
+    };
+
+    // ─── RENDER ───────────────────────────────────────────────────
+    return (
+        <div className="app-container">
+            <div style={{textAlign:'center',padding:'36px 20px 28px',marginBottom:'10px'}}>
+                <span style={{fontSize:'52px',display:'block',marginBottom:'10px',animation:'torchFlicker 2.5s ease-in-out infinite alternate'}}>🔥</span>
+                <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'11px',letterSpacing:'5px',color:'#D4A017',marginBottom:'6px',opacity:.8}}>FANTASY LEAGUE</div>
+                <div style={{fontFamily:"'Cinzel',serif",fontSize:'clamp(48px,10vw,80px)',fontWeight:700,lineHeight:.93,background:'linear-gradient(135deg,#D4A017 0%,#FF4500 50%,#FF8C00 100%)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text',marginBottom:'8px'}}>SURVIVOR<br/>51</div>
+                <div style={{fontFamily:"'Bebas Neue',sans-serif",fontSize:'16px',letterSpacing:'4px',color:'#F5E6C8',opacity:.65}}>THE OPEN ERA</div>
+                <div style={{width:'80px',height:'2px',background:'linear-gradient(90deg,transparent,#D4A017,transparent)',margin:'18px auto 0'}}></div>
+            </div>
+            <div className="navigation">
+                <button className={`nav-button ${activeView==='welcome'?'active':''}`} onClick={()=>setActiveView('welcome')}>🏠 Welcome</button>
+                <button className={`nav-button ${activeView==='leaderboard'?'active':''}`} onClick={()=>setActiveView('leaderboard')}>🏆 Leaderboard</button>
+                <button className={`nav-button ${activeView==='draft'?'active':''}`} onClick={()=>setActiveView('draft')}>📋 Draft Board</button>
+                <button className={`nav-button ${activeView==='contestants'?'active':''}`} onClick={()=>setActiveView('contestants')}>🌴 Contestants</button>
+                <button className={`nav-button ${activeView==='weekly'?'active':''}`} onClick={()=>setActiveView('weekly')}>📊 Weekly Scores</button>
+                <button className={`nav-button ${activeView==='eliminations'?'active':''}`} onClick={()=>setActiveView('eliminations')}>🔥 Eliminations</button>
+                <button className={`nav-button ${activeView==='attendance'?'active':''}`} onClick={()=>setActiveView('attendance')}>📅 Attendance</button>
+                <button className={`nav-button ${activeView==='winners'?'active':''}`} onClick={()=>setActiveView('winners')}>👑 Winner Circles</button>
+            </div>
+            {activeView==='welcome'       && renderWelcome()}
+            {activeView==='leaderboard'   && renderLeaderboard()}
+            {activeView==='draft'         && renderDraftBoard()}
+            {activeView==='contestants'   && renderContestants()}
+            {activeView==='weekly'        && renderWeeklyScores()}
+            {activeView==='eliminations'  && renderEliminations()}
+            {activeView==='attendance'    && renderAttendance()}
+            {activeView==='winners'       && renderWinnerCircles()}
+        </div>
+    );
+};
+
+ReactDOM.render(<SurvivorLeague />, document.getElementById('root'));
 </script>
 </body>
 </html>
