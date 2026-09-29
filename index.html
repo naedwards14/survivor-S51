@@ -388,7 +388,7 @@ const SurvivorLeague = () => {
     const [expandedPlayer, setExpandedPlayer] = useState(null);
 
     const getInitialData = () => {
-        const DATA_VERSION = 8; // Ep1 scores corrected // Ep5 scores, Charlie+Angelina eliminated, attendance wks 4-5
+        const DATA_VERSION = 10; // Ep1 scores corrected // Ep5 scores, Charlie+Angelina eliminated, attendance wks 4-5
         const savedVersion = localStorage.getItem('survivor51DataVersion');
         if (savedVersion != DATA_VERSION) {
             localStorage.removeItem('survivor51LeagueData');
@@ -467,26 +467,26 @@ const SurvivorLeague = () => {
                 ].map(n=>[n,{}]))]))
             },
             draftData: [
-                { player:"Neil",       picks:["","","","","",""], left:0 },
-                { player:"Julie",      picks:["","","","","",""], left:0 },
-                { player:"Lindsay",    picks:["","","","","",""], left:0 },
-                { player:"Jason",      picks:["","","","","",""], left:0 },
-                { player:"Debbie",     picks:["","","","","",""], left:0 },
-                { player:"David",      picks:["","","","","",""], left:0 },
+                { player:"Jack",         picks:["","","","","",""], left:0 },
+                { player:"Mel",          picks:["","","","","",""], left:0 },
+                { player:"Julie",        picks:["","","","","",""], left:0 },
+                { player:"Neil",         picks:["","","","","",""], left:0 },
+                { player:"Grayson",      picks:["","","","","",""], left:0 },
+                { player:"Brett/Emma",   picks:["","","","","",""], left:0 },
+                { player:"Dan",          picks:["","","","","",""], left:0 },
+                { player:"Dale",         picks:["","","","","",""], left:0 },
+                { player:"Charlie",      picks:["","","","","",""], left:0 },
+                { player:"Jenn",         picks:["","","","","",""], left:0 },
+                { player:"Sue",          picks:["","","","","",""], left:0 },
+                { player:"Jason",        picks:["","","","","",""], left:0 },
+                { player:"Jenny",        picks:["","","","","",""], left:0 },
+                { player:"Gab",          picks:["","","","","",""], left:0 },
+                { player:"David",        picks:["","","","","",""], left:0 },
                 { player:"Shannon/Tyler",picks:["","","","","",""], left:0 },
-                { player:"Jenny",      picks:["","","","","",""], left:0 },
-                { player:"Alex",       picks:["","","","","",""], left:0 },
-                { player:"Mel",        picks:["","","","","",""], left:0 },
-                { player:"Brett/Emma", picks:["","","","","",""], left:0 },
-                { player:"Dan",        picks:["","","","","",""], left:0 },
-                { player:"Danielle",   picks:["","","","","",""], left:0 },
-                { player:"Gab",        picks:["","","","","",""], left:0 },
-                { player:"Grayson",    picks:["","","","","",""], left:0 },
-                { player:"Jenn",       picks:["","","","","",""], left:0 },
-                { player:"Jack",       picks:["","","","","",""], left:0 },
-                { player:"Dale",       picks:["","","","","",""], left:0 },
-                { player:"Sue",        picks:["","","","","",""], left:0 },
-                { player:"Charlie",    picks:["","","","","",""], left:0 },
+                { player:"Danielle",     picks:["","","","","",""], left:0 },
+                { player:"Debbie",       picks:["","","","","",""], left:0 },
+                { player:"Alex",         picks:["","","","","",""], left:0 },
+                { player:"Lindsay",      picks:["","","","","",""], left:0 },
             ],
             attendanceData: {
                 "Neil":[],"Julie":[],"Lindsay":[],"Jason":[],"Debbie":[],
@@ -581,11 +581,11 @@ const SurvivorLeague = () => {
                 <div className="w-sec-header"><span className="w-sec-icon">💰</span><span className="w-sec-title">Buy-In & Prize Pool</span><div className="w-sec-line"></div></div>
                 <div className="w-card">
                     <div className="prize-grid">
-                        <div className="prize-item"><div className="prize-place">1st Place</div><div className="prize-amt gold">$325</div></div>
-                        <div className="prize-item"><div className="prize-place">2nd Place</div><div className="prize-amt silver">$100</div></div>
+                        <div className="prize-item"><div className="prize-place">1st Place</div><div className="prize-amt gold">$300</div></div>
+                        <div className="prize-item"><div className="prize-place">2nd Place</div><div className="prize-amt silver">$150</div></div>
                         <div className="prize-item"><div className="prize-place">3rd Place</div><div className="prize-amt bronze">$50</div></div>
                     </div>
-                    <p className="buy-in-note">$25 buy-in · Venmo <strong>@Neil-Edwards17</strong> to lock in your spot · <strong>$475 total pool</strong></p>
+                    <p className="buy-in-note">$25 buy-in · Venmo <strong>@Neil-Edwards17</strong> to lock in your spot · <strong>$500 total pool</strong></p>
                     <p className="buy-in-note" style={{marginTop:'8px',color:'rgba(255,140,0,.75)',fontStyle:'italic'}}>* Prize pool subject to change based on final number of players</p>
                 </div>
             </div>
