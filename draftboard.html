@@ -228,7 +228,7 @@ function App(){
                   <div className={'mn'+(isc?' cur':'')}>{isc?'▶ ':''}{m}</div>
                   {mp[mi].map((cid,si)=>{
                     const c=cid?CONTESTANTS.find(x=>x.id===cid):null;
-                    if(c){const left=MAX-dc[c.id];return<div key={si} className={'ps pk'+Math.min(left,6)}>{c.name}</div>;}
+                    if(c)return<div key={si} className={'ps pk'+(6-si)}>{c.name}</div>;
                     if(isc&&si===filled)return<div key={si} className="ps pn">PICK</div>;
                     return<div key={si} className="ps pm">—</div>;
                   })}
