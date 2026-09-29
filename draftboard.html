@@ -158,6 +158,15 @@ function App(){
   const mp=MGR.map(()=>Array(PP).fill(null));
   picks.forEach(p=>{mp[p.mi][Math.floor(p.num/N)]=p.cid;});
 
+  // For each pick, record which number draft it was for that player (1st, 2nd, 3rd...)
+  const pickNth = {}; // key: `${mi}_${slot}` → nth time that player was picked
+  const cidCount = {};
+  picks.forEach(p=>{
+    cidCount[p.cid] = (cidCount[p.cid]||0) + 1;
+    const slot = Math.floor(p.num/N);
+    pickNth[`${p.mi}_${slot}`] = cidCount[p.cid];
+  });
+
   function draft(cid){if(done||dc[cid]>=MAX)return;const ns={picks:[...picks,{num:cur,mi:cmi,cid}]};setSt(ns);sv(ns);}
   function undo(){if(!picks.length)return;const ns={picks:picks.slice(0,-1)};setSt(ns);sv(ns);}
   function reset(){if(!confirm('Reset draft board?'))return;const ns={picks:[]};setSt(ns);sv(ns);}
@@ -228,7 +237,7 @@ function App(){
                   <div className={'mn'+(isc?' cur':'')}>{isc?'▶ ':''}{m}</div>
                   {mp[mi].map((cid,si)=>{
                     const c=cid?CONTESTANTS.find(x=>x.id===cid):null;
-                    if(c)return<div key={si} className={'ps pk'+(6-si)}>{c.name}</div>;
+                    if(c){const nth=pickNth[`${mi}_${si}`]||1;return<div key={si} className={'ps pk'+(7-nth)}>{c.name}</div>;}
                     if(isc&&si===filled)return<div key={si} className="ps pn">PICK</div>;
                     return<div key={si} className="ps pm">—</div>;
                   })}
