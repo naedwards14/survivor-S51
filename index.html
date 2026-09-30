@@ -388,7 +388,7 @@ const SurvivorLeague = () => {
     const [expandedPlayer, setExpandedPlayer] = useState(null);
 
     const getInitialData = () => {
-        const DATA_VERSION = 10; // Ep1 scores corrected // Ep5 scores, Charlie+Angelina eliminated, attendance wks 4-5
+        const DATA_VERSION = 11; // Ep1 scores corrected // Ep5 scores, Charlie+Angelina eliminated, attendance wks 4-5
         const savedVersion = localStorage.getItem('survivor51DataVersion');
         if (savedVersion != DATA_VERSION) {
             localStorage.removeItem('survivor51LeagueData');
@@ -467,26 +467,26 @@ const SurvivorLeague = () => {
                 ].map(n=>[n,{}]))]))
             },
             draftData: [
-                { player:"Jack",         picks:["","","","","",""], left:0 },
-                { player:"Mel",          picks:["","","","","",""], left:0 },
-                { player:"Julie",        picks:["","","","","",""], left:0 },
-                { player:"Neil",         picks:["","","","","",""], left:0 },
-                { player:"Grayson",      picks:["","","","","",""], left:0 },
-                { player:"Brett/Emma",   picks:["","","","","",""], left:0 },
-                { player:"Dan",          picks:["","","","","",""], left:0 },
-                { player:"Dale",         picks:["","","","","",""], left:0 },
-                { player:"Charlie",      picks:["","","","","",""], left:0 },
-                { player:"Jenn",         picks:["","","","","",""], left:0 },
-                { player:"Sue",          picks:["","","","","",""], left:0 },
-                { player:"Jason",        picks:["","","","","",""], left:0 },
-                { player:"Jenny",        picks:["","","","","",""], left:0 },
-                { player:"Gab",          picks:["","","","","",""], left:0 },
-                { player:"David",        picks:["","","","","",""], left:0 },
-                { player:"Shannon/Tyler",picks:["","","","","",""], left:0 },
-                { player:"Danielle",     picks:["","","","","",""], left:0 },
-                { player:"Debbie",       picks:["","","","","",""], left:0 },
-                { player:"Alex",         picks:["","","","","",""], left:0 },
-                { player:"Lindsay",      picks:["","","","","",""], left:0 },
+                { player:"Jack",         picks:["Mike P","Patt","Jenna","Lewis","Linnea","Eric"], left:0 },
+                { player:"Mel",          picks:["Kristin","Carter","Ana","Kilby","Jelly","Eric"], left:0 },
+                { player:"Julie",        picks:["Kristin","Carter","Jenna","Patt","Cristian","Eric"], left:0 },
+                { player:"Neil",         picks:["Kristin","Sharonda","Carter","Alexis","Patt","Eric"], left:0 },
+                { player:"Grayson",      picks:["Kristin","Sharonda","Devin","Ori","Linnea","Thien An"], left:0 },
+                { player:"Brett/Emma",   picks:["Kristin","Lewis","Carter","Alexis","Linnea","Brady"], left:0 },
+                { player:"Dan",          picks:["Mike P","Devin","Ana","Jelly","Kilby","Cristian"], left:0 },
+                { player:"Dale",         picks:["Kristin","Lewis","Ana","Alexis","Kilby","Thien An"], left:0 },
+                { player:"Charlie",      picks:["Mike P","Sharonda","Jenna","Alexis","Linnea","Cristian"], left:0 },
+                { player:"Jenn",         picks:["Rob","Sharonda","Ana","Patt","Jelly","Brady"], left:0 },
+                { player:"Sue",          picks:["Mike P","Devin","Ana","Jelly","Thien An","Cristian"], left:0 },
+                { player:"Jason",        picks:["Rob","Lewis","Ana","Alexis","Kilby","Brady"], left:0 },
+                { player:"Jenny",        picks:["Mike P","Jenna","Devin","Linnea","Jelly","Kilby"], left:0 },
+                { player:"Gab",          picks:["Rob","Carter","Maggie","Ori","Brady","Eric"], left:0 },
+                { player:"David",        picks:["Mike P","Patt","Jenna","Ori","Maggie","Brady"], left:0 },
+                { player:"Shannon/Tyler",picks:["Rob","Carter","Linnea","Ori","Lewis","Maggie"], left:0 },
+                { player:"Danielle",     picks:["Rob","Alexis","Maggie","Ori","Thien An","Cristian"], left:0 },
+                { player:"Debbie",       picks:["Rob","Jenna","Devin","Ori","Brady","Eric"], left:0 },
+                { player:"Alex",         picks:["Lewis","Sharonda","Devin","Jelly","Thien An","Maggie"], left:0 },
+                { player:"Lindsay",      picks:["Patt","Sharonda","Maggie","Cristian","Thien An","Kilby"], left:0 },
             ],
             attendanceData: {
                 "Neil":[],"Julie":[],"Lindsay":[],"Jason":[],"Debbie":[],
