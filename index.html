@@ -389,7 +389,7 @@ const SurvivorLeague = () => {
     const [expandedPlayer, setExpandedPlayer] = useState(null);
 
     const getInitialData = () => {
-        const DATA_VERSION = 15; // Ep4: 3-tribe swap (Toka/Savu/Dina); Jenna voted out
+        const DATA_VERSION = 17; // Ep5: double tribal; Toka wins immunity; Linnea (Dina) + Alexis (Savu) voted out
         const savedVersion = localStorage.getItem('survivor51DataVersion');
         if (savedVersion != DATA_VERSION) {
             localStorage.removeItem('survivor51LeagueData');
@@ -412,13 +412,13 @@ const SurvivorLeague = () => {
                 { name:"Mike P",   tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
                 { name:"Patt",     tribe:"Voted Out", originalTribe:"Toka", eliminated:true,  eliminatedWeek:3,    advantages:[] },
                 // ── SAVU TRIBE (Purple) ──
-                { name:"Alexis",   tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Alexis",   tribe:"Voted Out", originalTribe:"Savu", eliminated:true,  eliminatedWeek:5,    advantages:[] },
                 { name:"Ana",      tribe:"Voted Out", originalTribe:"Savu", eliminated:true,  eliminatedWeek:2,    advantages:[] },
                 { name:"Carter",   tribe:"Toka",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:["Hidden Idol"] },
                 { name:"Cristian", tribe:"Dina",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
                 { name:"Eric",     tribe:"Dina",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
                 { name:"Kristin",  tribe:"Toka",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
-                { name:"Linnea",   tribe:"Dina",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Linnea",   tribe:"Voted Out", originalTribe:"Savu", eliminated:true,  eliminatedWeek:5,    advantages:[] },
                 { name:"Ori",      tribe:"Savu",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
                 { name:"Rob",      tribe:"Quit",      originalTribe:"Savu", eliminated:true,  eliminatedWeek:3,    advantages:[] },
                 { name:"Sharonda", tribe:"Dina",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
@@ -454,7 +454,14 @@ const SurvivorLeague = () => {
                     "Kristin":0.5, "Linnea":1.0, "Ori":0.75, "Rob":0, "Sharonda":1.0,
                     "Lewis":1.0
                 },
-                ...Object.fromEntries(Array.from({length:9},(_,i)=>[i+5, Object.fromEntries([
+                5: {
+                    "Aaliyah":0, "Thien An":1.0, "Jelly":0,    "Brady":1.0,  "Kilby":0.5,
+                    "Devin":0,   "Jenna":0,       "Maggie":1.5, "Mike P":1.0, "Patt":0,
+                    "Alexis":-0.5,"Ana":0,         "Carter":1.0, "Cristian":0, "Eric":0,
+                    "Kristin":1.0,"Linnea":-0.25, "Ori":0,     "Rob":0,      "Sharonda":0,
+                    "Lewis":0.5
+                },
+                ...Object.fromEntries(Array.from({length:8},(_,i)=>[i+6, Object.fromEntries([
                     "Aaliyah","Thien An","Jelly","Brady","Kilby","Devin","Jenna","Maggie","Mike P","Patt",
                     "Alexis","Ana","Carter","Cristian","Eric","Kristin","Linnea","Ori","Rob","Sharonda","Lewis"
                 ].map(n=>[n,0]))]))
@@ -552,7 +559,30 @@ const SurvivorLeague = () => {
                     "Sharonda": { team_immunity:true },
                     "Lewis":    { team_immunity:true },
                 },
-                ...Object.fromEntries(Array.from({length:9},(_,i)=>[i+5, Object.fromEntries([
+                5: {
+                    "Aaliyah":  {},
+                    "Thien An": { team_immunity:true },
+                    "Jelly":    {},
+                    "Brady":    { team_immunity:true },
+                    "Kilby":    { advantage_tribal:true },
+                    "Devin":    {},
+                    "Jenna":    {},
+                    "Maggie":   { team_immunity:true, advantage_tribal:true },
+                    "Mike P":   { team_immunity:true },
+                    "Patt":     {},
+                    "Alexis":   { voted_out:true },
+                    "Ana":      {},
+                    "Carter":   { team_immunity:true },
+                    "Cristian": {},
+                    "Eric":     {},
+                    "Kristin":  { team_immunity:true },
+                    "Linnea":   { voted_out:true, title_quote:true },
+                    "Ori":      {},
+                    "Rob":      {},
+                    "Sharonda": {},
+                    "Lewis":    { advantage_tribal:true },
+                },
+                ...Object.fromEntries(Array.from({length:8},(_,i)=>[i+6, Object.fromEntries([
                     "Aaliyah","Thien An","Jelly","Brady","Kilby","Devin","Jenna","Maggie","Mike P","Patt",
                     "Alexis","Ana","Carter","Cristian","Eric","Kristin","Linnea","Ori","Rob","Sharonda","Lewis"
                 ].map(n=>[n,{}]))]))
@@ -586,6 +616,8 @@ const SurvivorLeague = () => {
                 "Jack":[],"Dale":[],"Sue":[],"Charlie":[]
             },
             eliminationTimeline: [
+                { week:5, contestant:"Alexis", reason:"Alexis Bhatt was voted out at Savu's tribal council in Episode 5 — a double-tribal episode. She chose not to play her Shot in the Dark (−0.5 pts). Toka won immunity; both Savu and Dina went to tribal." },
+                { week:5, contestant:"Linnea", reason:"Linnea Mays was voted out at Dina's tribal council in Episode 5 — a double-tribal episode. She chose not to play her Shot in the Dark (−0.5 pts) and delivered the title quote of the week (+0.25 pts). Kilby, Lewis, and Maggie each found advantages (+0.5 pts each)." },
                 { week:4, contestant:"Jenna", reason:"Jenna Bowman was voted out 4-1 at Savu's tribal council in Episode 4, following the tribe swap. She had played her Shot in the Dark (which failed) at the Ep1 tribal, costing her −0.5 pts this week. The new Savu tribe (Devin, Jelly, Ori, Alexis, Jenna) voted her out as the numbers favored the former Tokas." },
                 { week:3, contestant:"Rob",  reason:"Rob Antonson quit the game at Episode 3, becoming the first player to leave voluntarily in Survivor 51. He forfeits −3 pts. He had a Boomerang Idol that is now void." },
                 { week:3, contestant:"Patt", reason:"Patt Cannaday was voted out at Toka's tribal council in Episode 3. Savu won immunity; Toka went to Tribal where Patt was eliminated." },
@@ -825,7 +857,7 @@ const SurvivorLeague = () => {
             </div>
             <div className="summary-stats">
                 <div className="stat-card"><div className="stat-label">Current Season</div><div className="stat-value">51</div></div>
-                <div className="stat-card"><div className="stat-label">Episodes Aired</div><div className="stat-value">4/{TOTAL_WEEKS}</div></div>
+                <div className="stat-card"><div className="stat-label">Episodes Aired</div><div className="stat-value">5/{TOTAL_WEEKS}</div></div>
                 <div className="stat-card"><div className="stat-label">Cast Remaining</div><div className="stat-value">{data.contestants.filter(c=>!c.eliminated).length}</div></div>
                 <div className="stat-card"><div className="stat-label">League Players</div><div className="stat-value">{leaderboard.length}</div></div>
                 <div className="stat-card"><div className="stat-label">🏆 Current Leader</div><div className="stat-value" style={{color:'#D4A017'}}>{leaderboard[0]?.player || '—'}</div></div>
