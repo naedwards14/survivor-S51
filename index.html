@@ -389,7 +389,7 @@ const SurvivorLeague = () => {
     const [expandedPlayer, setExpandedPlayer] = useState(null);
 
     const getInitialData = () => {
-        const DATA_VERSION = 19; // Ep7: MERGE; Mike P indiv immunity; Brady voted out; Jelly/Kristin idols gone
+        const DATA_VERSION = 20; // Ep8: Kilby+Kristin out; Jelly plays idol; Lewis+Sharonda immunity
         const savedVersion = localStorage.getItem('survivor51DataVersion');
         if (savedVersion != DATA_VERSION) {
             localStorage.removeItem('survivor51LeagueData');
@@ -405,7 +405,7 @@ const SurvivorLeague = () => {
                 { name:"Thien An", tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
                 { name:"Jelly",    tribe:"Savu",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
                 { name:"Brady",    tribe:"Voted Out", originalTribe:"Toka", eliminated:true,  eliminatedWeek:7,    advantages:[] },
-                { name:"Kilby",    tribe:"Dina",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Kilby",    tribe:"Voted Out", originalTribe:"Toka", eliminated:true,  eliminatedWeek:8,    advantages:[] },
                 { name:"Devin",    tribe:"Savu",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:["Extra Vote"] },
                 { name:"Jenna",    tribe:"Voted Out", originalTribe:"Toka", eliminated:true,  eliminatedWeek:4,    advantages:[] },
                 { name:"Maggie",   tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
@@ -417,7 +417,7 @@ const SurvivorLeague = () => {
                 { name:"Carter",   tribe:"Toka",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:["Hidden Idol"] },
                 { name:"Cristian", tribe:"Dina",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
                 { name:"Eric",     tribe:"Dina",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
-                { name:"Kristin",  tribe:"Toka",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Kristin",  tribe:"Voted Out", originalTribe:"Savu", eliminated:true,  eliminatedWeek:8,    advantages:[] },
                 { name:"Linnea",   tribe:"Voted Out", originalTribe:"Savu", eliminated:true,  eliminatedWeek:5,    advantages:[] },
                 { name:"Ori",      tribe:"Voted Out", originalTribe:"Savu", eliminated:true,  eliminatedWeek:6,    advantages:[] },
                 { name:"Rob",      tribe:"Quit",      originalTribe:"Savu", eliminated:true,  eliminatedWeek:3,    advantages:[] },
@@ -469,13 +469,20 @@ const SurvivorLeague = () => {
                     "Lewis":0.5
                 },
                 7: {
-                    "Aaliyah":0,  "Thien An":1.5, "Jelly":1.5,  "Brady":0.25, "Kilby":1.5,
+                    "Aaliyah":0,  "Thien An":1.5, "Jelly":2.5,  "Brady":0.25, "Kilby":1.5,
                     "Devin":2.0,  "Jenna":0,       "Maggie":1.5, "Mike P":3.5, "Patt":0,
                     "Alexis":0,   "Ana":0,          "Carter":2.5, "Cristian":1.0,"Eric":1.75,
                     "Kristin":1.5,"Linnea":0,       "Ori":0,      "Rob":0,       "Sharonda":1.0,
                     "Lewis":1.5
                 },
-                ...Object.fromEntries(Array.from({length:6},(_,i)=>[i+8, Object.fromEntries([
+                8: {
+                    "Aaliyah":0,  "Thien An":1.0, "Jelly":6.0,  "Brady":0,    "Kilby":0,
+                    "Devin":5.5,  "Jenna":0,       "Maggie":1.0, "Mike P":1.0, "Patt":0,
+                    "Alexis":0,   "Ana":0,          "Carter":2.5, "Cristian":1.5,"Eric":1.0,
+                    "Kristin":1.0,"Linnea":0,       "Ori":0,      "Rob":0,      "Sharonda":3.0,
+                    "Lewis":3.0
+                },
+                ...Object.fromEntries(Array.from({length:5},(_,i)=>[i+9, Object.fromEntries([
                     "Aaliyah","Thien An","Jelly","Brady","Kilby","Devin","Jenna","Maggie","Mike P","Patt",
                     "Alexis","Ana","Carter","Cristian","Eric","Kristin","Linnea","Ori","Rob","Sharonda","Lewis"
                 ].map(n=>[n,0]))]))
@@ -622,8 +629,8 @@ const SurvivorLeague = () => {
                 7: {
                     "Aaliyah":  {},
                     "Thien An": { mini_reward:true, postmerge_survive:true },
-                    "Jelly":    { mini_reward:true, postmerge_survive:true },
-                    "Brady":    { mini_reward:true, title_quote:true, voted_out:true },
+                    "Jelly":    { mini_reward:true, postmerge_survive:true, idol_tribal:true },
+                    "Brady":    { mini_reward:true, title_quote:true, shot_in_dark:true, voted_out:true },
                     "Kilby":    { mini_reward:true, postmerge_survive:true },
                     "Devin":    { mini_reward:true, postmerge_survive:true, advantage_tribal:true },
                     "Jenna":    {},
@@ -642,7 +649,30 @@ const SurvivorLeague = () => {
                     "Sharonda": { postmerge_survive:true },
                     "Lewis":    { mini_reward:true, postmerge_survive:true },
                 },
-                ...Object.fromEntries(Array.from({length:6},(_,i)=>[i+8, Object.fromEntries([
+                8: {
+                    "Aaliyah":  {},
+                    "Thien An": { postmerge_survive:true },
+                    "Jelly":    { postmerge_survive:true, taken_reward:true, idol_used:true },
+                    "Brady":    {},
+                    "Kilby":    { voted_out:true },
+                    "Devin":    { postmerge_survive:true, advantage_tribal:true, idol_used:true },
+                    "Jenna":    {},
+                    "Maggie":   { postmerge_survive:true },
+                    "Mike P":   { postmerge_survive:true },
+                    "Patt":     {},
+                    "Alexis":   {},
+                    "Ana":      {},
+                    "Carter":   { postmerge_survive:true, idol_tribal:true, idol_used:true },
+                    "Cristian": { postmerge_survive:true, idol_used:true },
+                    "Eric":     { postmerge_survive:true },
+                    "Kristin":  { taken_reward:true, voted_out:true },
+                    "Linnea":   {},
+                    "Ori":      {},
+                    "Rob":      {},
+                    "Sharonda": { postmerge_survive:true, individual_immunity:true },
+                    "Lewis":    { postmerge_survive:true, individual_immunity:true },
+                },
+                ...Object.fromEntries(Array.from({length:5},(_,i)=>[i+9, Object.fromEntries([
                     "Aaliyah","Thien An","Jelly","Brady","Kilby","Devin","Jenna","Maggie","Mike P","Patt",
                     "Alexis","Ana","Carter","Cristian","Eric","Kristin","Linnea","Ori","Rob","Sharonda","Lewis"
                 ].map(n=>[n,{}]))]))
@@ -676,7 +706,9 @@ const SurvivorLeague = () => {
                 "Jack":[],"Dale":[],"Sue":[],"Charlie":[]
             },
             eliminationTimeline: [
-                { week:7, contestant:"Brady", reason:"Brady Falkner was the first post-merge boot in Episode 7 — the merge episode. He chose not to play his Shot in the Dark (−0.5 pts) and earned the title quote (+0.25 pts). He also won a mini reward (+0.5 pts) earlier that episode. His Extra Vote is now void. Mike P won individual immunity; Carter held his idol at tribal (+1 pt); Devin's Extra Vote scored (+0.5 pts); Jelly's and Kristin's idols are no longer in play." },
+                { week:8, contestant:"Kilby",   reason:"Danny Kilby was eliminated in Episode 8's double boot. Jelly played her Hidden Idol nullifying all 8 votes cast against Jelly and Devin. Cristian's Shot in the Dark drew SAFE, protecting him and Carter (1 vote each saved = 0.5 pts each). Kristin's SitD was NOT SAFE. All valid votes landed on Kilby and Kristin, sending both home. Lewis and Sharonda each won individual immunity (+2 pts). Jelly's idol is now void." },
+                { week:8, contestant:"Kristin", reason:"Kristin Flickinger was eliminated in Episode 8's double boot alongside Kilby. She was taken on an individual reward before tribal (+1 pt), earning her only points of the episode. She played her Shot in the Dark (drew NOT SAFE — no penalty since she used it). Valid votes counted against her and Kilby, eliminating both. Her tethered idol (held by Sharonda) is now void." },
+                { week:7, contestant:"Brady",   reason:"Brady Booker was the first post-merge boot in Episode 7 — the merge episode. He chose not to play his Shot in the Dark (−0.5 pts) and earned the title quote (+0.25 pts). He also won a mini reward (+0.5 pts) earlier that episode. His Extra Vote is now void. Mike P won individual immunity; Carter held his idol at tribal (+1 pt); Devin's Extra Vote scored (+0.5 pts); Jelly and Carter still hold their Hidden Idols going forward." },
                 { week:6, contestant:"Ori", reason:"Ori Shapiro was voted out at Savu's tribal council in Episode 6. Toka won immunity; Dina finished second. Ori played his Shot in the Dark (no −0.5 penalty). Jelly survived tribal with her Hidden Idol (+1 pt). Kristin found a Hidden Idol (no points). Eric earned the title quote (+0.25 pts)." },
                 { week:5, contestant:"Alexis", reason:"Alexis Bhatt was voted out at Savu's tribal council in Episode 5 — a double-tribal episode. She chose not to play her Shot in the Dark (−0.5 pts). Toka won immunity; both Savu and Dina went to tribal." },
                 { week:5, contestant:"Linnea", reason:"Linnea Mays was voted out at Dina's tribal council in Episode 5 — a double-tribal episode. She chose not to play her Shot in the Dark (−0.5 pts) and delivered the title quote of the week (+0.25 pts). Kilby, Lewis, and Maggie each found advantages (+0.5 pts each)." },
