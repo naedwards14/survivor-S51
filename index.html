@@ -389,7 +389,7 @@ const SurvivorLeague = () => {
     const [expandedPlayer, setExpandedPlayer] = useState(null);
 
     const getInitialData = () => {
-        const DATA_VERSION = 18; // Ep6: Toka wins immunity, Dina 2nd; Ori voted out (Savu); Kristin finds idol
+        const DATA_VERSION = 19; // Ep7: MERGE; Mike P indiv immunity; Brady voted out; Jelly/Kristin idols gone
         const savedVersion = localStorage.getItem('survivor51DataVersion');
         if (savedVersion != DATA_VERSION) {
             localStorage.removeItem('survivor51LeagueData');
@@ -403,8 +403,8 @@ const SurvivorLeague = () => {
                 // ── TOKA TRIBE (Yellow) ──
                 { name:"Aaliyah",  tribe:"Voted Out", originalTribe:"Toka", eliminated:true,  eliminatedWeek:1,    advantages:[] },
                 { name:"Thien An", tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
-                { name:"Jelly",    tribe:"Savu",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:["Hidden Idol"] },
-                { name:"Brady",    tribe:"Toka",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:["Extra Vote"] },
+                { name:"Jelly",    tribe:"Savu",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
+                { name:"Brady",    tribe:"Voted Out", originalTribe:"Toka", eliminated:true,  eliminatedWeek:7,    advantages:[] },
                 { name:"Kilby",    tribe:"Dina",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:[] },
                 { name:"Devin",    tribe:"Savu",      originalTribe:"Toka", eliminated:false, eliminatedWeek:null, advantages:["Extra Vote"] },
                 { name:"Jenna",    tribe:"Voted Out", originalTribe:"Toka", eliminated:true,  eliminatedWeek:4,    advantages:[] },
@@ -417,7 +417,7 @@ const SurvivorLeague = () => {
                 { name:"Carter",   tribe:"Toka",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:["Hidden Idol"] },
                 { name:"Cristian", tribe:"Dina",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
                 { name:"Eric",     tribe:"Dina",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
-                { name:"Kristin",  tribe:"Toka",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:["Hidden Idol"] },
+                { name:"Kristin",  tribe:"Toka",      originalTribe:"Savu", eliminated:false, eliminatedWeek:null, advantages:[] },
                 { name:"Linnea",   tribe:"Voted Out", originalTribe:"Savu", eliminated:true,  eliminatedWeek:5,    advantages:[] },
                 { name:"Ori",      tribe:"Voted Out", originalTribe:"Savu", eliminated:true,  eliminatedWeek:6,    advantages:[] },
                 { name:"Rob",      tribe:"Quit",      originalTribe:"Savu", eliminated:true,  eliminatedWeek:3,    advantages:[] },
@@ -468,7 +468,14 @@ const SurvivorLeague = () => {
                     "Kristin":1.0,"Linnea":0,      "Ori":0,      "Rob":0,      "Sharonda":0.5,
                     "Lewis":0.5
                 },
-                ...Object.fromEntries(Array.from({length:7},(_,i)=>[i+7, Object.fromEntries([
+                7: {
+                    "Aaliyah":0,  "Thien An":1.5, "Jelly":1.5,  "Brady":0.25, "Kilby":1.5,
+                    "Devin":2.0,  "Jenna":0,       "Maggie":1.5, "Mike P":3.5, "Patt":0,
+                    "Alexis":0,   "Ana":0,          "Carter":2.5, "Cristian":1.0,"Eric":1.75,
+                    "Kristin":1.5,"Linnea":0,       "Ori":0,      "Rob":0,       "Sharonda":1.0,
+                    "Lewis":1.5
+                },
+                ...Object.fromEntries(Array.from({length:6},(_,i)=>[i+8, Object.fromEntries([
                     "Aaliyah","Thien An","Jelly","Brady","Kilby","Devin","Jenna","Maggie","Mike P","Patt",
                     "Alexis","Ana","Carter","Cristian","Eric","Kristin","Linnea","Ori","Rob","Sharonda","Lewis"
                 ].map(n=>[n,0]))]))
@@ -612,7 +619,30 @@ const SurvivorLeague = () => {
                     "Sharonda": { second_immunity:true },
                     "Lewis":    { second_immunity:true },
                 },
-                ...Object.fromEntries(Array.from({length:7},(_,i)=>[i+7, Object.fromEntries([
+                7: {
+                    "Aaliyah":  {},
+                    "Thien An": { mini_reward:true, postmerge_survive:true },
+                    "Jelly":    { mini_reward:true, postmerge_survive:true },
+                    "Brady":    { mini_reward:true, title_quote:true, voted_out:true },
+                    "Kilby":    { mini_reward:true, postmerge_survive:true },
+                    "Devin":    { mini_reward:true, postmerge_survive:true, advantage_tribal:true },
+                    "Jenna":    {},
+                    "Maggie":   { mini_reward:true, postmerge_survive:true },
+                    "Mike P":   { mini_reward:true, postmerge_survive:true, individual_immunity:true },
+                    "Patt":     {},
+                    "Alexis":   {},
+                    "Ana":      {},
+                    "Carter":   { mini_reward:true, postmerge_survive:true, idol_tribal:true },
+                    "Cristian": { postmerge_survive:true },
+                    "Eric":     { mini_reward:true, postmerge_survive:true, title_quote:true },
+                    "Kristin":  { mini_reward:true, postmerge_survive:true },
+                    "Linnea":   {},
+                    "Ori":      {},
+                    "Rob":      {},
+                    "Sharonda": { postmerge_survive:true },
+                    "Lewis":    { mini_reward:true, postmerge_survive:true },
+                },
+                ...Object.fromEntries(Array.from({length:6},(_,i)=>[i+8, Object.fromEntries([
                     "Aaliyah","Thien An","Jelly","Brady","Kilby","Devin","Jenna","Maggie","Mike P","Patt",
                     "Alexis","Ana","Carter","Cristian","Eric","Kristin","Linnea","Ori","Rob","Sharonda","Lewis"
                 ].map(n=>[n,{}]))]))
@@ -646,6 +676,7 @@ const SurvivorLeague = () => {
                 "Jack":[],"Dale":[],"Sue":[],"Charlie":[]
             },
             eliminationTimeline: [
+                { week:7, contestant:"Brady", reason:"Brady Falkner was the first post-merge boot in Episode 7 — the merge episode. He chose not to play his Shot in the Dark (−0.5 pts) and earned the title quote (+0.25 pts). He also won a mini reward (+0.5 pts) earlier that episode. His Extra Vote is now void. Mike P won individual immunity; Carter held his idol at tribal (+1 pt); Devin's Extra Vote scored (+0.5 pts); Jelly's and Kristin's idols are no longer in play." },
                 { week:6, contestant:"Ori", reason:"Ori Shapiro was voted out at Savu's tribal council in Episode 6. Toka won immunity; Dina finished second. Ori played his Shot in the Dark (no −0.5 penalty). Jelly survived tribal with her Hidden Idol (+1 pt). Kristin found a Hidden Idol (no points). Eric earned the title quote (+0.25 pts)." },
                 { week:5, contestant:"Alexis", reason:"Alexis Bhatt was voted out at Savu's tribal council in Episode 5 — a double-tribal episode. She chose not to play her Shot in the Dark (−0.5 pts). Toka won immunity; both Savu and Dina went to tribal." },
                 { week:5, contestant:"Linnea", reason:"Linnea Mays was voted out at Dina's tribal council in Episode 5 — a double-tribal episode. She chose not to play her Shot in the Dark (−0.5 pts) and delivered the title quote of the week (+0.25 pts). Kilby, Lewis, and Maggie each found advantages (+0.5 pts each)." },
@@ -888,7 +919,7 @@ const SurvivorLeague = () => {
             </div>
             <div className="summary-stats">
                 <div className="stat-card"><div className="stat-label">Current Season</div><div className="stat-value">51</div></div>
-                <div className="stat-card"><div className="stat-label">Episodes Aired</div><div className="stat-value">6/{TOTAL_WEEKS}</div></div>
+                <div className="stat-card"><div className="stat-label">Episodes Aired</div><div className="stat-value">7/{TOTAL_WEEKS}</div></div>
                 <div className="stat-card"><div className="stat-label">Cast Remaining</div><div className="stat-value">{data.contestants.filter(c=>!c.eliminated).length}</div></div>
                 <div className="stat-card"><div className="stat-label">League Players</div><div className="stat-value">{leaderboard.length}</div></div>
                 <div className="stat-card"><div className="stat-label">🏆 Current Leader</div><div className="stat-value" style={{color:'#D4A017'}}>{leaderboard[0]?.player || '—'}</div></div>
